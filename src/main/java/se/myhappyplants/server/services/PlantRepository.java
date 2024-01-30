@@ -25,7 +25,7 @@ public class PlantRepository {
 
     public ArrayList<Plant> getResult(String plantSearch) {
         ArrayList<Plant> plantList = new ArrayList<>();
-        String query = "SELECT id, common_name, scientific_name, family, image_url FROM species WHERE scientific_name LIKE ('%" + plantSearch + "%') OR common_name LIKE ('%" + plantSearch + "%');";
+        String query = "SELECT id, common_name, scientific_name, family, image_url FROM public.species WHERE scientific_name LIKE ('%" + plantSearch + "%') OR common_name LIKE ('%" + plantSearch + "%');";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -46,7 +46,7 @@ public class PlantRepository {
 
     public PlantDetails getPlantDetails(Plant plant) {
         PlantDetails plantDetails = null;
-        String query = "SELECT genus, scientific_name, light, water_frequency, family FROM species WHERE id = '" + plant.getPlantId() + "';";
+        String query = "SELECT genus, scientific_name, light, water_frequency, family FROM public.species WHERE id = '" + plant.getPlantId() + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -80,7 +80,7 @@ public class PlantRepository {
 
     public long getWaterFrequency(String plantId) throws IOException, InterruptedException {
         long waterFrequency = -1;
-        String query = "SELECT water_frequency FROM species WHERE id = '" + plantId + "';";
+        String query = "SELECT water_frequency FROM public.species WHERE id = '" + plantId + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {

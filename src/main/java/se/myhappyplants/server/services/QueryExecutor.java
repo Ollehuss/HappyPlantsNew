@@ -1,8 +1,6 @@
 package se.myhappyplants.server.services;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * Class for handling querys to database

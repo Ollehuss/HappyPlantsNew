@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
  * Simple yes/no confirmation box
  * Created by: Christopher O'Driscoll
@@ -51,7 +53,7 @@ public class ConfirmationBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("Stylesheet.css");
+        scene.getStylesheets().add(Objects.requireNonNull(ConfirmationBox.class.getResource("Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
 

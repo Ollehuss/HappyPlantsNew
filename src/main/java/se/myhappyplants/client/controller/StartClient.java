@@ -10,6 +10,7 @@ import se.myhappyplants.client.model.RootName;
 import se.myhappyplants.client.view.ConfirmationBox;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * JavaFX Application Main class
@@ -44,7 +45,7 @@ public class StartClient extends Application {
             close();
         });
         scene = new Scene(loadFXML(RootName.loginPane.toString()), 1010, 640);
-        scene.getStylesheets().add("src/Stylesheet.css");
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.show();
     }

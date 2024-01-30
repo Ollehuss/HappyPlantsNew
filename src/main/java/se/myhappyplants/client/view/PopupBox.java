@@ -16,6 +16,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import se.myhappyplants.client.controller.StartClient;
 
+import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -56,7 +58,15 @@ public class PopupBox extends Popup {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox, Color.TRANSPARENT);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        //scene.getStylesheets().add(Objects.requireNonNull(PopupBox.class.getResource("Stylesheet.css")).toExternalForm());
+        URL stylesheetUrl = PopupBox.class.getResource("Stylesheet.css");
+        if (stylesheetUrl != null) {
+            scene.getStylesheets().add(stylesheetUrl.toExternalForm());
+        } else {
+            System.out.println("Stylesheet.css not found.");
+            // Handle the case where the stylesheet is not found
+        }
+
         window.setScene(scene);
 
         showAndFade();

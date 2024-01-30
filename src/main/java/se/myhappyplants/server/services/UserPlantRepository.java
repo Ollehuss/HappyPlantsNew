@@ -28,7 +28,6 @@ public class UserPlantRepository {
     public UserPlantRepository(PlantRepository plantRepository, IQueryExecutor database) throws UnknownHostException, SQLException {
         this.plantRepository = plantRepository;
         this.database = database;
-
     }
 
     /**
@@ -43,7 +42,7 @@ public class UserPlantRepository {
     public boolean savePlant(User user, Plant plant) {
         boolean success = false;
         String sqlSafeNickname = plant.getNickname().replace("'", "''");
-        String query = "INSERT INTO Plant (user_id, nickname, plant_id, last_watered, image_url) values (" + user.getUniqueId() + ", '" + sqlSafeNickname + "', '" + plant.getPlantId() + "', '" + plant.getLastWatered() + "', '" + plant.getImageURL() + "');";
+        String query = "INSERT INTO public.plant (user_id, nickname, plant_id, last_watered, image_url) values (" + user.getUniqueId() + ", '" + sqlSafeNickname + "', '" + plant.getPlantId() + "', '" + plant.getLastWatered() + "', '" + plant.getImageURL() + "');";
         try {
             database.executeUpdate(query);
             success = true;
@@ -63,7 +62,7 @@ public class UserPlantRepository {
      */
     public ArrayList<Plant> getUserLibrary(User user) {
         ArrayList<Plant> plantList = new ArrayList<Plant>();
-        String query = "SELECT nickname, plant_id, last_watered, image_url FROM [Plant] WHERE user_id =" + user.getUniqueId() + ";";
+        String query = "SELECT nickname, plant_id, last_watered, image_url FROM public.plant WHERE user_id =" + user.getUniqueId() + ";";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -90,7 +89,7 @@ public class UserPlantRepository {
     public Plant getPlant(User user, String nickname) {
         Plant plant = null;
         String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "SELECT nickname, plant_id, last_watered, image_url FROM [Plant] WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
+        String query = "SELECT nickname, plant_id, last_watered, image_url FROM public.plant WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             String plantId = resultSet.getString("plant_id");
@@ -115,7 +114,7 @@ public class UserPlantRepository {
     public boolean deletePlant(User user, String nickname) {
         boolean plantDeleted = false;
         String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "DELETE FROM [plant] WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
+        String query = "DELETE FROM public.plant WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
         try {
             database.executeUpdate(query);
             plantDeleted = true;
@@ -137,7 +136,7 @@ public class UserPlantRepository {
     public boolean changeLastWatered(User user, String nickname, LocalDate date) {
         boolean dateChanged = false;
         String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "UPDATE [Plant] SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        String query = "UPDATE public.plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
         try {
             database.executeUpdate(query);
             dateChanged = true;
@@ -152,7 +151,7 @@ public class UserPlantRepository {
         boolean nicknameChanged = false;
         String sqlSafeNickname = nickname.replace("'", "''");
         String sqlSafeNewNickname = newNickname.replace("'", "''");
-        String query = "UPDATE [Plant] SET nickname = '" + sqlSafeNewNickname + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        String query = "UPDATE public.plant SET nickname = '" + sqlSafeNewNickname + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
         try {
             database.executeUpdate(query);
             nicknameChanged = true;
@@ -166,7 +165,7 @@ public class UserPlantRepository {
     public boolean changeAllToWatered(User user) {
         boolean dateChanged = false;
         LocalDate date = java.time.LocalDate.now();
-        String query = "UPDATE [Plant] SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
+        String query = "UPDATE public.plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
         try {
             database.executeUpdate(query);
             dateChanged = true;
@@ -181,7 +180,7 @@ public class UserPlantRepository {
         boolean pictureChanged = false;
         String nickname = plant.getNickname();
         String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "UPDATE [Plant] SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        String query = "UPDATE public.plant SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
         try {
             database.executeUpdate(query);
             pictureChanged = true;

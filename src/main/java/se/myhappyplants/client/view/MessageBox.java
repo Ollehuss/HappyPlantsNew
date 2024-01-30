@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import se.myhappyplants.client.model.BoxTitle;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -54,7 +55,7 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
     }
@@ -104,7 +105,7 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
 
@@ -154,7 +155,7 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
 

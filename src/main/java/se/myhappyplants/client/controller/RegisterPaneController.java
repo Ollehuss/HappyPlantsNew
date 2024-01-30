@@ -43,33 +43,32 @@ public class RegisterPaneController {
         if(answer == 1){
             boolean verifiedRegistration = verifier.validateRegistration(this);
             Thread registerThread = new Thread(() -> {
-                if (!verifiedRegistration) {
-                    return;
-                }
-                Message registerRequest = new Message(MessageType.register, new User(txtFldNewEmail.getText(), txtFldNewUsername.getText(), passFldNewPassword.getText(), true));
-                ServerConnection connection = ServerConnection.getClientConnection();
-                Message registerResponse = connection.makeRequest(registerRequest);
+                try {
+                    if (!verifiedRegistration) {
+                        return;
+                    }
+                    Message registerRequest = new Message(MessageType.register, new User(txtFldNewEmail.getText(), txtFldNewUsername.getText(), passFldNewPassword.getText(), true));
+                    ServerConnection connection = ServerConnection.getClientConnection();
+                    Message registerResponse = connection.makeRequest(registerRequest);
 
-                if (registerResponse != null) {
-                    if (registerResponse.isSuccess()) {
+                    // Validate the response
+                    if (registerResponse != null && registerResponse.isSuccess()) {
+                        // Further validation can be added here if needed
                         LoggedInUser.getInstance().setUser(registerResponse.getUser());
                         Platform.runLater(() -> MessageBox.display(BoxTitle.Success, "Account created successfully! Now logged in as " + LoggedInUser.getInstance().getUser().getUsername()));
-                        try {
-                            switchToMainPane();
-                        }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        switchToMainPane();
                     } else {
-                        Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "An account with this email address already exists here at My Happy Plants."));
+                        // Handle failed registration
+                        Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Registration failed. Please check the details and try again."));
                     }
-                } else {
-                    Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
+                } catch (Exception e) {
+                    Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "An error occurred: " + e.getMessage()));
+                    e.printStackTrace();
                 }
             });
             registerThread.start();
         }
-        else{
+        else {
             return;
         }
     }

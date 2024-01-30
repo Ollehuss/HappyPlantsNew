@@ -9,17 +9,17 @@
   <tabs>
      <Tab fx:id="myPlantsTab" text="My Plants">
         <content>
-           <fx:include fx:id="myPlantsTabPane" source="myPlantsTabPane.fxml" />
+           <fx:include fx:id="myPlantsTabPane" source="./myPlantsTabPane.fxml" />
         </content>
      </Tab>
     <Tab fx:id="searchTab" text="Search">
          <content>
-            <fx:include fx:id="searchTabPane" source="searchTabPane.fxml" />
+            <fx:include fx:id="searchTabPane" source="./searchTabPane.fxml" />
          </content>
     </Tab>
       <Tab fx:id="settingsTab" text="Settings">
          <content>
-            <fx:include fx:id="settingsTabPane" source="settingsTabPane.fxml" />
+            <fx:include fx:id="settingsTabPane" source="./settingsTabPane.fxml" />
          </content>
       </Tab>
   </tabs>
