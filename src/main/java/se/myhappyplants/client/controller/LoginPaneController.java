@@ -69,7 +69,7 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    private int loginButtonPressed() {
+    public int loginButtonPressed() {
         //Thread loginThread = new Thread(() -> {
             Message loginMessage = new Message(MessageType.login, new User(txtFldEmail.getText(), passFldPassword.getText()));
             ServerConnection connection = ServerConnection.getClientConnection();
