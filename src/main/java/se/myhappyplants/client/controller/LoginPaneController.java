@@ -69,8 +69,8 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    private void loginButtonPressed() {
-        Thread loginThread = new Thread(() -> {
+    private int loginButtonPressed() {
+        //Thread loginThread = new Thread(() -> {
             Message loginMessage = new Message(MessageType.login, new User(txtFldEmail.getText(), passFldPassword.getText()));
             ServerConnection connection = ServerConnection.getClientConnection();
             Message loginResponse = connection.makeRequest(loginMessage);
@@ -85,17 +85,19 @@ public class LoginPaneController {
                     catch (IOException e) {
                         e.printStackTrace();
                     }
+                    return 1;
                 }
                 else {
                     Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
-
+                    return 0;
                 }
             }
             else {
                 Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
+                return -1;
             }
-        });
-        loginThread.start();
+        //});
+        //loginThread.start();
     }
 
     /**
