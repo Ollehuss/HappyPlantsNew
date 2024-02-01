@@ -63,7 +63,7 @@ public class PopupBox extends Popup {
         if (stylesheetUrl != null) {
             scene.getStylesheets().add(stylesheetUrl.toExternalForm());
         } else {
-            System.out.println("Stylesheet.css not found.");
+            System.out.println("PopupBox Cannot find the Stylesheet.css.");
             // Handle the case where the stylesheet is not found
         }
 

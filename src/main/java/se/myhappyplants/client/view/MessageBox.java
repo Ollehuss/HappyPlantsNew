@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import se.myhappyplants.client.model.BoxTitle;
 
+import java.net.URL;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -106,6 +107,13 @@ public class MessageBox {
 
         Scene scene = new Scene(vBox);
         //scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
+        URL stylesheetUrl = PopupBox.class.getResource("Stylesheet.css");
+        if (stylesheetUrl != null) {
+            scene.getStylesheets().add(stylesheetUrl.toExternalForm());
+        } else {
+            System.out.println("MessageBox Cannot find the Stylesheet.css.");
+            // Handle the case where the stylesheet is not found
+        }
         window.setScene(scene);
         window.showAndWait();
 
