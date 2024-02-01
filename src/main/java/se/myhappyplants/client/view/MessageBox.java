@@ -105,7 +105,7 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
+        //scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
 
