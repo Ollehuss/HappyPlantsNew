@@ -2,7 +2,7 @@ package se.myhappyplants.client.view;
 
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+//import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -52,7 +52,7 @@ public class MessageBox {
 
         vBox = new VBox(10);
         vBox.getChildren().addAll(label, okButton);
-        vBox.setAlignment(Pos.CENTER);
+        //vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
@@ -102,7 +102,7 @@ public class MessageBox {
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(label, yesButton, noButton);
-        vBox.setAlignment(Pos.CENTER);
+        //vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
         //scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());
@@ -152,7 +152,7 @@ public class MessageBox {
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(label, textField, enterButton);
-        vBox.setAlignment(Pos.CENTER);
+        //vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("Stylesheet.css")).toExternalForm());

@@ -78,12 +78,11 @@ public class StartClient extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(StartClient.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
+    /*public static void main(String[] args) {
+        launch();
+    }*/
 
-    /**
-     * Alternative run method (not needed)
-     * @param args
-     **/
-    public static void main(String[] args) {
+    public static void initiate() {
         launch();
     }
 }
