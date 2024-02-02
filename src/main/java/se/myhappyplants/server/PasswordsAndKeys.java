@@ -6,7 +6,7 @@ public class PasswordsAndKeys {
     public static String dbServerIp = "pgserver.mau.se";
     public static String dbServerPort = "5432";
     public static String dbUsername = "an6529";
-    public static String dbPassword = "967ro5nq";
+    public static String dbPassword = "pzajl162";
     public static String dbHostName = "pgserver.mau.se";
 
     //API
