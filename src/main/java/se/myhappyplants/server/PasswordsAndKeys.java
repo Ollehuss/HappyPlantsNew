@@ -10,5 +10,5 @@ public class PasswordsAndKeys {
     public static String dbHostName = "pgserver.mau.se";
 
     //API
-    public static String APIToken = "eI01vwK-LgBiMpuVI3tqDaT7xKSEyoEl2qf20rwxb9k&q";
+    public static String APIToken = "T07viGDW4qPmCP7bpbaiuPAg-OlixTHO78mNTd89DRs";
 }
