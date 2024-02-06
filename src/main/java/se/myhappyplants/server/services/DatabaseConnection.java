@@ -1,6 +1,6 @@
 package se.myhappyplants.server.services;
 
-import se.myhappyplants.server.PasswordsAndKeys;
+import se.myhappyplants.server.services.PasswordsAndKeys;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
