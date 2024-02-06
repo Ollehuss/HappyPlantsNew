@@ -17,7 +17,6 @@ import javafx.util.Duration;
 import se.myhappyplants.client.controller.StartClient;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**

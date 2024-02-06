@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="myhappyplants@pgserver.mau.se">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.45">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.51">
     <root id="1">
       <DateStyle>ymd</DateStyle>
       <Grants>13445||10|c|G
@@ -14181,12 +14181,16 @@ false posixrules
     <sequence id="1691" parent="1690" name="plant_plant_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>520617</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>385274</StateNumber>
       <OwnerName>an5859</OwnerName>
     </sequence>
     <sequence id="1692" parent="1690" name="user_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>520585</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>385267</StateNumber>
       <OwnerName>an5859</OwnerName>
     </sequence>
@@ -14263,9 +14267,9 @@ false posixrules
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>520628</ObjectId>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
       <StateNumber>385274</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefKeyColNames>id</RefKeyColNames>
       <RefTableId>520587</RefTableId>
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
