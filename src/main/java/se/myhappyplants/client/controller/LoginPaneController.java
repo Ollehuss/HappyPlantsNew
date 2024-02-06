@@ -1,7 +1,5 @@
 package se.myhappyplants.client.controller;
 
-import java.io.*;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,10 +64,11 @@ public class LoginPaneController {
     /**
      * Method which tries to log in user. If it's successful, it changes scene
      *
+     * @return
      * @throws IOException
      */
     @FXML
-    private void loginButtonPressed() {
+    public String loginButtonPressed() {
         Thread loginThread = new Thread(() -> {
             Message loginMessage = new Message(MessageType.login, new User(txtFldEmail.getText(), passFldPassword.getText()));
             ServerConnection connection = ServerConnection.getClientConnection();
@@ -88,7 +87,6 @@ public class LoginPaneController {
                 }
                 else {
                     Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
-
                 }
             }
             else {
@@ -96,6 +94,7 @@ public class LoginPaneController {
             }
         });
         loginThread.start();
+        return "Login failed";
     }
 
     /**
