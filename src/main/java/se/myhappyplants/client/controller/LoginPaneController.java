@@ -44,7 +44,7 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    public void initialize() throws IOException {
+    public int initialize(int siffra) throws IOException {
         String lastLoggedInUser;
 
         File file = new File("resources/lastLogin.txt");
@@ -61,6 +61,7 @@ public class LoginPaneController {
                 e.printStackTrace();
             }
         }
+        return siffra;
     }
 
     /**
