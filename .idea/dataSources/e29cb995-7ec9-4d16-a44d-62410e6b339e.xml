@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="myhappyplants@pgserver.mau.se">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.45">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.51">
     <root id="1">
       <DateStyle>ymd</DateStyle>
       <Grants>13445||10|c|G
@@ -14381,24 +14381,32 @@ false posixrules
     <sequence id="1701" parent="1700" name="plant_plant_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>520617</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>385274</StateNumber>
       <OwnerName>an5859</OwnerName>
     </sequence>
     <sequence id="1702" parent="1700" name="user_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>520585</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>385267</StateNumber>
       <OwnerName>an5859</OwnerName>
     </sequence>
     <sequence id="1703" parent="1700" name="user_id_seq1">
       <DasType>integer|0s</DasType>
       <ObjectId>524965</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>387011</StateNumber>
       <OwnerName>an5859</OwnerName>
     </sequence>
     <sequence id="1704" parent="1700" name="user_plant_plant_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>524978</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>387012</StateNumber>
       <OwnerName>an5859</OwnerName>
     </sequence>
@@ -14520,9 +14528,9 @@ false posixrules
     <foreign-key id="1722" parent="1706" name="plant_user_id_fkey">
       <ColNames>user_id</ColNames>
       <ObjectId>520628</ObjectId>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
       <StateNumber>385274</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefKeyColNames>id</RefKeyColNames>
       <RefTableId>520587</RefTableId>
       <RefTableName>User</RefTableName>
       <RefTableKind>table</RefTableKind>
@@ -14676,9 +14684,9 @@ false posixrules
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>524989</ObjectId>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
       <StateNumber>387012</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefKeyColNames>id</RefKeyColNames>
       <RefTableId>524967</RefTableId>
       <RefTableName>user</RefTableName>
       <RefTableKind>table</RefTableKind>
