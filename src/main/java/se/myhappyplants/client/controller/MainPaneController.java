@@ -55,7 +55,7 @@ public class MainPaneController {
      * @throws IOException
      */
     @FXML
-    public void logoutButtonPressed() throws IOException {
+    public String logoutButtonPressed() throws IOException {
         String email = LoggedInUser.getInstance().getUser().getEmail();
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("resources/lastLogin.txt"))) {
@@ -66,6 +66,7 @@ public class MainPaneController {
         }
         LoggedInUser.getInstance().setUser(null);
         StartClient.setRoot(String.valueOf(RootName.loginPane));
+        return "You have been logged out successfully!";
     }
 
     /**
