@@ -162,6 +162,7 @@ public class SearchTabPaneController {
         btnSearch.setDisable(true);
         txtFldSearchText.addToHistory();
         PopupBox.display(MessageText.holdOnGettingInfo.toString());
+
         Thread searchThread = new Thread(() -> {
             Message apiRequest = new Message(MessageType.search, txtFldSearchText.getText());
             ServerConnection connection = ServerConnection.getClientConnection();
