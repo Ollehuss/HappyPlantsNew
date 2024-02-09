@@ -13,7 +13,7 @@ import java.util.Properties;
 public class DatabaseConnection implements IDatabaseConnection {
 
     private java.sql.Connection conn;
-    private String databaseName;
+    private final String databaseName;
 
     public DatabaseConnection(String databaseName) {
         this.databaseName = databaseName;
@@ -39,9 +39,10 @@ public class DatabaseConnection implements IDatabaseConnection {
         try {
             // Establish the connection
             this.conn = DriverManager.getConnection(dbURL, props);
-            String[] tables = new String[] {"user", "plant"};
+            String[] tables = new String[] {"User", "User_plant"};
             checkAndCreateTable(tables);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
@@ -65,8 +66,8 @@ public class DatabaseConnection implements IDatabaseConnection {
     private void createTable(String tableName) throws SQLException {
         String createTableSQL = "";
         switch (tableName) {
-            case "user":
-                createTableSQL = "CREATE TABLE IF NOT EXISTS public.user (" +
+            case "User":
+                createTableSQL = "CREATE TABLE IF NOT EXISTS public.User (" +
                                  "id SERIAL PRIMARY KEY, " +
                                  "email VARCHAR(255) UNIQUE, " +
                                  "username VARCHAR(255), " +
@@ -75,8 +76,8 @@ public class DatabaseConnection implements IDatabaseConnection {
                                  "notification_activated BOOLEAN, " +
                                  "fun_facts_activated BOOLEAN)";
                 break;
-            case "plant":
-                createTableSQL = "CREATE TABLE IF NOT EXISTS public.plant (" +
+            case "User_plant":
+                createTableSQL = "CREATE TABLE IF NOT EXISTS public.User_plant (" +
                                  "plant_id SERIAL PRIMARY KEY, " +
                                  "common_name VARCHAR(255), " +
                                  "scientific_name VARCHAR(255), " +
@@ -103,6 +104,7 @@ public class DatabaseConnection implements IDatabaseConnection {
             }
             catch (UnknownHostException e) {
                 e.printStackTrace();
+
             }
             catch (SQLException sqlException) {
                 sqlException.printStackTrace();

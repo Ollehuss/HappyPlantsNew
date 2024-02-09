@@ -29,7 +29,7 @@ public class UserRepository {
         boolean success = false;
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         String sqlSafeUsername = user.getUsername().replace("'", "''");
-        String query = "INSERT INTO public.user (username, email, password, notification_activated, fun_facts_activated) VALUES ('" + sqlSafeUsername + "', '" + user.getEmail() + "', '" + hashedPassword + "','" + 1 + "','" + 1 + "');";
+        String query = "INSERT INTO public.User (username, email, password, notification_activated) VALUES ('" + sqlSafeUsername + "', '" + user.getEmail() + "', '" + hashedPassword + "','" + 1 + "');";
 
         try {
             database.executeUpdate(query);
@@ -52,7 +52,7 @@ public class UserRepository {
      */
     public boolean checkLogin(String email, String password) {
         boolean isVerified = false;
-        String query = "SELECT password FROM public.user WHERE email = '" + email + "';";
+        String query = "SELECT password FROM public.User WHERE email = '" + email + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             if (resultSet.next()) {
@@ -78,16 +78,15 @@ public class UserRepository {
         String username = null;
         boolean notificationActivated = false;
         boolean funFactsActivated = false;
-        String query = "SELECT id, username, notification_activated, fun_facts_activated FROM public.user WHERE email = '" + email + "';";
+        String query = "SELECT id, username, notification_activated FROM public.User WHERE email = '" + email + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
                 uniqueID = resultSet.getInt(1);
                 username = resultSet.getString(2);
                 notificationActivated = resultSet.getBoolean(3);
-                funFactsActivated = resultSet.getBoolean(4);
             }
-            user = new User(uniqueID, email, username, notificationActivated, funFactsActivated);
+            user = new User(uniqueID, email, username, notificationActivated);
         }
         catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -107,7 +106,7 @@ public class UserRepository {
     public boolean deleteAccount(String email, String password) {
         boolean accountDeleted = false;
         if (checkLogin(email, password)) {
-            String querySelect = "SELECT public.user.id from public.user WHERE public.user.email = '" + email + "';";
+            String querySelect = "SELECT public.User.id from public.User WHERE public.User.email = '" + email + "';";
             try {
                 Statement statement = database.beginTransaction();
                 ResultSet resultSet = statement.executeQuery(querySelect);
@@ -115,9 +114,9 @@ public class UserRepository {
                     throw new SQLException();
                 }
                 int id = resultSet.getInt(1);
-                String queryDeletePlants = "DELETE FROM public.plant WHERE user_id = " + id + ";";
+                String queryDeletePlants = "DELETE FROM public.User_plant WHERE user_id = " + id + ";";
                 statement.executeUpdate(queryDeletePlants);
-                String queryDeleteUser = "DELETE FROM public.user WHERE id = " + id + ";";
+                String queryDeleteUser = "DELETE FROM public.User WHERE id = " + id + ";";
                 statement.executeUpdate(queryDeleteUser);
                 database.endTransaction();
                 accountDeleted = true;
@@ -140,7 +139,7 @@ public class UserRepository {
         if (notifications) {
             notificationsActivated = 1;
         }
-        String query = "UPDATE public.user SET notification_activated = " + notificationsActivated + " WHERE email = '" + user.getEmail() + "';";
+        String query = "UPDATE public.User SET notification_activated = " + notificationsActivated + " WHERE email = '" + user.getEmail() + "';";
         try {
             database.executeUpdate(query);
             notificationsChanged = true;
@@ -151,21 +150,21 @@ public class UserRepository {
         return notificationsChanged;
     }
 
-    public boolean changeFunFacts(User user, Boolean funFactsActivated) {
-        boolean funFactsChanged = false;
-        int funFactsBitValue = 0;
-        if (funFactsActivated) {
-            funFactsBitValue = 1;
-        }
-        String query = "UPDATE public.user SET fun_facts_activated = " + funFactsBitValue + " WHERE email = '" + user.getEmail() + "';";
-        try {
-            database.executeUpdate(query);
-            funFactsChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return funFactsChanged;
-    }
+//    public boolean changeFunFacts(User user, Boolean funFactsActivated) {
+//        boolean funFactsChanged = false;
+//        int funFactsBitValue = 0;
+//        if (funFactsActivated) {
+//            funFactsBitValue = 1;
+//        }
+//        String query = "UPDATE public.user SET fun_facts_activated = " + funFactsBitValue + " WHERE email = '" + user.getEmail() + "';";
+//        try {
+//            database.executeUpdate(query);
+//            funFactsChanged = true;
+//        }
+//        catch (SQLException sqlException) {
+//            sqlException.printStackTrace();
+//        }
+//        return funFactsChanged;
+//    }
 }
 

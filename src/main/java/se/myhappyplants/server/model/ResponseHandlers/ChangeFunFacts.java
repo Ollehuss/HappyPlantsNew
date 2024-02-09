@@ -23,11 +23,12 @@ public class ChangeFunFacts implements IResponseHandler {
         Message response;
         User user = request.getUser();
         Boolean funFactsActivated = request.getNotifications();
-        if (userRepository.changeFunFacts(user, funFactsActivated)) {
-            response = new Message(true);
-        } else {
-            response = new Message(false);
-        }
-        return response;
+//        if (userRepository.changeFunFacts(user, funFactsActivated)) {
+//            response = new Message(true);
+//        } else {
+//            response = new Message(false);
+//        }
+//        return response;
+        return null;
     }
 }

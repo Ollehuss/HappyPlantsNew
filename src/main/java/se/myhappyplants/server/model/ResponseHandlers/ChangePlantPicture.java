@@ -19,11 +19,12 @@ public class ChangePlantPicture implements IResponseHandler {
         Message response;
         User user = request.getUser();
         Plant plant = request.getPlant();
-        if (userPlantRepository.changePlantPicture(user, plant)) {
-            response = new Message(true);
-        } else {
-            response = new Message(false);
-        }
-        return response;
+//        if (userPlantRepository.changePlantPicture(user, plant)) {
+//            response = new Message(true);
+//        } else {
+//            response = new Message(false);
+//        }
+//        return response;
+        return null;
     }
 }
