@@ -29,6 +29,10 @@ public class StartClient extends Application {
         return window;
     }
 
+    public static RootName getRoot() {
+        return RootName.valueOf(scene.getRoot().getId());
+    }
+
     /**
      * Starts the application by opening window. Method handles close on request.
      *

@@ -8,6 +8,8 @@ module demo {
     //requires com.microsoft.sqlserver.jdbc;
     requires org.postgresql.jdbc;
     requires org.junit.jupiter.api;
+    requires org.mockito;
+    requires junit;
 
     opens  se.myhappyplants.client.controller to javafx.fxml;
     exports se.myhappyplants.client.view to javafx.fxml;

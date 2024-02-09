@@ -16,7 +16,7 @@ public final class LoggedInUser {
     /**
      * Private constructor to get only one instance of the class
      */
-    private LoggedInUser() {
+    public LoggedInUser() {
     }
 
     /**
