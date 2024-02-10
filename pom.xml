@@ -52,6 +52,11 @@
             <artifactId>javafx-fxml</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>23-ea+3</version>
+        </dependency>
 
     </dependencies>
     <build>

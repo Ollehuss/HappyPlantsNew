@@ -18,6 +18,7 @@ import se.myhappyplants.client.controller.StartClient;
 
 import java.net.URL;
 import java.security.spec.ECField;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -55,7 +56,7 @@ public class PopupBox extends Popup {
 
         vBox = new VBox(10);
         vBox.getChildren().add(label);
-       // vBox.setAlignment(Pos.CENTER);
+        //vBox.setAlignment(Pos.CENTER);
 
 
         Scene scene = new Scene(vBox, Color.TRANSPARENT);
