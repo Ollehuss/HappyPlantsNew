@@ -135,9 +135,9 @@ public class UserRepository {
 
     public boolean changeNotifications(User user, boolean notifications) {
         boolean notificationsChanged = false;
-        int notificationsActivated = 0;
+        boolean notificationsActivated = false;
         if (notifications) {
-            notificationsActivated = 1;
+            notificationsActivated = true;
         }
         String query = "UPDATE public.User SET notification_activated = " + notificationsActivated + " WHERE email = '" + user.getEmail() + "';";
         try {
