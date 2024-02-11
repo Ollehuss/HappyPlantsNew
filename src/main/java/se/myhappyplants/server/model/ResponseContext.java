@@ -1,10 +1,12 @@
 package se.myhappyplants.server.model;
 
+import se.myhappyplants.server.controller.api.PlantController;
 import se.myhappyplants.server.model.ResponseHandlers.*;
 import se.myhappyplants.server.services.PlantRepository;
 import se.myhappyplants.server.services.UserPlantRepository;
 import se.myhappyplants.server.services.UserRepository;
 import se.myhappyplants.shared.MessageType;
+import se.myhappyplants.shared.Plant;
 
 import java.util.HashMap;
 
@@ -15,16 +17,19 @@ import java.util.HashMap;
  */
 public class ResponseContext {
 
+
     private HashMap<MessageType, IResponseHandler> responders = new HashMap<>();
     private UserRepository userRepository;
     private UserPlantRepository userPlantRepository;
     private PlantRepository plantRepository;
+    private PlantController plantController;
 
-    public ResponseContext(UserRepository userRepository, UserPlantRepository userPlantRepository, PlantRepository plantRepository) {
+    public ResponseContext(UserRepository userRepository, UserPlantRepository userPlantRepository, PlantRepository plantRepository, PlantController plantController) {
 
         this.userRepository = userRepository;
         this.userPlantRepository = userPlantRepository;
         this.plantRepository = plantRepository;
+        this.plantController = plantController;
         createResponders();
     }
 
@@ -45,7 +50,7 @@ public class ResponseContext {
         responders.put(MessageType.login, new Login(userRepository));
         responders.put(MessageType.register, new Register(userRepository));
         responders.put(MessageType.savePlant, new SavePlant(userPlantRepository));
-        responders.put(MessageType.search, new Search(plantRepository));
+        responders.put(MessageType.search, new Search(plantRepository, plantController));
     }
 
     public IResponseHandler getResponseHandler(MessageType messageType) {

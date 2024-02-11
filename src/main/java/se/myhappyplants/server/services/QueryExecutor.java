@@ -24,10 +24,20 @@ public class QueryExecutor implements IQueryExecutor {
                 isSuccess = true;
                 return;
             }
-            catch (SQLException sqlException) {
+            /*catch (SQLException sqlException) {
                 connection.closeConnection();
                 retries++;
+            }*/
+            catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                // Log additional details from the exception
+                System.out.println("SQL State: " + sqlException.getSQLState());
+                System.out.println("Error Code: " + sqlException.getErrorCode());
+                System.out.println("Message: " + sqlException.getMessage());
+                retries++;
+                // Consider adding a delay here if you plan to retry
             }
+
         } while (!isSuccess && retries < 3);
         throw new SQLException("No connection to database");
     }
