@@ -135,7 +135,7 @@ public class SettingsTabPaneController {
                 Message deleteMessage = new Message(MessageType.deleteAccount, new User(LoggedInUser.getInstance().getUser().getEmail(), passFldDeleteAccount.getText()));
                 ServerConnection connection = ServerConnection.getClientConnection();
                 Message deleteResponse = connection.makeRequest(deleteMessage);
-                if (deleteResponse != null) {
+                if (deleteResponseNotNull(deleteResponse)) {
                     if (deleteResponse.isSuccess()) {
                         Platform.runLater(() -> MessageBox.display(BoxTitle.Success, "We are sorry to see you go"));
                         try {
@@ -153,6 +153,11 @@ public class SettingsTabPaneController {
             deleteAccountThread.start();
         }
     }
+
+    private static boolean deleteResponseNotNull(Message deleteResponse) {
+        return deleteResponse != null;
+    }
+
     /**
      * Method to message the right controller-class that the log out-button has been pressed
      * @throws IOException
