@@ -171,7 +171,7 @@ public class SearchTabPaneController {
                 if (apiResponse.isSuccess()) {
                     searchResults = apiResponse.getPlantArray();
                     Platform.runLater(() -> txtNbrOfResults.setText(searchResults.size() + " results"));
-                    if(searchResults.size() == 0) {
+                    if(searchResults.isEmpty()) {
                         progressIndicator.progressProperty().unbind();
                         progressIndicator.setProgress(100);
                         btnSearch.setDisable(false);
