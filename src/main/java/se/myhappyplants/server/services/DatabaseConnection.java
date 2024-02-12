@@ -87,7 +87,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                                  "last_watered DATE, " +
                                  "water_frequency BIGINT," +
                                  "user_id INTEGER, " +
-                                 "FOREIGN KEY (user_id) REFERENCES public.user(id))";
+                                 "FOREIGN KEY (user_id) REFERENCES public.User(id))";
         }
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);
