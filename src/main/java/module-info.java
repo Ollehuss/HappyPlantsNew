@@ -10,6 +10,8 @@ module demo {
     requires org.junit.jupiter.api;
     requires org.mockito;
     requires junit;
+    requires com.google.gson;
+    requires java.net.http;
 
     opens  se.myhappyplants.client.controller to javafx.fxml;
     exports se.myhappyplants.client.view to javafx.fxml;
