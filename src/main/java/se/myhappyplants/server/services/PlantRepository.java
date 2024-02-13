@@ -25,28 +25,40 @@ public class PlantRepository {
 
     public ArrayList<Plant> getResult(String plantSearch) {
         ArrayList<Plant> plantList = new ArrayList<>();
-        String query = "SELECT id, common_name, scientific_name, family, image_url FROM public.species WHERE scientific_name LIKE ('%" + plantSearch + "%') OR common_name LIKE ('%" + plantSearch + "%');";
+        String query = "SELECT plant_id, common_name, scientific_name, family_name, image_url FROM public.plant WHERE scientific_name LIKE ('%" + plantSearch + "%') OR common_name LIKE ('%" + plantSearch + "%');";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
-                String plantId = resultSet.getString("id");
+                String plantId = resultSet.getString("plant_id");
                 String commonName = resultSet.getString("common_name");
                 String scientificName = resultSet.getString("scientific_name");
-                String familyName = resultSet.getString("family");
+                String familyName = resultSet.getString("family_name");
                 String imageURL = resultSet.getString("image_url");
                 plantList.add(new Plant(plantId, commonName, scientificName, familyName, imageURL));
             }
         }
+        /*catch (SQLException sqlException) {
+            System.out.println(sqlException.fillInStackTrace());
+            plantList = null;
+        }*/
         catch (SQLException sqlException) {
             System.out.println(sqlException.fillInStackTrace());
             plantList = null;
+            sqlException.printStackTrace();
+            // Log additional details from the exception
+            System.out.println("SQL State: " + sqlException.getSQLState());
+            System.out.println("Error Code: " + sqlException.getErrorCode());
+            System.out.println("Message: " + sqlException.getMessage());
+            //retries++;
+            // Consider adding a delay here if you plan to retry
         }
+
         return plantList;
     }
 
     public PlantDetails getPlantDetails(Plant plant) {
         PlantDetails plantDetails = null;
-        String query = "SELECT genus, scientific_name, light, water_frequency, family FROM public.species WHERE id = '" + plant.getPlantId() + "';";
+        String query = "SELECT scientific_name, water_frequency, family_name, common_name, image_url, last_watered FROM public.plant WHERE plant_id = '" + plant.getPlantId() + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -80,7 +92,7 @@ public class PlantRepository {
 
     public long getWaterFrequency(String plantId) throws IOException, InterruptedException {
         long waterFrequency = -1;
-        String query = "SELECT water_frequency FROM public.species WHERE id = '" + plantId + "';";
+        String query = "SELECT water_frequency FROM public.plant WHERE id = '" + plantId + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -93,5 +105,28 @@ public class PlantRepository {
             throwables.printStackTrace();
         }
         return waterFrequency;
+    }
+
+    public boolean savePlant(se.myhappyplants.server.model.api.Plant plant) {
+        boolean success = false;
+        String commonName = plant.getCommon_name();
+        System.out.println("SERVER:SAVEPLANT:plant.getCommon_name(): " + plant.getCommon_name());
+        String scientificName = plant.getScientific_name();
+        System.out.println("SERVER:SAVEPLANT:plant.getScientific_name(): " + plant.getScientific_name());
+        String familyName = plant.getFamily();
+        System.out.println("SERVER:SAVEPLANT:plant.getFamily(): " + plant.getFamily());
+        String imageURL = plant.getImage_url();
+        System.out.println("SERVER:SAVEPLANT:plant.getImage_url(): " + plant.getImage_url());
+        String query = "INSERT INTO public.plant (common_name, scientific_name, family_name, image_url) VALUES ('" + commonName + "', '" + scientificName + "', '" + familyName + "','" + imageURL + "');";
+
+        try {
+            database.executeUpdate(query);
+            //database.executeUpdate(sqlSafeUsername, user.getEmail(), hashedPassword, 1, 1);
+            success = true;
+        }
+        catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return success;
     }
 }

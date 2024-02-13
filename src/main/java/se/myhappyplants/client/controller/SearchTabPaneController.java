@@ -162,15 +162,20 @@ public class SearchTabPaneController {
         btnSearch.setDisable(true);
         txtFldSearchText.addToHistory();
         PopupBox.display(MessageText.holdOnGettingInfo.toString());
+
         Thread searchThread = new Thread(() -> {
             Message apiRequest = new Message(MessageType.search, txtFldSearchText.getText());
+            System.out.println("Client: searchButtonPressed" + txtFldSearchText.getText());
             ServerConnection connection = ServerConnection.getClientConnection();
             Message apiResponse = connection.makeRequest(apiRequest);
 
             if (apiResponse != null) {
                 if (apiResponse.isSuccess()) {
+                    System.out.println("Client: apiResposne: isSuccess");
                     searchResults = apiResponse.getPlantArray();
+                    System.out.println("searchResults" + searchResults.get(0));
                     Platform.runLater(() -> txtNbrOfResults.setText(searchResults.size() + " results"));
+
                     if(searchResults.size() == 0) {
                         progressIndicator.progressProperty().unbind();
                         progressIndicator.setProgress(100);

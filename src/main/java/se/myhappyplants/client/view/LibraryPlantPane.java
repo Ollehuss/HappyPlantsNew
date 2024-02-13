@@ -4,7 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
+//import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -65,7 +65,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         nickname.setLayoutX(100);
         nickname.setLayoutY(25);
         nickname.setPrefWidth(300);
-        nickname.setAlignment(Pos.CENTER);
+        //nickname.setAlignment(Pos.CENTER);
 
         this.getChildren().addAll(image, nickname);
     }
@@ -154,7 +154,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         nickname.setLayoutX(0);
         nickname.setLayoutY(70);
         nickname.setPrefWidth(145);
-        nickname.setAlignment(Pos.CENTER);
+        //nickname.setAlignment(Pos.CENTER);
     }
 
     /**

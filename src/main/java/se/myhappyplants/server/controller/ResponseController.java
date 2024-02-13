@@ -1,5 +1,6 @@
 package se.myhappyplants.server.controller;
 
+import se.myhappyplants.server.controller.api.PlantController;
 import se.myhappyplants.server.model.IResponseHandler;
 import se.myhappyplants.server.model.ResponseContext;
 import se.myhappyplants.server.services.PlantRepository;
@@ -18,10 +19,11 @@ import java.io.IOException;
 
 public class ResponseController {
     private ResponseContext responseContext;
+    private PlantController plantController;
 
 
-    public ResponseController(UserRepository userRepository, UserPlantRepository userPlantRepository, PlantRepository plantRepository){
-        responseContext = new ResponseContext(userRepository, userPlantRepository, plantRepository);
+    public ResponseController(UserRepository userRepository, UserPlantRepository userPlantRepository, PlantRepository plantRepository, PlantController plantController){
+        responseContext = new ResponseContext(userRepository, userPlantRepository, plantRepository, plantController);
     }
     /**
      * Gets a response depending on the type of requests received

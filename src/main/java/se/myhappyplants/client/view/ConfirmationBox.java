@@ -1,6 +1,6 @@
 package se.myhappyplants.client.view;
 
-import javafx.geometry.Pos;
+//import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,7 +20,7 @@ public class ConfirmationBox {
     private static boolean answer;
 
     /**
-     * Static method to display a pop up box
+     * Static method to display a pop-up box
      * @param title the title of the box
      * @param message the message in the box
      * @return boolean if it's successful
@@ -50,7 +50,7 @@ public class ConfirmationBox {
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(label, yesButton, noButton);
-        vBox.setAlignment(Pos.CENTER);
+       // vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add(Objects.requireNonNull(ConfirmationBox.class.getResource("Stylesheet.css")).toExternalForm());
