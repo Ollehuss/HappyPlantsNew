@@ -1,13 +1,14 @@
 package se.myhappyplants.client.controller;
 
 import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.assertNull;
 
 import se.myhappyplants.client.model.LoggedInUser;
+import se.myhappyplants.client.model.RootName;
+import se.myhappyplants.client.service.ServerConnection;
 import se.myhappyplants.shared.User;
-
-
 
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class JunitTest {
         this.lpc = new LoginPaneController();
         this.mpc = new MainPaneController();
         this.startClient = new StartClient();
+        startClient = mock(StartClient.class);
     }
     @Test
     public void testSetUserToNull() {
@@ -46,11 +48,11 @@ public class JunitTest {
        assertEquals("User set to null", result);
     }
     @Test
-    public void testSetRootToLoginPane(){
-        LoggedInUser.getInstance().setUser(new LoggedInUser().getUser());
+    public void testSetRootToLoginPane() throws IOException{
+        doNothing().when(startClient).setRoot(String.valueOf(RootName.loginPane));
         String result = mpc.setRootToLoginPane();
-        assertEquals("Root set to loginPane", result);
 
+        assertEquals("Root set to loginPane", result);
     }
     @Test
     public void testWriteEmailToTextFile() {
@@ -59,8 +61,9 @@ public class JunitTest {
         String result = mpc.writeEmailToTextFile();
         assertEquals("Email written to file", result);
     }
- /*   @Test
+   /* @Test
     public void testLogoutButtonPressed() {
     }
-  */
+
+    */
 }
