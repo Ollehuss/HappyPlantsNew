@@ -8,7 +8,7 @@ import se.myhappyplants.shared.User;
  * Created by: Christopher O'Driscoll
  * Updated by: Christopher, 2021-04-13
  */
-public final class LoggedInUser {
+public class LoggedInUser {
 
     private User user;
     private final static LoggedInUser INSTANCE = new LoggedInUser();

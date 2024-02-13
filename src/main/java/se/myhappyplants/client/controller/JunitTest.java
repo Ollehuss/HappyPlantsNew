@@ -1,5 +1,6 @@
 package se.myhappyplants.client.controller;
 
+import org.junit.After;
 import org.junit.jupiter.api.*;
 import static org.mockito.Mockito.*;
 
@@ -10,13 +11,21 @@ import se.myhappyplants.client.model.RootName;
 import se.myhappyplants.client.service.ServerConnection;
 import se.myhappyplants.shared.User;
 
-
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JunitTest {
     private LoginPaneController lpc;
+    private LoggedInUser loggedInUserMock;
     private MainPaneController mpc;
 
     private StartClient startClient;
@@ -25,22 +34,24 @@ public class JunitTest {
     public static void main(String[] args) throws IOException {
         JunitTest testFile = new JunitTest();
         testFile.setup();
-        testFile.testLoginButton();
+        testFile.testLogOutButton();
     }
-    public void testLoginButton() throws IOException {
+    public void testLogOutButton() throws IOException {
         setup();
         testWriteEmailToTextFile();
+     //   testWriteEmailToTextFile_IOExecption();
         testSetUserToNull();
-        testSetRootToLoginPane();
+       // testSetRootToLoginPane();
        // testLogoutButtonPressed();
     }
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         this.lpc = new LoginPaneController();
         this.mpc = new MainPaneController();
         this.startClient = new StartClient();
-        startClient = mock(StartClient.class);
+        loggedInUserMock = mock(LoggedInUser.class);
+     //   startClient = mock(StartClient.class);
     }
     @Test
     public void testSetUserToNull() {
@@ -60,6 +71,8 @@ public class JunitTest {
         LoggedInUser.getInstance().setUser(new User(email, "test", "test", true));
         String result = mpc.writeEmailToTextFile();
         assertEquals("Email written to file", result);
+    }
+    public void testWriteEmailToTextFile_IOExecption() throws IOException {
     }
    /* @Test
     public void testLogoutButtonPressed() {
