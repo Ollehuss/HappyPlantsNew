@@ -35,7 +35,7 @@ public class JunitTest {
         setup();
         testWriteEmailToTextFile();
         testSetUserToNull();
-      //  testSetRootToLoginPane();
+        testSetRootToLoginPane();
        // testLogoutButtonPressed();
     }
     public void testLogInButton() throws IOException {
@@ -48,7 +48,7 @@ public class JunitTest {
     public void setup() throws IOException {
         this.lpc = new LoginPaneController();
         this.mpc = new MainPaneController();
-     //   this.startClient = new StartClient();
+        this.startClient = new StartClient();
      //   startClient = mock(StartClient.class);
     }
     @Test
@@ -58,9 +58,12 @@ public class JunitTest {
     }
     @Test
     public void testSetRootToLoginPane() throws IOException{
+        StartClient clientMock = mock(StartClient.class);
+        StartClient.setRoot(String.valueOf(RootName.loginPane));
         String result = mpc.setRootToLoginPane();
         assertEquals("Root set to loginPane", result);
-        assertEquals(RootName.loginPane.toString(), StartClient.getRoot());    }
+        verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
+    }
     @Test
     public void testWriteEmailToTextFile() throws IOException {
         String email = "test@test.com";
