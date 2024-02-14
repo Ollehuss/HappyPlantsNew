@@ -79,9 +79,6 @@ public class MainPaneController {
         StartClient.setRoot(String.valueOf(RootName.loginPane));
         return "Root set to loginPane";
     }
-
-
-
     /**
      * Method to update so the user picture is the same on all the tabs
      */

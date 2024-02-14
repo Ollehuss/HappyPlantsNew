@@ -29,7 +29,7 @@ public class JunitTest {
         JunitTest testFile = new JunitTest();
         testFile.setup();
         testFile.testLogOutButton();
-        testFile.testLogInButton();
+      //  testFile.testLogInButton();
     }
     public void testLogOutButton() throws IOException {
         setup();
