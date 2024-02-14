@@ -41,7 +41,7 @@ public class JunitTest {
         setup();
         testWriteEmailToTextFile();
         testSetUserToNull();
-        testSetRootToLoginPane();
+      //  testSetRootToLoginPane();
        // testLogoutButtonPressed();
     }
 
@@ -60,9 +60,6 @@ public class JunitTest {
     @Test
     public void testSetRootToLoginPane() throws IOException{
         String result = mpc.setRootToLoginPane();
-        if (loginPane.equals(RootName.loginPane.toString())) {
-            assertEquals("Root set to loginPane", result);
-        }
         assertEquals("Root set to loginPane", result);
         assertEquals(RootName.loginPane.toString(), StartClient.getRoot());    }
     @Test
