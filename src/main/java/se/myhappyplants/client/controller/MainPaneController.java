@@ -55,22 +55,18 @@ public class MainPaneController {
      * @throws IOException
      */
     @FXML
-    public String logoutButtonPressed() {
+    public String logoutButtonPressed() throws IOException{
         writeEmailToTextFile();
         setUserToNull();
         setRootToLoginPane();
         return "User logged out";
     }
 
-    public String writeEmailToTextFile() {
+    public String writeEmailToTextFile () throws IOException {
         String email = LoggedInUser.getInstance().getUser().getEmail();
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("resources/lastLogin.txt"))) {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("resources/lastLogin.txt"));
             bw.write(email);
             bw.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Email not written to file";
-        }
         return "Email written to file";
     }
 
@@ -79,13 +75,8 @@ public class MainPaneController {
         return "User set to null";
     }
 
-    public String setRootToLoginPane() {
-        try {
-            StartClient.setRoot(String.valueOf(RootName.loginPane));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Root not set to loginPane";
-        }
+    public String setRootToLoginPane() throws IOException{
+        StartClient.setRoot(String.valueOf(RootName.loginPane));
         return "Root set to loginPane";
     }
 
