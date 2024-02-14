@@ -75,18 +75,17 @@ public class LoginPaneController {
             ServerConnection connection = ServerConnection.getClientConnection();
             Message loginResponse = connection.makeRequest(loginMessage);
 
-            checkLoginResponseNotNull(loginResponse);
+            if(checkLoginResponseNotNull(loginResponse)) {
+                checkLoginResponseIsSuccess(loginResponse);
+            } else {
+                Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
+            }
         });
         loginThread.start();
     }
 
-    private void checkLoginResponseNotNull(Message loginResponse) {
-        if (loginResponse != null) {
-            checkLoginResponseIsSuccess(loginResponse);
-        }
-        else {
-            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
-        }
+    private boolean checkLoginResponseNotNull(Message loginResponse) {
+        return loginResponse != null;
     }
 
     private void checkLoginResponseIsSuccess(Message loginResponse) {
