@@ -68,33 +68,42 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    public String loginButtonPressed() {
+    private String loginButtonPressed() {
         Thread loginThread = new Thread(() -> {
             Message loginMessage = new Message(MessageType.login, new User(txtFldEmail.getText(), passFldPassword.getText()));
             ServerConnection connection = ServerConnection.getClientConnection();
             Message loginResponse = connection.makeRequest(loginMessage);
 
-            if (loginResponse != null) {
-                if (loginResponse.isSuccess()) {
-                    LoggedInUser.getInstance().setUser(loginResponse.getUser());
-                    Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));
-                    try {
-                        switchToMainPane();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
-                }
-            }
-            else {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
-            }
+            checkLoginResponseNotNull(loginResponse);
         });
         loginThread.start();
-        return "Login failed";
+        return "User logged in";
+    }
+
+    public String checkLoginResponseNotNull(Message loginResponse) {
+        if (loginResponse != null) {
+            checkLoginResponseIsSuccess(loginResponse);
+        }
+        else {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
+        }
+        return "Login response is null";
+    }
+
+    public String checkLoginResponseIsSuccess(Message loginResponse) {
+        if (loginResponse.isSuccess()) {
+            LoggedInUser.getInstance().setUser(loginResponse.getUser());
+            Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));
+            try {
+                switchToMainPane();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
+        }
+        return "Login response is not successful";
     }
 
     /**

@@ -1,29 +1,22 @@
 package se.myhappyplants.client.controller;
 
-import org.junit.After;
 import org.junit.jupiter.api.*;
-import static org.mockito.Mockito.*;
 
-import static org.junit.Assert.assertNull;
 
+import se.myhappyplants.client.model.BoxTitle;
 import se.myhappyplants.client.model.LoggedInUser;
 import se.myhappyplants.client.model.RootName;
-import se.myhappyplants.client.controller.*;
-import se.myhappyplants.client.service.ServerConnection;
+import se.myhappyplants.shared.Message;
+import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.User;
 
-
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.PosixFilePermission;
-import java.util.HashSet;
-import java.util.Set;
+import static org.mockito.Mockito.*;
 
+
+import static javafx.beans.binding.Bindings.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
 
 public class JunitTest {
     private LoginPaneController lpc;
@@ -36,6 +29,7 @@ public class JunitTest {
         JunitTest testFile = new JunitTest();
         testFile.setup();
         testFile.testLogOutButton();
+        testFile.testLogInButton();
     }
     public void testLogOutButton() throws IOException {
         setup();
@@ -44,12 +38,17 @@ public class JunitTest {
       //  testSetRootToLoginPane();
        // testLogoutButtonPressed();
     }
+    public void testLogInButton() throws IOException {
+        setup();
+     //   checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox();
+      //  checkLoginResponseIsSuccess();
+    }
 
     @BeforeEach
     public void setup() throws IOException {
         this.lpc = new LoginPaneController();
         this.mpc = new MainPaneController();
-        this.startClient = new StartClient();
+     //   this.startClient = new StartClient();
      //   startClient = mock(StartClient.class);
     }
     @Test
@@ -69,9 +68,18 @@ public class JunitTest {
         String result = mpc.writeEmailToTextFile();
         assertEquals("Email written to file", result);
     }
-   /* @Test
-    public void testLogoutButtonPressed() {
-    }
+    @Test
+    public void checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox() {
+        // Call the method with null loginResponse
+        String result = lpc.checkLoginResponseNotNull(null);
 
-    */
+        // Check that the appropriate message is returned
+        assertEquals("Login response is null", result);
+    }
+    @Test
+    public void checkLoginResponseIsSuccess() {
+        Message loginResponse = new Message(MessageType.login, new User("test", "test"));
+        String result = lpc.checkLoginResponseIsSuccess(loginResponse);
+        assertEquals("Login response is not successful", result);
+    }
 }

@@ -60,8 +60,8 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>LATEST</version>
-            <scope>compile</scope>
+            <version>4.13.2</version> <!-- Or the latest version available -->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -74,6 +74,19 @@
             <artifactId>mockito-core</artifactId>
             <version>3.12.4</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.16-alpha</version> <!-- Or the latest version available -->
+            <scope>test</scope>
+        </dependency>
+
 
 
     </dependencies>
