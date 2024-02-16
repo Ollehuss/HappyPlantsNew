@@ -6,11 +6,14 @@ import org.junit.jupiter.api.*;
 import se.myhappyplants.client.model.BoxTitle;
 import se.myhappyplants.client.model.LoggedInUser;
 import se.myhappyplants.client.model.RootName;
+import se.myhappyplants.server.StartServer;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.User;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import static org.mockito.Mockito.*;
 
 
@@ -25,13 +28,13 @@ public class JunitTest {
     private StartClient startClient;
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         JunitTest testFile = new JunitTest();
         testFile.setup();
         testFile.testLogOutButton();
       //  testFile.testLogInButton();
     }
-    public void testLogOutButton() throws IOException {
+    public void testLogOutButton() throws IOException, SQLException {
         setup();
         testWriteEmailToTextFile();
         testSetUserToNull();
@@ -57,8 +60,10 @@ public class JunitTest {
        assertEquals("User set to null", result);
     }
     @Test
-    public void testSetRootToLoginPane() throws IOException{
+    public void testSetRootToLoginPane() throws IOException, SQLException {
+        StartServer serverMock = mock(StartServer.class);
         StartClient clientMock = mock(StartClient.class);
+     //   serverMock.main(new String[0]);
         StartClient.setRoot(String.valueOf(RootName.loginPane));
         String result = mpc.setRootToLoginPane();
         assertEquals("Root set to loginPane", result);
