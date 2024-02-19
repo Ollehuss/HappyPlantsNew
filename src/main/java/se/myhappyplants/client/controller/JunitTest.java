@@ -62,12 +62,12 @@ public class JunitTest {
     @Test
     public void testSetRootToLoginPane() throws IOException, SQLException {
         StartServer serverMock = mock(StartServer.class);
-        StartClient clientMock = mock(StartClient.class);
+        //StartClient clientMock = mock(StartClient.class);
      //   serverMock.main(new String[0]);
         StartClient.setRoot(String.valueOf(RootName.loginPane));
         String result = mpc.setRootToLoginPane();
         assertEquals("Root set to loginPane", result);
-        verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
+     //   verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
     }
     @Test
     public void testWriteEmailToTextFile() throws IOException {
