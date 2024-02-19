@@ -66,7 +66,7 @@ public class PlantRepository {
                 String scientificName = resultSet.getString("scientific_name");
                 String lightText = resultSet.getString("light");
                 String waterText = resultSet.getString("water_frequency");
-                String family = resultSet.getString("family");
+                String family = resultSet.getString("family_name");
 
                 int light = (isNumeric(lightText)) ? Integer.parseInt(lightText) : -1;
                 int water = (isNumeric(waterText)) ? Integer.parseInt(waterText) : -1;

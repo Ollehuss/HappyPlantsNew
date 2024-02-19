@@ -40,11 +40,11 @@ public class RegisterPaneController {
     @FXML
     private void registerButtonPressed() {
         int answer = MessageBox.askYesNo(BoxTitle.GDPR, "Your account details will be saved in accordance with GDPR requirements" + "\n" + "Do you still want to create the account?");
-        if(answer == 1){
-            boolean verifiedRegistration = verifier.validateRegistration(this);
+        if(answer == 1) {
+            boolean verifiedRegistration = isVerifiedRegistration();
             Thread registerThread = new Thread(() -> {
                 try {
-                    if (!verifiedRegistration) {
+                    if (!isVerifiedRegistration()) {
                         return;
                     }
                     Message registerRequest = new Message(MessageType.register, new User(txtFldNewEmail.getText(), txtFldNewUsername.getText(), passFldNewPassword.getText(), true));
@@ -52,7 +52,7 @@ public class RegisterPaneController {
                     Message registerResponse = connection.makeRequest(registerRequest);
 
                     // Validate the response
-                    if (registerResponse != null && registerResponse.isSuccess()) {
+                    if (registerResponseSuccess(registerResponse)) {
                         // Further validation can be added here if needed
                         LoggedInUser.getInstance().setUser(registerResponse.getUser());
                         Platform.runLater(() -> MessageBox.display(BoxTitle.Success, "Account created successfully! Now logged in as " + LoggedInUser.getInstance().getUser().getUsername()));
@@ -71,6 +71,14 @@ public class RegisterPaneController {
         else {
             return;
         }
+    }
+
+    private boolean isVerifiedRegistration() {
+        return verifier.validateRegistration(this);
+    }
+
+    private static boolean registerResponseSuccess(Message registerResponse) {
+        return registerResponse != null && registerResponse.isSuccess();
     }
 
     @FXML

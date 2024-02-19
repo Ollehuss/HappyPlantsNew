@@ -1,5 +1,7 @@
 package se.myhappyplants.client.controller;
 
+import java.io.*;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,33 +66,29 @@ public class LoginPaneController {
     /**
      * Method which tries to log in user. If it's successful, it changes scene
      *
-     * @return
      * @throws IOException
      */
     @FXML
-    private String loginButtonPressed() {
+    private void loginButtonPressed() {
         Thread loginThread = new Thread(() -> {
             Message loginMessage = new Message(MessageType.login, new User(txtFldEmail.getText(), passFldPassword.getText()));
             ServerConnection connection = ServerConnection.getClientConnection();
             Message loginResponse = connection.makeRequest(loginMessage);
 
-            checkLoginResponseNotNull(loginResponse);
+            if(checkLoginResponseNotNull(loginResponse)) {
+                checkLoginResponseIsSuccess(loginResponse);
+            } else {
+                Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
+            }
         });
         loginThread.start();
-        return "User logged in";
     }
 
-    public String checkLoginResponseNotNull(Message loginResponse) {
-        if (loginResponse != null) {
-            checkLoginResponseIsSuccess(loginResponse);
-        }
-        else {
-            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
-        }
-        return "Login response is null";
+    private boolean checkLoginResponseNotNull(Message loginResponse) {
+        return loginResponse != null;
     }
 
-    public String checkLoginResponseIsSuccess(Message loginResponse) {
+    private void checkLoginResponseIsSuccess(Message loginResponse) {
         if (loginResponse.isSuccess()) {
             LoggedInUser.getInstance().setUser(loginResponse.getUser());
             Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));
@@ -103,7 +101,6 @@ public class LoginPaneController {
         } else {
             Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
         }
-        return "Login response is not successful";
     }
 
     /**
