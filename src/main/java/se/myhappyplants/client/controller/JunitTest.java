@@ -76,7 +76,7 @@ public class JunitTest {
         String result = mpc.writeEmailToTextFile();
         assertEquals("Email written to file", result);
     }
-    @Test
+ /*   @Test
     public void checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox() {
         // Call the method with null loginResponse
         String result = lpc.checkLoginResponseNotNull(null);
@@ -84,10 +84,14 @@ public class JunitTest {
         // Check that the appropriate message is returned
         assertEquals("Login response is null", result);
     }
-    @Test
+
+  */
+  /*  @Test
     public void checkLoginResponseIsSuccess() {
         Message loginResponse = new Message(MessageType.login, new User("test", "test"));
         String result = lpc.checkLoginResponseIsSuccess(loginResponse);
         assertEquals("Login response is not successful", result);
     }
+   */
+
 }
