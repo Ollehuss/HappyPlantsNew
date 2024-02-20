@@ -53,7 +53,7 @@ public class ConfirmationBox {
        // vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(Objects.requireNonNull(ConfirmationBox.class.getResource("Stylesheet.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(ConfirmationBox.class.getResource("/Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
 

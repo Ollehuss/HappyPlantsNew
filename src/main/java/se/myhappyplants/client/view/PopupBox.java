@@ -60,7 +60,7 @@ public class PopupBox extends Popup {
 
 
         Scene scene = new Scene(vBox, Color.TRANSPARENT);
-        //scene.getStylesheets().add(Objects.requireNonNull(PopupBox.class.getResource("Stylesheet.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(PopupBox.class.getResource("/Stylesheet.css")).toExternalForm());
         URL stylesheetUrl ;
         try{
             stylesheetUrl = new URL("/src/main/resources/Stylesheet.css");
