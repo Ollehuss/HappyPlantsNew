@@ -1,8 +1,13 @@
 package se.myhappyplants.client.controller;
 
+import javafx.application.Platform;
 import org.junit.jupiter.api.*;
+import javafx.embed.swing.JFXPanel;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
+import org.mockito.Mockito;
 import se.myhappyplants.client.model.BoxTitle;
 import se.myhappyplants.client.model.LoggedInUser;
 import se.myhappyplants.client.model.RootName;
@@ -11,6 +16,8 @@ import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.User;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -19,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 import static javafx.beans.binding.Bindings.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
 
 public class JunitTest {
     private LoginPaneController lpc;
@@ -41,6 +47,8 @@ public class JunitTest {
         testSetRootToLoginPane();
        // testLogoutButtonPressed();
     }
+
+
     public void testLogInButton() throws IOException {
         setup();
      //   checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox();
@@ -54,6 +62,27 @@ public class JunitTest {
         this.startClient = new StartClient();
      //   startClient = mock(StartClient.class);
     }
+     @Test
+    public void test1WriteEmailToTextFile() throws IOException {
+        // Arrange
+        MainPaneController mpc = new MainPaneController();
+        String email = "test@test.com";
+        LoggedInUser.getInstance().setUser(new User(email, "test", "test", true));
+        String expected = "Email written to file";
+
+        // Act
+        String result = mpc.writeEmailToTextFile();
+
+        // Assert
+        assertEquals(expected, result);
+
+        // Verify that the email is written to the file
+        BufferedReader br = new BufferedReader(new FileReader("resources/lastLogin.txt"));
+        String writtenEmail = br.readLine();
+        br.close();
+        assertEquals(email, writtenEmail);
+    }
+
     @Test
     public void testSetUserToNull() {
        String result = mpc.setUserToNull();
@@ -69,6 +98,63 @@ public class JunitTest {
         assertEquals("Root set to loginPane", result);
      //   verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
     }
+    //////////////////////////////////////////////
+   /*  @Test
+        public void testLogoutButtonPressed() throws Exception {
+            // Arrange
+            MainPaneController mpc = Mockito.spy(MainPaneController.class);
+
+            // Act
+            String result = mpc.logoutButtonPressed();
+
+            // Assert
+            verify(mpc, times(1)).writeEmailToTextFile();
+            //verify(mpc, times(1)).setUserToNull();
+            verify(mpc, times(1)).setRootToLoginPane();
+            assertEquals("User logged out", result);
+        }
+        */
+        @Test
+    public void test1SetUserToNull() {
+        // Arrange
+        MainPaneController mpc = new MainPaneController();
+        LoggedInUser.getInstance().setUser(new User("test@test.com", "test", "test", true));
+        String expected = "User set to null";
+
+        // Act
+        String result = mpc.setUserToNull();
+
+        // Assert
+        assertEquals(expected, result);
+
+        // Verify that the user is set to null
+        assertEquals(null,LoggedInUser.getInstance().getUser());
+    }
+    @Test
+    public void testSetRootToLoginPane() throws IOException {
+        // Initialize JavaFX platform
+        new JFXPanel();
+
+        // Arrange
+        MainPaneController mpc = new MainPaneController();
+        String expected = "Root set to loginPane";
+
+        // Act
+        Platform.runLater(() -> {
+            String result = mpc.setRootToLoginPane();
+
+            // Assert
+            assertEquals(expected, result);
+        });
+
+        // Wait for JavaFX platform to finish processing
+        WaitForAsyncUtils.waitForFxEvents();
+    }
+
+        
+
+        
+
     @Test
     public void testWriteEmailToTextFile() throws IOException {
         String email = "test@test.com";

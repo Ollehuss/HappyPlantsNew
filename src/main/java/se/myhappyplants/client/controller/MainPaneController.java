@@ -94,4 +94,4 @@ public class MainPaneController {
     public void changeToSearchTab() {
         mainPane.getSelectionModel().select(1);
     }
-}
+    }
