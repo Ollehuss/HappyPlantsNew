@@ -69,7 +69,11 @@ public class StartClient extends Application {
      * @throws IOException
      */
     public static String setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        if (scene == null) {
+            scene = new Scene(loadFXML(fxml));
+        } else {
+            scene.setRoot(loadFXML(fxml));
+        }
         return "Root set to ";
     }
 
