@@ -39,14 +39,16 @@ public class RegisterPaneController {
 
     @FXML
     private void registerButtonPressed() {
+        boolean verifiedRegistration = isVerifiedRegistration();
+        if (!verifiedRegistration) {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Invalid account details. Please check your inputs."));
+            return;
+        }
+
         int answer = MessageBox.askYesNo(BoxTitle.GDPR, "Your account details will be saved in accordance with GDPR requirements" + "\n" + "Do you still want to create the account?");
-        if(answer == 1) {
-            boolean verifiedRegistration = isVerifiedRegistration();
+        if (answer == 1) {
             Thread registerThread = new Thread(() -> {
                 try {
-                    if (!isVerifiedRegistration()) {
-                        return;
-                    }
                     Message registerRequest = new Message(MessageType.register, new User(txtFldNewEmail.getText(), txtFldNewUsername.getText(), passFldNewPassword.getText(), true));
                     ServerConnection connection = ServerConnection.getClientConnection();
                     Message registerResponse = connection.makeRequest(registerRequest);
@@ -67,11 +69,11 @@ public class RegisterPaneController {
                 }
             });
             registerThread.start();
-        }
-        else {
+        } else {
             return;
         }
     }
+
 
     private boolean isVerifiedRegistration() {
         return verifier.validateRegistration(this);
