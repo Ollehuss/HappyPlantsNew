@@ -84,7 +84,7 @@ public class LoginPaneController {
         loginThread.start();
     }
 
-    private boolean checkLoginResponseNotNull(Message loginResponse) {
+    public boolean checkLoginResponseNotNull(Message loginResponse) {
         return loginResponse != null;
     }
 

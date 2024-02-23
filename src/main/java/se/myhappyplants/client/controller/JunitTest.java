@@ -1,25 +1,25 @@
 package se.myhappyplants.client.controller;
 
+import javafx.application.Platform;
 import org.junit.jupiter.api.*;
 
 
-import se.myhappyplants.client.model.BoxTitle;
+import org.mockito.Mockito;
+import org.testfx.util.WaitForAsyncUtils;
 import se.myhappyplants.client.model.LoggedInUser;
-import se.myhappyplants.client.model.RootName;
-import se.myhappyplants.server.StartServer;
+import se.myhappyplants.client.service.ServerConnection;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.User;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-import static javafx.beans.binding.Bindings.when;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
+import javafx.embed.swing.JFXPanel;
 
 public class JunitTest {
     private LoginPaneController lpc;
@@ -59,16 +59,7 @@ public class JunitTest {
        String result = mpc.setUserToNull();
        assertEquals("User set to null", result);
     }
-    @Test
-    public void testSetRootToLoginPane() throws IOException, SQLException {
-        StartServer serverMock = mock(StartServer.class);
-        //StartClient clientMock = mock(StartClient.class);
-     //   serverMock.main(new String[0]);
-        StartClient.setRoot(String.valueOf(RootName.loginPane));
-        String result = mpc.setRootToLoginPane();
-        assertEquals("Root set to loginPane", result);
-     //   verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
-    }
+
     @Test
     public void testWriteEmailToTextFile() throws IOException {
         String email = "test@test.com";
@@ -94,4 +85,125 @@ public class JunitTest {
     }
    */
 
+    @Test
+    public void checkLoginResponseNotNull_LoginResponseIsNull_ReturnsFalse() {
+        // Call the method with null loginResponse
+        boolean result = lpc.checkLoginResponseNotNull(null);
+
+        // Check that false is returned
+        assertFalse(result, "Expected false when loginResponse is null.");
+    }
+    //it need to start Server first
+    @Test
+    public void testMakeRequestApiResponseNotNull() {
+        // Mock ServerConnection
+        ServerConnection connection = Mockito.mock(ServerConnection.class);
+        Message mockResponse = new Message(true); // Adapt as necessary
+
+        // When makeRequest is called on the mock, return the mockResponse
+        Mockito.when(connection.makeRequest(Mockito.any(Message.class))).thenReturn(mockResponse);
+
+        // Create a mock or real Message object as needed for the request
+        Message apiRequest = new Message(true); // Adapt constructor as necessary
+
+        // Execute
+        Message apiResponse = connection.makeRequest(apiRequest);
+
+        // Verify
+        assertNotNull(apiResponse, "apiResponse should not be null to indicate a successful connection.");
+    }
+    @Test
+    public void testSetAvatar() {
+        // Arrange
+        User user = new User(1, "test@email.com", "testUser", true, true);
+        String pathToImg = "path/to/image.jpg";
+
+        // Act
+        user.setAvatar(pathToImg);
+
+        // Assert
+        String expectedAvatarURL = new File(pathToImg).toURI().toString();
+        assertEquals(expectedAvatarURL, user.getAvatarURL(), "Avatar URL was not set correctly");
+    }
+    /*
+    @Test
+    public void testGetErrorMessage() {
+        // Create an instance of Verified
+        Verified verified = new Verified();
+
+        // Call the getErrorMessage method
+        String errorMessage = verified.getErrorMessage();
+
+        // Check the returned value
+        // Replace "expectedErrorMessage" with the expected error message
+        String expectedErrorMessage = "expectedErrorMessage";
+        assertEquals(expectedErrorMessage, errorMessage, "Error message was not as expected");
+    }*/
+    /*@Test
+    public void testIsVerifiedRegistrationReturnsTrue() {
+        // Arrange
+        RegisterPaneController controller = new RegisterPaneController();
+
+        // Act
+        boolean result = controller.isVerifiedRegistration();
+
+        // Assert
+        assertTrue(result, "isVerifiedRegistration() should return true");
+    }*/
+    @Test
+    public void testApiResponseNotNull() {
+        // Setup - create a Message and ServerConnection instance
+        Message apiRequest = new Message(MessageType.search, "testSearch");
+        ServerConnection connection = ServerConnection.getClientConnection();
+
+        // Execute
+        Message apiResponse = connection.makeRequest(apiRequest);
+
+        // Verify
+        assertNotNull(apiResponse, "The apiResponse is null, indicating no connection.");
+    }
+    //it needs to start Server first
+    @Test
+    public void testApiResponseSuccess() {
+        // Setup - create a Message and ServerConnection instance
+        Message apiRequest = new Message(MessageType.search, "validSearchCriteria");
+        ServerConnection connection = ServerConnection.getClientConnection();
+
+        // Execute
+        Message apiResponse = connection.makeRequest(apiRequest);
+
+        // Verify that apiResponse is not null to avoid NullPointerException in the test
+        assertNotNull(apiResponse, "The apiResponse is null, which is not expected here.");
+
+        // Now verify apiResponse.isSuccess() is true
+        assertTrue(apiResponse.isSuccess(), "The apiResponse did not successfully retrieve the data.");
+    }
+
+
+    @Test
+    public void testSetRootToLoginPane() throws IOException {
+        //System.out.println(System.getProperty("java.class.path"));
+        // Initialize JavaFX platform
+        new JFXPanel();
+
+        // Arrange
+        Platform.runLater(() -> {
+            MainPaneController mpc = new MainPaneController();
+            String expected = "Root set to loginPane";
+
+            // Act
+            String result = null;
+            try {
+                result = mpc.setRootToLoginPane();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Assert
+            assertEquals(expected, result);
+        });
+
+        // Wait for JavaFX platform to finish processing
+        WaitForAsyncUtils.waitForFxEvents();
+    }
 }

@@ -75,7 +75,7 @@ public class RegisterPaneController {
     }
 
 
-    private boolean isVerifiedRegistration() {
+    public boolean isVerifiedRegistration() {
         return verifier.validateRegistration(this);
     }
 

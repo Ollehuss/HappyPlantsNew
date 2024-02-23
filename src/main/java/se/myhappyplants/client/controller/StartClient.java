@@ -2,6 +2,7 @@ package se.myhappyplants.client.controller;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -70,10 +71,10 @@ public class StartClient extends Application {
      */
     public static String setRoot(String fxml) throws IOException {
         if (scene == null) {
-            scene = new Scene(loadFXML(fxml));
-        } else {
-            scene.setRoot(loadFXML(fxml));
+            scene = new Scene(new Group());
         }
+            scene.setRoot(loadFXML(fxml));
+
         return "Root set to ";
     }
 
