@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class Verifier {
 
-    private enum errorType {
+    public enum errorType {
         WRONG_EMAIL_FORMAT,
         NO_USERNAME,
         NO_PASSWORD,

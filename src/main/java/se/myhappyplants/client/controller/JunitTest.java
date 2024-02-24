@@ -1,22 +1,27 @@
 package se.myhappyplants.client.controller;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import javafx.application.Platform;
-import org.junit.jupiter.api.*;
-
-
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.testfx.util.WaitForAsyncUtils;
+import se.myhappyplants.client.model.BoxTitle;
 import se.myhappyplants.client.model.LoggedInUser;
+import se.myhappyplants.client.model.Verifier;
 import se.myhappyplants.client.service.ServerConnection;
+import se.myhappyplants.client.view.MessageBox;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.User;
-
+import se.myhappyplants.client.model.Verifier;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
 
 
 import javafx.embed.swing.JFXPanel;
@@ -32,19 +37,21 @@ public class JunitTest {
         JunitTest testFile = new JunitTest();
         testFile.setup();
         testFile.testLogOutButton();
-      //  testFile.testLogInButton();
+        //  testFile.testLogInButton();
     }
+
     public void testLogOutButton() throws IOException, SQLException {
         setup();
         testWriteEmailToTextFile();
         testSetUserToNull();
         testSetRootToLoginPane();
-       // testLogoutButtonPressed();
+        // testLogoutButtonPressed();
     }
+
     public void testLogInButton() throws IOException {
         setup();
-     //   checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox();
-      //  checkLoginResponseIsSuccess();
+        //   checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox();
+        //  checkLoginResponseIsSuccess();
     }
 
     @BeforeEach
@@ -52,12 +59,13 @@ public class JunitTest {
         this.lpc = new LoginPaneController();
         this.mpc = new MainPaneController();
         this.startClient = new StartClient();
-     //   startClient = mock(StartClient.class);
+          startClient = mock(StartClient.class);
     }
+
     @Test
     public void testSetUserToNull() {
-       String result = mpc.setUserToNull();
-       assertEquals("User set to null", result);
+        String result = mpc.setUserToNull();
+        assertEquals("User set to null", result);
     }
 
     @Test
@@ -93,7 +101,8 @@ public class JunitTest {
         // Check that false is returned
         assertFalse(result, "Expected false when loginResponse is null.");
     }
-    //it need to start Server first
+
+    //it needs to start Server first
     @Test
     public void testMakeRequestApiResponseNotNull() {
         // Mock ServerConnection
@@ -112,6 +121,7 @@ public class JunitTest {
         // Verify
         assertNotNull(apiResponse, "apiResponse should not be null to indicate a successful connection.");
     }
+
     @Test
     public void testSetAvatar() {
         // Arrange
@@ -125,20 +135,21 @@ public class JunitTest {
         String expectedAvatarURL = new File(pathToImg).toURI().toString();
         assertEquals(expectedAvatarURL, user.getAvatarURL(), "Avatar URL was not set correctly");
     }
-    /*
+
+
     @Test
     public void testGetErrorMessage() {
         // Create an instance of Verified
-        Verified verified = new Verified();
+        Verifier verified = new Verifier();
 
         // Call the getErrorMessage method
-        String errorMessage = verified.getErrorMessage();
+        String errorMessage = verified.getErrorMessage(Verifier.errorType.WRONG_EMAIL_FORMAT);
 
         // Check the returned value
         // Replace "expectedErrorMessage" with the expected error message
-        String expectedErrorMessage = "expectedErrorMessage";
+        String expectedErrorMessage = "Please enter your email address in format: yourname@example.com";
         assertEquals(expectedErrorMessage, errorMessage, "Error message was not as expected");
-    }*/
+    }
     /*@Test
     public void testIsVerifiedRegistrationReturnsTrue() {
         // Arrange
@@ -162,6 +173,7 @@ public class JunitTest {
         // Verify
         assertNotNull(apiResponse, "The apiResponse is null, indicating no connection.");
     }
+
     //it needs to start Server first
     @Test
     public void testApiResponseSuccess() {
@@ -206,4 +218,39 @@ public class JunitTest {
         // Wait for JavaFX platform to finish processing
         WaitForAsyncUtils.waitForFxEvents();
     }
+
+    @BeforeAll
+    public static void setupJavaFXRuntime() {
+        // Initializes the JavaFX Runtime
+        new JFXPanel();
+    }
+
+    private RegisterPaneController controller;
+    private Verifier mockVerifier;
+    private RegisterPaneController.UIMessageService mockUIMessageService;
+
+    @BeforeEach
+    void setUp() {
+        mockVerifier = mock(Verifier.class);
+        mockUIMessageService = mock(RegisterPaneController.UIMessageService.class);
+        controller = new RegisterPaneController();
+        controller.setVerifier(mockVerifier);
+        controller.setUIMessageService(mockUIMessageService);
+    }
+
+    @Test
+    public void testVerificationFails() {
+        // Arrange: Mock isVerifiedRegistration to return false
+        when(mockVerifier.validateRegistration(controller)).thenReturn(false);
+
+        // Create a Message object that represents a failed registration
+        Message failedRegistrationMessage = new Message(false);
+
+        // Act: Invoke the method under test
+        controller.registerButtonPressed();
+
+        // Assert: Perform your assertions here
+        assertFalse(controller.registerResponseSuccess(failedRegistrationMessage), "Registration failed. Please check the details and try again");
+    }
 }
+

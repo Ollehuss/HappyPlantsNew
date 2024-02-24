@@ -29,16 +29,32 @@ public class RegisterPaneController {
     @FXML public PasswordField passFldNewPassword1;
     @FXML public Label goBackIcon;
 
-    private Verifier verifier;
+    protected Verifier verifier;
+    public void setVerifier(Verifier verifier) {
+        this.verifier = verifier;
+    }
 
     @FXML
     public void initialize() {
         verifier = new Verifier();
         goBackIcon.setFocusTraversable(true); //sets the goback button on focus to remove from first textfield
     }
+    public interface UIMessageService {
+        void showMessage(String message);
+        int askYesNo(String question);
+    }
+    protected UIMessageService uiMessageService;
+
+    public void setUIMessageService(UIMessageService uiMessageService) {
+        this.uiMessageService = uiMessageService;
+    }
+    protected void displayMessage(BoxTitle title, String message) {
+        Platform.runLater(() -> MessageBox.display(title, message));
+    }
+
 
     @FXML
-    private void registerButtonPressed() {
+    protected void registerButtonPressed() {
         boolean verifiedRegistration = isVerifiedRegistration();
         if (!verifiedRegistration) {
             Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Invalid account details. Please check your inputs."));
@@ -79,7 +95,7 @@ public class RegisterPaneController {
         return verifier.validateRegistration(this);
     }
 
-    private static boolean registerResponseSuccess(Message registerResponse) {
+    protected static boolean registerResponseSuccess(Message registerResponse) {
         return registerResponse != null && registerResponse.isSuccess();
     }
 
