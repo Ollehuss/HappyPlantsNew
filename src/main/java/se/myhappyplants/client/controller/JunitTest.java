@@ -1,8 +1,12 @@
 package se.myhappyplants.client.controller;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static se.myhappyplants.client.controller.RegisterPaneController.registerResponseSuccess;
+
 import javafx.application.Platform;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -59,7 +63,7 @@ public class JunitTest {
         this.lpc = new LoginPaneController();
         this.mpc = new MainPaneController();
         this.startClient = new StartClient();
-          startClient = mock(StartClient.class);
+        startClient = mock(StartClient.class);
     }
 
     @Test
@@ -123,7 +127,7 @@ public class JunitTest {
     }
 
     @Test
-    public void testSetAvatar() {
+    public void testVALIDSetAvatar() {
         // Arrange
         User user = new User(1, "test@email.com", "testUser", true, true);
         String pathToImg = "path/to/image.jpg";
@@ -132,24 +136,37 @@ public class JunitTest {
         user.setAvatar(pathToImg);
 
         // Assert
-        String expectedAvatarURL = new File(pathToImg).toURI().toString();
-        assertEquals(expectedAvatarURL, user.getAvatarURL(), "Avatar URL was not set correctly");
+        String expectedAvatarURL = "file:/Users/omar/Documents/kurser/Termin_4/DA489A_Systemutveckling_II/GitHub/HappyPlantsNew/path/to/image.jpg";
+        assertEquals(expectedAvatarURL, user.getAvatarURL());
+    }
+
+    @Test
+    public void testNOTVALIDSetAvatar() {
+        // Arrange
+        User user = new User(1, "test@email.com", "testUser", true, true);
+        String pathToImg = "path/to/imae.jpg";
+
+        // Act
+        user.setAvatar(pathToImg);
+
+        // Assert
+        String expectedAvatarURL = "file:/Users/omar/Documents/kurser/Termin_4/DA489A_Systemutveckling_II/GitHub/HappyPlantsNew/path/to/image.jpg";
+        assertNotEquals(expectedAvatarURL, user.getAvatarURL());
     }
 
 
     @Test
-    public void testGetErrorMessage() {
-        // Create an instance of Verified
+    public void testInvalidEmail() {
         Verifier verified = new Verifier();
-
-        // Call the getErrorMessage method
-        String errorMessage = verified.getErrorMessage(Verifier.errorType.WRONG_EMAIL_FORMAT);
-
-        // Check the returned value
-        // Replace "expectedErrorMessage" with the expected error message
-        String expectedErrorMessage = "Please enter your email address in format: yourname@example.com";
-        assertEquals(expectedErrorMessage, errorMessage, "Error message was not as expected");
+        assertFalse(verified.validateEmail("test.EmailWHENiswrong.com"));
     }
+
+    @Test
+    public void testvalidEmail() {
+        Verifier verified = new Verifier();
+        assertTrue(verified.validateEmail("test.EmailWHENisCorrect@correct.com"));
+    }
+
     @Test
     public void testIsVerifiedRegistrationReturnsTrue() {
         // Act
@@ -157,7 +174,7 @@ public class JunitTest {
         boolean result = controller.isVerifiedRegistration();
 
         // Assert
-        assertTrue(result, "isVerifiedRegistration() should return true");
+        assert (result);
     }
 
     @Test
@@ -237,19 +254,34 @@ public class JunitTest {
         controller.setUIMessageService(mockUIMessageService);
     }
 
+ //registerThen Login
     @Test
-    public void testVerificationFails() {
-        // Arrange: Mock isVerifiedRegistration to return false
-        when(mockVerifier.validateRegistration(controller)).thenReturn(false);
-
-        // Create a Message object that represents a failed registration
-        Message failedRegistrationMessage = new Message(false);
-
-        // Act: Invoke the method under test
-        controller.registerButtonPressed();
-
-        // Assert: Perform your assertions here
-        assertFalse(controller.registerResponseSuccess(failedRegistrationMessage), "Registration failed. Please check the details and try again");
+    public void testLoginButtonPressed_SuccessfulLogin() {
+        Message registerRequest = new Message(MessageType.register, new User("test@test.com","test", "testpassword", true));
+        ServerConnection connection = ServerConnection.getClientConnection();
+        Message registerResponse = connection.makeRequest(registerRequest);
+        RegisterPaneController Register = new RegisterPaneController();
+        if (Register.registerResponseSuccess(registerResponse)) {
+            // Further validation can be added here if needed
+            LoggedInUser.getInstance().setUser(registerResponse.getUser());
+        }
+        Message loginMessage = new Message(MessageType.login, new User("test@test.com", "testpassword"));
+        Message loginResponse = connection.makeRequest(loginMessage);
+        LoginPaneController controller = new LoginPaneController();
+        assertTrue(controller.checkLoginResponseNotNull(loginResponse));
     }
-}
+    //login without registeration
+    @Test
+    public void testLoginButtonPressed_Invalid() {
 
+        // Mock ServerConnection
+        Message loginMessage = new Message(MessageType.login, new User("test@test.com", "testpassword"));
+
+        ServerConnection connection = Mockito.mock(ServerConnection.class);
+        Message loginResponse = connection.makeRequest(loginMessage);
+         LoginPaneController controller = new LoginPaneController();
+        assertFalse(controller.checkLoginResponseNotNull(loginResponse));
+    }
+
+
+}

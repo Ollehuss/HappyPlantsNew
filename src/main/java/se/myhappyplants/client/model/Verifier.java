@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Class to validate the registration
  */
+
 public class Verifier {
 
     public enum errorType {
@@ -82,7 +83,7 @@ public class Verifier {
      * @param email input email from user in application
      * @return true if the email contains @, false if it is not valid
      */
-    private boolean validateEmail(String email) {
+    public boolean validateEmail(String email) {
         final String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
