@@ -150,17 +150,16 @@ public class JunitTest {
         String expectedErrorMessage = "Please enter your email address in format: yourname@example.com";
         assertEquals(expectedErrorMessage, errorMessage, "Error message was not as expected");
     }
-    /*@Test
+    @Test
     public void testIsVerifiedRegistrationReturnsTrue() {
-        // Arrange
-        RegisterPaneController controller = new RegisterPaneController();
-
         // Act
+        when(mockVerifier.validateRegistration(controller)).thenReturn(true);
         boolean result = controller.isVerifiedRegistration();
 
         // Assert
         assertTrue(result, "isVerifiedRegistration() should return true");
-    }*/
+    }
+
     @Test
     public void testApiResponseNotNull() {
         // Setup - create a Message and ServerConnection instance
