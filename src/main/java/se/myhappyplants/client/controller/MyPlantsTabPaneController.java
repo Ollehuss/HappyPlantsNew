@@ -316,9 +316,18 @@ public class MyPlantsTabPaneController {
      * Method to update the users avatar picture
      */
 
-    public void updateAvatar() {
-        imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+    public String updateAvatar() {
+        String resultMessage;
+        try {
+            imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+            resultMessage = "Avatar updated successfully.";
+        } catch (Exception e) {
+            resultMessage = "Failed to update avatar.";
+            e.printStackTrace();
+        }
+        return resultMessage;
     }
+
 
     /**
      * Method to send to the server to get extended information about the plant
