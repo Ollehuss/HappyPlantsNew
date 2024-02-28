@@ -412,16 +412,20 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * @param plant the selected plant
      */
     private void changeNickname(Plant plant) {
-        boolean changeSuccess;
-        String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
+        String result = myPlantsTabPaneController.changeNicknameInDB(plant, null);
 
-        if (!newNickname.equals("")) {
-            changeSuccess = myPlantsTabPaneController.changeNicknameInDB(plant, newNickname);
-            if (changeSuccess) {
+        if (result.equals("Success")) {
+            String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
+
+            if (!newNickname.equals("")) {
+                myPlantsTabPaneController.changeNicknameInDB(plant, newNickname);
                 nickname.setText(newNickname);
             }
+        } else if (result.equals("Failed")) {
+             MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for your plant. Try again.");
         }
     }
+
 
     /**
      * Method to change the date of the last watered date
