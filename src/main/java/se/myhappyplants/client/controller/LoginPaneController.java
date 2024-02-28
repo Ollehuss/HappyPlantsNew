@@ -75,32 +75,27 @@ public class LoginPaneController {
             ServerConnection connection = ServerConnection.getClientConnection();
             Message loginResponse = connection.makeRequest(loginMessage);
 
-            if(checkLoginResponseNotNull(loginResponse)) {
-                checkLoginResponseIsSuccess(loginResponse);
-            } else {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
+            if (loginResponse != null) {
+                if (loginResponse.isSuccess()) {
+                    LoggedInUser.getInstance().setUser(loginResponse.getUser());
+                    Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));
+                    try {
+                        switchToMainPane();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
+
+                }
+            }
+            else {
+                Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
             }
         });
         loginThread.start();
-    }
-
-    private boolean checkLoginResponseNotNull(Message loginResponse) {
-        return loginResponse != null;
-    }
-
-    private void checkLoginResponseIsSuccess(Message loginResponse) {
-        if (loginResponse.isSuccess()) {
-            LoggedInUser.getInstance().setUser(loginResponse.getUser());
-            Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));
-            try {
-                switchToMainPane();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
-        }
     }
 
     /**

@@ -39,48 +39,39 @@ public class RegisterPaneController {
 
     @FXML
     private void registerButtonPressed() {
-        boolean verifiedRegistration = isVerifiedRegistration();
-        if (!verifiedRegistration) {
-            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Invalid account details. Please check your inputs."));
-            return;
-        }
-
         int answer = MessageBox.askYesNo(BoxTitle.GDPR, "Your account details will be saved in accordance with GDPR requirements" + "\n" + "Do you still want to create the account?");
-        if (answer == 1) {
+        if(answer == 1){
+            boolean verifiedRegistration = verifier.validateRegistration(this);
             Thread registerThread = new Thread(() -> {
-                try {
-                    Message registerRequest = new Message(MessageType.register, new User(txtFldNewEmail.getText(), txtFldNewUsername.getText(), passFldNewPassword.getText(), true));
-                    ServerConnection connection = ServerConnection.getClientConnection();
-                    Message registerResponse = connection.makeRequest(registerRequest);
+                if (!verifiedRegistration) {
+                    return;
+                }
+                Message registerRequest = new Message(MessageType.register, new User(txtFldNewEmail.getText(), txtFldNewUsername.getText(), passFldNewPassword.getText(), true));
+                ServerConnection connection = ServerConnection.getClientConnection();
+                Message registerResponse = connection.makeRequest(registerRequest);
 
-                    // Validate the response
-                    if (registerResponseSuccess(registerResponse)) {
-                        // Further validation can be added here if needed
+                if (registerResponse != null) {
+                    if (registerResponse.isSuccess()) {
                         LoggedInUser.getInstance().setUser(registerResponse.getUser());
                         Platform.runLater(() -> MessageBox.display(BoxTitle.Success, "Account created successfully! Now logged in as " + LoggedInUser.getInstance().getUser().getUsername()));
-                        switchToMainPane();
+                        try {
+                            switchToMainPane();
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        // Handle failed registration
-                        Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Registration failed. Please check the details and try again."));
+                        Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "An account with this email address already exists here at My Happy Plants."));
                     }
-                } catch (Exception e) {
-                    Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "An error occurred: " + e.getMessage()));
-                    e.printStackTrace();
+                } else {
+                    Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
                 }
             });
             registerThread.start();
-        } else {
+        }
+        else{
             return;
         }
-    }
-
-
-    private boolean isVerifiedRegistration() {
-        return verifier.validateRegistration(this);
-    }
-
-    private static boolean registerResponseSuccess(Message registerResponse) {
-        return registerResponse != null && registerResponse.isSuccess();
     }
 
     @FXML

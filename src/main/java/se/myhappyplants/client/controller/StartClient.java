@@ -10,7 +10,6 @@ import se.myhappyplants.client.model.RootName;
 import se.myhappyplants.client.view.ConfirmationBox;
 
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * JavaFX Application Main class
@@ -29,10 +28,6 @@ public class StartClient extends Application {
         return window;
     }
 
-    public static RootName getRoot() {
-        return RootName.valueOf(scene.getRoot().getId());
-    }
-
     /**
      * Starts the application by opening window. Method handles close on request.
      *
@@ -49,7 +44,7 @@ public class StartClient extends Application {
             close();
         });
         scene = new Scene(loadFXML(RootName.loginPane.toString()), 1010, 640);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Stylesheet.css")).toExternalForm());
+        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
         window.setScene(scene);
         window.show();
     }
@@ -68,13 +63,8 @@ public class StartClient extends Application {
      * @param fxml to set
      * @throws IOException
      */
-    public static String setRoot(String fxml) throws IOException {
-        if (scene == null) {
-            scene = new Scene(loadFXML(fxml));
-        } else {
-            scene.setRoot(loadFXML(fxml));
-        }
-        return "Root set to ";
+    public static void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
     }
 
     /**

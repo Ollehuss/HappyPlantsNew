@@ -137,21 +137,15 @@ public class SearchPlantPane extends Pane implements PlantPane {
                 if (!extended) {
                     if (!gotInfoOnPlant) {
                         PlantDetails plantDetails = searchTabPaneController.getPlantDetails(plant);
-                        if (plantDetails != null) { // Kontrollera om plantDetails är null
-                            String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
-                            long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
-                            String waterText = WaterTextFormatter.getWaterString(waterInMilli);
-                            ObservableList<String> plantInfo = FXCollections.observableArrayList();
-                            plantInfo.add("Genus: " + plantDetails.getGenus());
-                            plantInfo.add("Scientific name: " + plantDetails.getScientificName());
-                            plantInfo.add("Family: " + plantDetails.getFamily());
-                            plantInfo.add("Light: " + lightText);
-                            plantInfo.add("Water: " + waterText);
-                            listView.setItems(plantInfo);
-                        } else {
-                            // Hantera fallet när plantDetails är null, t.ex. visa ett meddelande för användaren
-                            System.out.println("Växtdetaljer saknas för den valda växten.");
-                        }
+                        String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
+                        String waterText = WaterTextFormatter.getWaterString(plantDetails.getWaterFrequency());
+                        ObservableList<String> plantInfo = FXCollections.observableArrayList();
+                        plantInfo.add("Genus: " +plantDetails.getGenus());
+                        plantInfo.add("Scientific name: "+plantDetails.getScientificName());
+                        plantInfo.add("Family: "+plantDetails.getFamily());
+                        plantInfo.add("Light: " +lightText);
+                        plantInfo.add("Water: "+waterText);
+                        listView.setItems(plantInfo);
                     }
                     extendPaneMoreInfoPlant();
                 } else {
@@ -164,7 +158,6 @@ public class SearchPlantPane extends Pane implements PlantPane {
         commonName.setOnMouseClicked(onPress);
         infoButton.setOnAction(onPress);
     }
-
 
     /**
      * Method to initialize the ListView

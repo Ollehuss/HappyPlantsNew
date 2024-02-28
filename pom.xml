@@ -33,14 +33,6 @@
             <version>9.2.1.jre15</version>
         </dependency>-->
 
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>LATEST</version>
-        </dependency>
-
-
         <!-- JAVAFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -85,6 +77,17 @@
             <artifactId>testfx-junit5</artifactId>
             <version>4.0.16-alpha</version> <!-- Or the latest version available -->
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240205</version>
         </dependency>
 
 

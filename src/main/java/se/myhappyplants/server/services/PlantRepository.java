@@ -58,7 +58,7 @@ public class PlantRepository {
 
     public PlantDetails getPlantDetails(Plant plant) {
         PlantDetails plantDetails = null;
-        String query = "SELECT scientific_name, water_frequency, family_name, common_name, image_url, last_watered FROM public.plant WHERE plant_id = '" + plant.getPlantId() + "';";
+        String query = "SELECT genus, light, scientific_name, water_frequency, family_name, common_name, image_url FROM public.plant WHERE plant_id = '" + plant.getPlantId() + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -75,12 +75,15 @@ public class PlantRepository {
             }
         }
         catch (SQLException sqlException) {
-            System.out.println(sqlException.fillInStackTrace());
+            sqlException.printStackTrace();
         }
         return plantDetails;
     }
 
     public static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
         try {
             Double.parseDouble(str);
             return true;
@@ -92,7 +95,7 @@ public class PlantRepository {
 
     public long getWaterFrequency(String plantId) throws IOException, InterruptedException {
         long waterFrequency = -1;
-        String query = "SELECT water_frequency FROM public.plant WHERE id = '" + plantId + "';";
+        String query = "SELECT water_frequency FROM public.plant WHERE plant_id = '" + plantId + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -107,26 +110,4 @@ public class PlantRepository {
         return waterFrequency;
     }
 
-    public boolean savePlant(se.myhappyplants.server.model.api.Plant plant) {
-        boolean success = false;
-        String commonName = plant.getCommon_name();
-        System.out.println("SERVER:SAVEPLANT:plant.getCommon_name(): " + plant.getCommon_name());
-        String scientificName = plant.getScientific_name();
-        System.out.println("SERVER:SAVEPLANT:plant.getScientific_name(): " + plant.getScientific_name());
-        String familyName = plant.getFamily();
-        System.out.println("SERVER:SAVEPLANT:plant.getFamily(): " + plant.getFamily());
-        String imageURL = plant.getImage_url();
-        System.out.println("SERVER:SAVEPLANT:plant.getImage_url(): " + plant.getImage_url());
-        String query = "INSERT INTO public.plant (common_name, scientific_name, family_name, image_url) VALUES ('" + commonName + "', '" + scientificName + "', '" + familyName + "','" + imageURL + "');";
-
-        try {
-            database.executeUpdate(query);
-            //database.executeUpdate(sqlSafeUsername, user.getEmail(), hashedPassword, 1, 1);
-            success = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return success;
-    }
 }

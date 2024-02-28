@@ -55,30 +55,19 @@ public class MainPaneController {
      * @throws IOException
      */
     @FXML
-    public String logoutButtonPressed() throws IOException{
-        writeEmailToTextFile();
-        setUserToNull();
-        setRootToLoginPane();
-        return "User logged out";
-    }
-
-    public String writeEmailToTextFile () throws IOException {
+    public void logoutButtonPressed() throws IOException {
         String email = LoggedInUser.getInstance().getUser().getEmail();
-        BufferedWriter bw = new BufferedWriter(new FileWriter("resources/lastLogin.txt"));
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("resources/lastLogin.txt"))) {
             bw.write(email);
             bw.flush();
-        return "Email written to file";
-    }
-
-    public String setUserToNull() {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         LoggedInUser.getInstance().setUser(null);
-        return "User set to null";
+        StartClient.setRoot(String.valueOf(RootName.loginPane));
     }
 
-    public String setRootToLoginPane() throws IOException{
-        StartClient.setRoot(String.valueOf(RootName.loginPane));
-        return "Root set to loginPane";
-    }
     /**
      * Method to update so the user picture is the same on all the tabs
      */

@@ -280,22 +280,20 @@ public class MyPlantsTabPaneController {
      * @param newNickname the new nickname of the plant
      * @return if it's successful. true or false
      */
-    public String changeNicknameInDB(Plant plant, String newNickname) {
+    public boolean changeNicknameInDB(Plant plant, String newNickname) {
         Message changeNicknameInDB = new Message(MessageType.changeNickname, LoggedInUser.getInstance().getUser(), plant, newNickname);
         ServerConnection connection = ServerConnection.getClientConnection();
         Message response = connection.makeRequest(changeNicknameInDB);
-
+        PopupBox.display(MessageText.sucessfullyChangedPlant.toString());
         if (!response.isSuccess()) {
-            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for your plant. Try again."));
-            return "Failed";
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for you plant. Try again."));
+            return false;
         } else {
             plant.setNickname(newNickname);
             sortLibrary();
-            PopupBox.display(MessageText.sucessfullyChangedPlant.toString());
-            return "Success";
+            return true;
         }
     }
-
 
     /**
      * rearranges the library based on selected sorting option
