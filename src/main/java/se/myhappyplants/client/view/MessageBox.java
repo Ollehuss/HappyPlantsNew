@@ -56,7 +56,7 @@ public class MessageBox {
         //vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/Stylesheet.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("src/main/resources/Stylesheet.css")).toExternalForm());
         window.setScene(scene);
         window.showAndWait();
     }
@@ -107,7 +107,7 @@ public class MessageBox {
 
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/Stylesheet.css")).toExternalForm());
-        URL stylesheetUrl = PopupBox.class.getResource("Stylesheet.css");
+        URL stylesheetUrl = PopupBox.class.getResource("/Stylesheet.css");
         if (stylesheetUrl != null) {
             scene.getStylesheets().add(stylesheetUrl.toExternalForm());
         } else {

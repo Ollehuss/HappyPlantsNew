@@ -53,7 +53,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * while waiting for response from database
      */
     public LibraryPlantPane() {
-        File fileImg = new File("resources/images/img.png");
+        File fileImg = new File("/resources/images/img.png");
         Image img = new Image(fileImg.toURI().toString());
         image = new ImageView(img);
         image.setFitHeight(45.0);
