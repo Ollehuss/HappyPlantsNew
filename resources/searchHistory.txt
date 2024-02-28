@@ -16,3 +16,6 @@ lavender
 
 aloevera
 aloe
+cctus
+tulpan
+bamboo

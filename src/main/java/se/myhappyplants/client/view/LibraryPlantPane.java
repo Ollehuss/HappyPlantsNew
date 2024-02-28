@@ -53,7 +53,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * while waiting for response from database
      */
     public LibraryPlantPane() {
-        File fileImg = new File("resources/images/img.png");
+        File fileImg = new File("/resources/images/img.png");
         Image img = new Image(fileImg.toURI().toString());
         image = new ImageView(img);
         image.setFitHeight(45.0);
@@ -325,21 +325,21 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         listViewMoreInfo.setLayoutY(this.getHeight() + 100.0);
         listViewMoreInfo.setPrefWidth(725.0);
         listViewMoreInfo.setPrefHeight(140.0);
-        PlantDetails plantDetails = myPlantsTabPaneController.getPlantDetails(plant);
-        long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
-        String waterText = WaterTextFormatter.getWaterString(waterInMilli);
-        String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
-        ObservableList<String> plantInfo = FXCollections.observableArrayList();
-        plantInfo.add("Genus: " + plantDetails.getGenus());
-        plantInfo.add("Scientific name: " + plantDetails.getScientificName());
-        plantInfo.add("Family: " + plantDetails.getFamily());
-        plantInfo.add("Light: " + lightText);
-        plantInfo.add("Water: " + waterText);
-        plantInfo.add("Last watered: " + plant.getLastWatered());
-        this.setPrefHeight(92.0);
-        this.getChildren().addAll(image, nickname, daysUntilWaterlbl, progressBar, waterButton, infoButton);
-        listViewMoreInfo.setItems(plantInfo);
 
+        PlantDetails plantDetails = myPlantsTabPaneController.getPlantDetails(plant);
+        if (plantDetails != null) {
+            long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
+            String waterText = WaterTextFormatter.getWaterString(waterInMilli);
+            String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
+            ObservableList<String> plantInfo = FXCollections.observableArrayList();
+            plantInfo.add("Genus: " + plantDetails.getGenus());
+            plantInfo.add("Scientific name: " + plantDetails.getScientificName());
+            plantInfo.add("Family: " + plantDetails.getFamily());
+            plantInfo.add("Light: " + lightText);
+            plantInfo.add("Water: " + waterText);
+            plantInfo.add("Last watered: " + plant.getLastWatered());
+            listViewMoreInfo.setItems(plantInfo);
+        }
     }
 
 
