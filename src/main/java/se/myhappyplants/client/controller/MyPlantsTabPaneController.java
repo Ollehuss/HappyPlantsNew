@@ -300,12 +300,16 @@ public class MyPlantsTabPaneController {
     /**
      * rearranges the library based on selected sorting option
      */
-    public void sortLibrary() {
+    public String sortLibrary() {
+        StringBuilder resultMessage = new StringBuilder();
         SortingOption selectedOption;
         selectedOption = cmbSortOption.getValue();
         if (selectedOption == null)
             selectedOption = SortingOption.nickname;
         lstViewUserPlantLibrary.setItems(ListSorter.sort(selectedOption, lstViewUserPlantLibrary.getItems()));
+
+        resultMessage.append("Library sorted by ").append(selectedOption.toString());
+        return resultMessage.toString();
     }
 
     /**
