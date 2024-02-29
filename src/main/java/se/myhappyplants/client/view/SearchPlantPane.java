@@ -165,7 +165,6 @@ public class SearchPlantPane extends Pane implements PlantPane {
         infoButton.setOnAction(onPress);
     }
 
-
     /**
      * Method to initialize the ListView
      */

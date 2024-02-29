@@ -103,7 +103,6 @@ public class SettingsTabPaneController {
         return resultMessage.toString();
     }
 
-
     /**
      * Message to send to the server to change the setting of the fun facts
      */
@@ -165,7 +164,6 @@ public class SettingsTabPaneController {
     private static boolean deleteResponseNotNull(Message deleteResponse) {
         return deleteResponse != null;
     }
-
     /**
      * Method to message the right controller-class that the log out-button has been pressed
      * @throws IOException

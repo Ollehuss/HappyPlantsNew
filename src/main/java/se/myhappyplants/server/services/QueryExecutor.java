@@ -1,6 +1,8 @@
 package se.myhappyplants.server.services;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Class for handling querys to database
@@ -24,22 +26,13 @@ public class QueryExecutor implements IQueryExecutor {
                 isSuccess = true;
                 return;
             }
-            /*catch (SQLException sqlException) {
+            catch (SQLException sqlException) {
                 connection.closeConnection();
                 retries++;
-            }*/
-            catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-                // Log additional details from the exception
-                System.out.println("SQL State: " + sqlException.getSQLState());
-                System.out.println("Error Code: " + sqlException.getErrorCode());
-                System.out.println("Message: " + sqlException.getMessage());
-                retries++;
-                // Consider adding a delay here if you plan to retry
+                System.out.println(sqlException);
             }
-
         } while (!isSuccess && retries < 3);
-        throw new SQLException("No connection to database");
+        throw new SQLException("No connection to database1");
     }
 
     @Override
@@ -53,9 +46,10 @@ public class QueryExecutor implements IQueryExecutor {
             catch (SQLException sqlException) {
                 connection.closeConnection();
                 retries++;
+                sqlException.printStackTrace();
             }
         } while (retries < 3);
-        throw new SQLException("No connection to database");
+        throw new SQLException("No connection to database2");
     }
 
     @Override
@@ -72,7 +66,7 @@ public class QueryExecutor implements IQueryExecutor {
             }
         }
         while (retries < 3);
-        throw new SQLException("No connection to database");
+        throw new SQLException("No connection to database3");
     }
 
     @Override

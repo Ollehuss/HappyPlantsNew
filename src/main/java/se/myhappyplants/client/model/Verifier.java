@@ -28,26 +28,26 @@ public class Verifier {
     public boolean validateRegistration(RegisterPaneController registerPaneController) {
         String[] loginInfoToCompare = registerPaneController.getComponentsToVerify();
 
-            if (!validateEmail(loginInfoToCompare[0])) {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.WRONG_EMAIL_FORMAT)));
-                return false;
-            }
-            if (loginInfoToCompare[2].isEmpty()) {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.NO_USERNAME)));
-                return false;
-            }
-            if (loginInfoToCompare[3].isEmpty()) {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.NO_PASSWORD)));
-                return false;
-            }
-            if (!loginInfoToCompare[1].equals(loginInfoToCompare[0])) {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.WRONG_EMAIL)));
-                return false;
-            }
-            if (!loginInfoToCompare[4].equals(loginInfoToCompare[3])) {
-                Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.WRONG_PASSWORD)));
-                return false;
-            }
+        if (!validateEmail(loginInfoToCompare[0])) {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.WRONG_EMAIL_FORMAT)));
+            return false;
+        }
+        if (loginInfoToCompare[2].isEmpty()) {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.NO_USERNAME)));
+            return false;
+        }
+        if (loginInfoToCompare[3].isEmpty()) {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.NO_PASSWORD)));
+            return false;
+        }
+        if (!loginInfoToCompare[1].equals(loginInfoToCompare[0])) {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.WRONG_EMAIL)));
+            return false;
+        }
+        if (!loginInfoToCompare[4].equals(loginInfoToCompare[3])) {
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Error, getErrorMessage(errorType.WRONG_PASSWORD)));
+            return false;
+        }
 
         return true;
 

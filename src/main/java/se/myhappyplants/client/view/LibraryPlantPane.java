@@ -4,7 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-//import javafx.geometry.Pos;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,7 +53,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * while waiting for response from database
      */
     public LibraryPlantPane() {
-        File fileImg = new File("/resources/images/img.png");
+        File fileImg = new File("resources/images/img.png");
         Image img = new Image(fileImg.toURI().toString());
         image = new ImageView(img);
         image.setFitHeight(45.0);
@@ -65,7 +65,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         nickname.setLayoutX(100);
         nickname.setLayoutY(25);
         nickname.setPrefWidth(300);
-        //nickname.setAlignment(Pos.CENTER);
+        nickname.setAlignment(Pos.CENTER);
 
         this.getChildren().addAll(image, nickname);
     }
@@ -154,7 +154,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         nickname.setLayoutX(0);
         nickname.setLayoutY(70);
         nickname.setPrefWidth(145);
-        //nickname.setAlignment(Pos.CENTER);
+        nickname.setAlignment(Pos.CENTER);
     }
 
     /**
@@ -232,8 +232,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         if (!extended) {
             if (!gotInfoOnPlant) {
                 PlantDetails plantDetails = myPlantsTabPaneController.getPlantDetails(plant);
-                long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
-                String waterText = WaterTextFormatter.getWaterString(waterInMilli);
+                String waterText = WaterTextFormatter.getWaterString(plantDetails.getWaterFrequency());
                 String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
 
                 ObservableList<String> plantInfo = FXCollections.observableArrayList();
@@ -325,21 +324,20 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         listViewMoreInfo.setLayoutY(this.getHeight() + 100.0);
         listViewMoreInfo.setPrefWidth(725.0);
         listViewMoreInfo.setPrefHeight(140.0);
-
         PlantDetails plantDetails = myPlantsTabPaneController.getPlantDetails(plant);
-        if (plantDetails != null) {
-            long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
-            String waterText = WaterTextFormatter.getWaterString(waterInMilli);
-            String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
-            ObservableList<String> plantInfo = FXCollections.observableArrayList();
-            plantInfo.add("Genus: " + plantDetails.getGenus());
-            plantInfo.add("Scientific name: " + plantDetails.getScientificName());
-            plantInfo.add("Family: " + plantDetails.getFamily());
-            plantInfo.add("Light: " + lightText);
-            plantInfo.add("Water: " + waterText);
-            plantInfo.add("Last watered: " + plant.getLastWatered());
-            listViewMoreInfo.setItems(plantInfo);
-        }
+        String waterText = WaterTextFormatter.getWaterString(plantDetails.getWaterFrequency());
+        String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
+        ObservableList<String> plantInfo = FXCollections.observableArrayList();
+        plantInfo.add("Genus: " + plantDetails.getGenus());
+        plantInfo.add("Scientific name: " + plantDetails.getScientificName());
+        plantInfo.add("Family: " + plantDetails.getFamily());
+        plantInfo.add("Light: " + lightText);
+        plantInfo.add("Water: " + waterText);
+        plantInfo.add("Last watered: " + plant.getLastWatered());
+        this.setPrefHeight(92.0);
+        this.getChildren().addAll(image, nickname, daysUntilWaterlbl, progressBar, waterButton, infoButton);
+        listViewMoreInfo.setItems(plantInfo);
+
     }
 
 
@@ -412,20 +410,16 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * @param plant the selected plant
      */
     private void changeNickname(Plant plant) {
-        String result = myPlantsTabPaneController.changeNicknameInDB(plant, null);
+        boolean changeSuccess;
+        String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
 
-        if (result.equals("Success")) {
-            String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
-
-            if (!newNickname.equals("")) {
-                myPlantsTabPaneController.changeNicknameInDB(plant, newNickname);
+        if (!newNickname.equals("")) {
+            changeSuccess = myPlantsTabPaneController.changeNicknameInDB(plant, newNickname);
+            if (changeSuccess) {
                 nickname.setText(newNickname);
             }
-        } else if (result.equals("Failed")) {
-             MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for your plant. Try again.");
         }
     }
-
 
     /**
      * Method to change the date of the last watered date

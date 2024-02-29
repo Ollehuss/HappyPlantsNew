@@ -1,8 +1,8 @@
 package se.myhappyplants.client.view;
 
 import javafx.animation.KeyFrame;
-//import javafx.geometry.Pos;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -16,9 +16,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import se.myhappyplants.client.controller.StartClient;
 
-import java.net.URL;
-import java.security.spec.ECField;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -56,25 +53,10 @@ public class PopupBox extends Popup {
 
         vBox = new VBox(10);
         vBox.getChildren().add(label);
-        //vBox.setAlignment(Pos.CENTER);
-
+        vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox, Color.TRANSPARENT);
-        scene.getStylesheets().add(Objects.requireNonNull(PopupBox.class.getResource("/Stylesheet.css")).toExternalForm());
-        URL stylesheetUrl ;
-        try{
-            stylesheetUrl = new URL("/src/main/resources/Stylesheet.css");
-            if (stylesheetUrl != null) {
-                scene.getStylesheets().add(stylesheetUrl.toExternalForm());
-            } else {
-                System.out.println("PopupBox Cannot find the Stylesheet.css.");
-                // Handle the case where the stylesheet is not found
-            }
-        } catch (Exception e){
-
-        }
-
-
+        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
         window.setScene(scene);
 
         showAndFade();

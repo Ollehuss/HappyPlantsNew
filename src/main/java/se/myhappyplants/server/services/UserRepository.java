@@ -16,7 +16,7 @@ public class UserRepository {
     private IQueryExecutor database;
 
     public UserRepository(IQueryExecutor database){
-       this.database = database;
+        this.database = database;
     }
 
     /**
@@ -123,7 +123,7 @@ public class UserRepository {
             }
             catch (SQLException sqlException) {
                 try {
-                   database.rollbackTransaction();
+                    database.rollbackTransaction();
                 }
                 catch (SQLException throwables) {
                     throwables.printStackTrace();
@@ -135,9 +135,9 @@ public class UserRepository {
 
     public boolean changeNotifications(User user, boolean notifications) {
         boolean notificationsChanged = false;
-        int notificationsActivated = 0;
+        boolean notificationsActivated = false;
         if (notifications) {
-            notificationsActivated = 1;
+            notificationsActivated = true;
         }
         String query = "UPDATE public.user SET notification_activated = " + notificationsActivated + " WHERE email = '" + user.getEmail() + "';";
         try {
@@ -150,21 +150,21 @@ public class UserRepository {
         return notificationsChanged;
     }
 
-//    public boolean changeFunFacts(User user, Boolean funFactsActivated) {
-//        boolean funFactsChanged = false;
-//        int funFactsBitValue = 0;
-//        if (funFactsActivated) {
-//            funFactsBitValue = 1;
-//        }
-//        String query = "UPDATE public.user SET fun_facts_activated = " + funFactsBitValue + " WHERE email = '" + user.getEmail() + "';";
-//        try {
-//            database.executeUpdate(query);
-//            funFactsChanged = true;
-//        }
-//        catch (SQLException sqlException) {
-//            sqlException.printStackTrace();
-//        }
-//        return funFactsChanged;
-//    }
+   public boolean changeFunFacts(User user, Boolean funFactsActivated) {
+      boolean funFactsChanged = false;
+        boolean funFactsBitValue = false;
+       if (funFactsActivated) {
+           funFactsBitValue = true;
+       }
+        String query = "UPDATE public.user SET fun_facts_activated = " + funFactsBitValue + " WHERE email = '" + user.getEmail() + "';";
+        try {
+            database.executeUpdate(query);
+            funFactsChanged = true;
+       }
+       catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+       }
+       return funFactsChanged;
+    }
 }
 
