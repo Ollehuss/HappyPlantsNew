@@ -298,21 +298,34 @@ public class MyPlantsTabPaneController {
     /**
      * rearranges the library based on selected sorting option
      */
-    public void sortLibrary() {
+    public String sortLibrary() {
+        StringBuilder resultMessage = new StringBuilder();
         SortingOption selectedOption;
         selectedOption = cmbSortOption.getValue();
         if (selectedOption == null)
             selectedOption = SortingOption.nickname;
         lstViewUserPlantLibrary.setItems(ListSorter.sort(selectedOption, lstViewUserPlantLibrary.getItems()));
+
+        resultMessage.append("Library sorted by ").append(selectedOption.toString());
+        return resultMessage.toString();
     }
 
     /**
      * Method to update the users avatar picture
      */
 
-    public void updateAvatar() {
-        imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+    public String updateAvatar() {
+        String resultMessage;
+        try {
+            imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+            resultMessage = "Avatar updated successfully.";
+        } catch (Exception e) {
+            resultMessage = "Failed to update avatar.";
+            e.printStackTrace();
+        }
+        return resultMessage;
     }
+
 
     /**
      * Method to send to the server to get extended information about the plant
