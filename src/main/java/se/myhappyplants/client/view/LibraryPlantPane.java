@@ -318,26 +318,29 @@ public class LibraryPlantPane extends Pane implements PlantPane {
     /**
      * Method to initialize and set the listView with the extended information about the plants
      */
+
     private void initListView() {
         listViewMoreInfo = new ListView();
         listViewMoreInfo.setLayoutX(this.getWidth() + 10.0);
         listViewMoreInfo.setLayoutY(this.getHeight() + 100.0);
         listViewMoreInfo.setPrefWidth(725.0);
         listViewMoreInfo.setPrefHeight(140.0);
-        PlantDetails plantDetails = myPlantsTabPaneController.getPlantDetails(plant);
-        String waterText = WaterTextFormatter.getWaterString(plantDetails.getWaterFrequency());
-        String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
-        ObservableList<String> plantInfo = FXCollections.observableArrayList();
-        plantInfo.add("Genus: " + plantDetails.getGenus());
-        plantInfo.add("Scientific name: " + plantDetails.getScientificName());
-        plantInfo.add("Family: " + plantDetails.getFamily());
-        plantInfo.add("Light: " + lightText);
-        plantInfo.add("Water: " + waterText);
-        plantInfo.add("Last watered: " + plant.getLastWatered());
-        this.setPrefHeight(92.0);
-        this.getChildren().addAll(image, nickname, daysUntilWaterlbl, progressBar, waterButton, infoButton);
-        listViewMoreInfo.setItems(plantInfo);
 
+        PlantDetails plantDetails = myPlantsTabPaneController.getPlantDetails(plant);
+        if (plantDetails != null) {
+            String waterText = WaterTextFormatter.getWaterString(plantDetails.getWaterFrequency());
+            String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
+            ObservableList<String> plantInfo = FXCollections.observableArrayList();
+            plantInfo.add("Genus: " + plantDetails.getGenus());
+            plantInfo.add("Scientific name: " + plantDetails.getScientificName());
+            plantInfo.add("Family: " + plantDetails.getFamily());
+            plantInfo.add("Light: " + lightText);
+            plantInfo.add("Water: " + waterText);
+            plantInfo.add("Last watered: " + plant.getLastWatered());
+            this.setPrefHeight(92.0);
+            this.getChildren().addAll(image, nickname, daysUntilWaterlbl, progressBar, waterButton, infoButton);
+            listViewMoreInfo.setItems(plantInfo);
+        }
     }
 
 
@@ -410,14 +413,17 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * @param plant the selected plant
      */
     private void changeNickname(Plant plant) {
-        boolean changeSuccess;
-        String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
+        String result = myPlantsTabPaneController.changeNicknameInDB(plant, null);
 
-        if (!newNickname.equals("")) {
-            changeSuccess = myPlantsTabPaneController.changeNicknameInDB(plant, newNickname);
-            if (changeSuccess) {
+        if (result.equals("Success")) {
+            String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
+
+            if (!newNickname.equals("")) {
+                myPlantsTabPaneController.changeNicknameInDB(plant, newNickname);
                 nickname.setText(newNickname);
             }
+        } else if (result.equals("Failed")) {
+            MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for your plant. Try again.");
         }
     }
 
