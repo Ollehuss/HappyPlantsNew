@@ -8,7 +8,7 @@ import se.myhappyplants.shared.User;
  * Created by: Christopher O'Driscoll
  * Updated by: Christopher, 2021-04-13
  */
-public class LoggedInUser {
+public final class LoggedInUser {
 
     private User user;
     private final static LoggedInUser INSTANCE = new LoggedInUser();
@@ -16,7 +16,7 @@ public class LoggedInUser {
     /**
      * Private constructor to get only one instance of the class
      */
-    public LoggedInUser() {
+    private LoggedInUser() {
     }
 
     /**

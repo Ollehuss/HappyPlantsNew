@@ -2,7 +2,7 @@ package se.myhappyplants.client.view;
 
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
-//import javafx.geometry.Pos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import se.myhappyplants.client.model.BoxTitle;
 
-import java.net.URL;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,10 +51,10 @@ public class MessageBox {
 
         vBox = new VBox(10);
         vBox.getChildren().addAll(label, okButton);
-        //vBox.setAlignment(Pos.CENTER);
+        vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("src/main/resources/Stylesheet.css")).toExternalForm());
+        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
         window.setScene(scene);
         window.showAndWait();
     }
@@ -103,17 +101,10 @@ public class MessageBox {
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(label, yesButton, noButton);
-        //vBox.setAlignment(Pos.CENTER);
+        vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/Stylesheet.css")).toExternalForm());
-        URL stylesheetUrl = PopupBox.class.getResource("/Stylesheet.css");
-        if (stylesheetUrl != null) {
-            scene.getStylesheets().add(stylesheetUrl.toExternalForm());
-        } else {
-            System.out.println("MessageBox Cannot find the Stylesheet.css.");
-            // Handle the case where the stylesheet is not found
-        }
+        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
         window.setScene(scene);
         window.showAndWait();
 
@@ -160,10 +151,10 @@ public class MessageBox {
 
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(label, textField, enterButton);
-        //vBox.setAlignment( Pos.CENTER);
+        vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/Stylesheet.css")).toExternalForm());
+        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
         window.setScene(scene);
         window.showAndWait();
 

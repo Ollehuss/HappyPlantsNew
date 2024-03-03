@@ -65,8 +65,8 @@ public class MainPaneController {
     public String writeEmailToTextFile () throws IOException {
         String email = LoggedInUser.getInstance().getUser().getEmail();
         BufferedWriter bw = new BufferedWriter(new FileWriter("resources/lastLogin.txt"));
-            bw.write(email);
-            bw.flush();
+        bw.write(email);
+        bw.flush();
         return "Email written to file";
     }
 
@@ -79,6 +79,7 @@ public class MainPaneController {
         StartClient.setRoot(String.valueOf(RootName.loginPane));
         return "Root set to loginPane";
     }
+
     /**
      * Method to update so the user picture is the same on all the tabs
      */

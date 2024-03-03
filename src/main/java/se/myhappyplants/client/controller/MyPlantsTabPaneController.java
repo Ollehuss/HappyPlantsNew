@@ -280,39 +280,54 @@ public class MyPlantsTabPaneController {
      * @param newNickname the new nickname of the plant
      * @return if it's successful. true or false
      */
-    public boolean changeNicknameInDB(Plant plant, String newNickname) {
+    public String changeNicknameInDB(Plant plant, String newNickname) {
         Message changeNicknameInDB = new Message(MessageType.changeNickname, LoggedInUser.getInstance().getUser(), plant, newNickname);
         ServerConnection connection = ServerConnection.getClientConnection();
         Message response = connection.makeRequest(changeNicknameInDB);
-        PopupBox.display(MessageText.sucessfullyChangedPlant.toString());
+
         if (!response.isSuccess()) {
-            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for you plant. Try again."));
-            return false;
+            Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "It was not possible to change nickname for your plant. Try again."));
+            return "Failed";
         } else {
             plant.setNickname(newNickname);
             sortLibrary();
-            return true;
+            PopupBox.display(MessageText.sucessfullyChangedPlant.toString());
+            return "Success";
         }
     }
+
 
     /**
      * rearranges the library based on selected sorting option
      */
-    public void sortLibrary() {
+    public String sortLibrary() {
+        StringBuilder resultMessage = new StringBuilder();
         SortingOption selectedOption;
         selectedOption = cmbSortOption.getValue();
         if (selectedOption == null)
             selectedOption = SortingOption.nickname;
         lstViewUserPlantLibrary.setItems(ListSorter.sort(selectedOption, lstViewUserPlantLibrary.getItems()));
+
+        resultMessage.append("Library sorted by ").append(selectedOption.toString());
+        return resultMessage.toString();
     }
 
     /**
      * Method to update the users avatar picture
      */
 
-    public void updateAvatar() {
-        imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+    public String updateAvatar() {
+        String resultMessage;
+        try {
+            imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+            resultMessage = "Avatar updated successfully.";
+        } catch (Exception e) {
+            resultMessage = "Failed to update avatar.";
+            e.printStackTrace();
+        }
+        return resultMessage;
     }
+
 
     /**
      * Method to send to the server to get extended information about the plant

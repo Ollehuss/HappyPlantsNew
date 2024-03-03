@@ -1,10 +1,10 @@
 package se.myhappyplants.server.services;
 
-//import se.myhappyplants.server.PasswordsAndKeys;
+import se.myhappyplants.server.PasswordsAndKeys;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.*;
-import java.util.Properties;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Class for handling connection with a specific database
@@ -13,7 +13,7 @@ import java.util.Properties;
 public class DatabaseConnection implements IDatabaseConnection {
 
     private java.sql.Connection conn;
-    private final String databaseName;
+    private String databaseName;
 
     public DatabaseConnection(String databaseName) {
         this.databaseName = databaseName;
@@ -24,71 +24,14 @@ public class DatabaseConnection implements IDatabaseConnection {
         String dbServerPort = PasswordsAndKeys.dbServerPort;
         String dbUser = PasswordsAndKeys.dbUsername;
         String dbPassword = PasswordsAndKeys.dbPassword;
-        DriverManager.registerDriver(new org.postgresql.Driver());// com.microsoft.sqlserver.jdbc.SQLServerDriver());
+        DriverManager.registerDriver(new org.postgresql.Driver());
 
         if (InetAddress.getLocalHost().getHostName().equals(PasswordsAndKeys.dbHostName)) {
             dbServerIp = "localhost";
         }
-        //String dbURL = String.format("jdbc:postgresql://%s:%s/databaseName=" + databaseName + "/user=%s;password=%s", dbServerIp, dbServerPort, dbUser, dbPassword);
         String dbURL = String.format("jdbc:postgresql://%s:%s/%s", dbServerIp, dbServerPort, databaseName);
-        // Set properties for username and password
-        Properties props = new Properties();
-        props.setProperty("user", dbUser);
-        props.setProperty("password", dbPassword);
-
-        try {
-            // Establish the connection
-            this.conn = DriverManager.getConnection(dbURL, props);
-            String[] tables = new String[] {"user", "user_plant"};
-            checkAndCreateTable(tables);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-
-        //this.conn = DriverManager.getConnection(dbURL);
+        this.conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
         return conn;
-    }
-
-    private void checkAndCreateTable(String[] tableNames) throws SQLException {
-        for (int i = 0; i < tableNames.length; i++) {
-            String checkTableExistsQuery = "SELECT to_regclass('public." + tableNames[i] + "')";
-            try (Statement stmt = conn.createStatement();
-                 ResultSet userRS = stmt.executeQuery(checkTableExistsQuery)) {
-                if (!userRS.next() || userRS.getString(1) == null) {
-                    // Table does not exist
-                    createTable(tableNames[i]);
-                }
-            }
-        }
-    }
-
-    private void createTable(String tableName) throws SQLException {
-        String createTableSQL = "";
-        switch (tableName) {
-            case "user":
-                createTableSQL = "CREATE TABLE IF NOT EXISTS public.user (" +
-                                 "id SERIAL PRIMARY KEY, " +
-                                 "email VARCHAR(255) UNIQUE, " +
-                                 "username VARCHAR(255), " +
-                                 "password VARCHAR(255), " +
-                                 "avatar_url TEXT, " +
-                                 "notification_activated BOOLEAN, " +
-                                 "fun_facts_activated BOOLEAN)";
-                break;
-            case "user_plant":
-                createTableSQL = "CREATE TABLE IF NOT EXISTS public.user_plant (" +
-                                 "plant_id SERIAL PRIMARY KEY, " +
-                                 "nickname VARCHAR(255), " +
-                                 "last_watered DATE, " +
-                                 "user_id INTEGER, " +
-                                 "FOREIGN KEY (user_id) REFERENCES public.user(id))";
-        }
-        try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(createTableSQL);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -99,7 +42,6 @@ public class DatabaseConnection implements IDatabaseConnection {
             }
             catch (UnknownHostException e) {
                 e.printStackTrace();
-
             }
             catch (SQLException sqlException) {
                 sqlException.printStackTrace();

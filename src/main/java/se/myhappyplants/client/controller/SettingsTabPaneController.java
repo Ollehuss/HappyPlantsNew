@@ -73,7 +73,9 @@ public class SettingsTabPaneController {
      * Method to send to the server to change settings of the notifications.
      */
     @FXML
-    public void changeNotificationsSetting() {
+    public String changeNotificationsSetting() {
+        StringBuilder resultMessage = new StringBuilder();
+
         Thread changeNotificationsThread = new Thread(() -> {
             Message notificationRequest = new Message(MessageType.changeNotifications, tglBtnChangeNotification.isSelected(), LoggedInUser.getInstance().getUser());
             ServerConnection connection = ServerConnection.getClientConnection();
@@ -83,17 +85,22 @@ public class SettingsTabPaneController {
                     LoggedInUser.getInstance().getUser().setIsNotificationsActivated(tglBtnChangeNotification.isSelected());
                     tglBtnChangeNotification.setDisable(true);
                     Platform.runLater(() -> PopupBox.display("Notification settings\n changed", tglBtnChangeNotification));
+                    resultMessage.append("Notification settings changed.");
                 } else {
                     Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Settings could not be changed"));
+                    resultMessage.append("Failed to change notification settings.");
                 }
             } else {
                 Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "The connection to the server has failed. Check your connection and try again."));
+                resultMessage.append("Failed to connect to the server.");
             }
-
         });
+
         changeNotificationsThread.start();
         ButtonText.setButtonText(tglBtnChangeNotification);
         mainPaneController.getMyPlantsTabPaneController().createCurrentUserLibraryFromDB();
+
+        return resultMessage.toString();
     }
 
     /**
@@ -157,7 +164,6 @@ public class SettingsTabPaneController {
     private static boolean deleteResponseNotNull(Message deleteResponse) {
         return deleteResponse != null;
     }
-
     /**
      * Method to message the right controller-class that the log out-button has been pressed
      * @throws IOException

@@ -69,13 +69,16 @@ public class UserPlantRepository {
                 String nickname = resultSet.getString("nickname");
                 String plantId = resultSet.getString("plant_id");
                 Date lastWatered = resultSet.getDate("last_watered");
-//                String imageURL = resultSet.getString("image_url");
                 long waterFrequency = plantRepository.getWaterFrequency(plantId);
                 plantList.add(new Plant(nickname, plantId, lastWatered, waterFrequency));
             }
         }
-        catch (SQLException | IOException | InterruptedException exception) {
-            System.out.println(exception.fillInStackTrace());
+        catch (SQLException exception) {
+            exception.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return plantList;
     }
@@ -134,18 +137,28 @@ public class UserPlantRepository {
      * @return boolean result depending on the result, false if exception
      */
     public boolean changeLastWatered(User user, String nickname, LocalDate date) {
-        boolean dateChanged = false;
+        String query = createLastWateredQuery(user, nickname, date);
+        boolean dateChanged = runLastWateredQuery(query);
+        return dateChanged;
+    }
+
+    public String createLastWateredQuery(User user, String nickname, LocalDate date) {
         String sqlSafeNickname = nickname.replace("'", "''");
         String query = "UPDATE public.user_plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        return query;
+    }
+
+    public boolean runLastWateredQuery(String query) {
         try {
             database.executeUpdate(query);
-            dateChanged = true;
+            return true;
         }
         catch (SQLException sqlException) {
             sqlException.printStackTrace();
+            return false;
         }
-        return dateChanged;
     }
+
 
     public boolean changeNickname(User user, String nickname, String newNickname) {
         boolean nicknameChanged = false;
@@ -176,18 +189,18 @@ public class UserPlantRepository {
         return dateChanged;
     }
 
-//    public boolean changePlantPicture(User user, Plant plant) {
-//        boolean pictureChanged = false;
-//        String nickname = plant.getNickname();
-//        String sqlSafeNickname = nickname.replace("'", "''");
-//        String query = "UPDATE public.User_plant SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
-//        try {
-//            database.executeUpdate(query);
-//            pictureChanged = true;
-//        }
-//        catch (SQLException sqlException) {
-//            sqlException.printStackTrace();
-//        }
-//        return pictureChanged;
-//    }
+   public boolean changePlantPicture(User user, Plant plant) {
+        boolean pictureChanged = false;
+       String nickname = plant.getNickname();
+       String sqlSafeNickname = nickname.replace("'", "''");
+        String query = "UPDATE public.User_plant SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        try {
+            database.executeUpdate(query);
+            pictureChanged = true;
+        }
+        catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return pictureChanged;
+    }
 }
