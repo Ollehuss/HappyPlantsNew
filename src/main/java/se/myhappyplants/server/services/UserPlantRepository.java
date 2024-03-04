@@ -134,18 +134,28 @@ public class UserPlantRepository {
      * @return boolean result depending on the result, false if exception
      */
     public boolean changeLastWatered(User user, String nickname, LocalDate date) {
-        boolean dateChanged = false;
+        String query = createLastWateredQuery(user, nickname, date);
+        boolean dateChanged = runLastWateredQuery(query);
+        return dateChanged;
+    }
+
+    public String createLastWateredQuery(User user, String nickname, LocalDate date) {
         String sqlSafeNickname = nickname.replace("'", "''");
         String query = "UPDATE public.user_plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        return query;
+    }
+
+    public boolean runLastWateredQuery(String query) {
         try {
             database.executeUpdate(query);
-            dateChanged = true;
+            return true;
         }
         catch (SQLException sqlException) {
             sqlException.printStackTrace();
+            return false;
         }
-        return dateChanged;
     }
+
 
     public boolean changeNickname(User user, String nickname, String newNickname) {
         boolean nicknameChanged = false;
