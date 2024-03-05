@@ -1,9 +1,11 @@
 package se.myhappyplants.client.controller;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.*;
 //import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.Test;
@@ -98,12 +100,27 @@ public class JunitTest {
     }
 
 
-    public void testLogInButton() throws IOException {
-//        setup();
-     //   checkLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox();
-      //  checkLoginResponseIsSuccess();
+    /////////////////////////// JAVAFX SETUP ///////////////////////////
+    @BeforeAll
+    public static void setupJavaFX() throws InterruptedException {
+        Thread t = new Thread("JavaFX Init Thread") {
+            public void run() {
+                Application.launch(JavaFXInit.class, new String[0]);
+            }
+        };
+        t.setDaemon(true);
+        t.start();
+        Thread.sleep(500);
     }
 
+    public static class JavaFXInit extends Application {
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            // No need to do anything here.
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////
 
 
     @Test
@@ -189,198 +206,177 @@ public class JunitTest {
 //        assertTrue(finalLibrarySize == initialLibrarySize + 1);
 //    }
 
-    @Test
-    public void test1WriteEmailToTextFile() throws IOException {
-        // Arrange
-        MainPaneController mpc = new MainPaneController();
-        String email = "test@test.com";
-        LoggedInUser.getInstance().setUser(new User(email, "test", "test", true));
-        String expected = "Email written to file";
-
-        // Act
-        String result = mpc.writeEmailToTextFile();
-
-        // Assert
-        assertEquals(expected, result);
-
-        // Verify that the email is written to the file
-        BufferedReader br = new BufferedReader(new FileReader("resources/lastLogin.txt"));
-        String writtenEmail = br.readLine();
-        br.close();
-        assertEquals(email, writtenEmail);
-    }
-
-     @Test
-    public void test1WriteEmailToTextFile() throws IOException {
-        // Arrange
-        MainPaneController mpc = new MainPaneController();
-        String email = "test@test.com";
-        LoggedInUser.getInstance().setUser(new User(email, "test", "test", true));
-        String expected = "Email written to file";
-
-        // Act
-        String result = mpc.writeEmailToTextFile();
-
-        // Assert
-        assertEquals(expected, result);
-
-        // Verify that the email is written to the file
-        BufferedReader br = new BufferedReader(new FileReader("resources/lastLogin.txt"));
-        String writtenEmail = br.readLine();
-        br.close();
-        assertEquals(email, writtenEmail);
-    }
+//    @Test
+//    public void test1WriteEmailToTextFile() throws IOException {
+//        // Arrange
+//        MainPaneController mpc = new MainPaneController();
+//        String email = "test@test.com";
+//        LoggedInUser.getInstance().setUser(new User(email, "test", "test", true));
+//        String expected = "Email written to file";
+//
+//        // Act
+//        String result = mpc.writeEmailToTextFile();
+//
+//        // Assert
+//        assertEquals(expected, result);
+//
+//        // Verify that the email is written to the file
+//        BufferedReader br = new BufferedReader(new FileReader("resources/lastLogin.txt"));
+//        String writtenEmail = br.readLine();
+//        br.close();
+//        assertEquals(email, writtenEmail);
+//    }
+//
+//     @Test
+//    public void test1WriteEmailToTextFile() throws IOException {
+//        // Arrange
+//        MainPaneController mpc = new MainPaneController();
+//        String email = "test@test.com";
+//        LoggedInUser.getInstance().setUser(new User(email, "test", "test", true));
+//        String expected = "Email written to file";
+//
+//        // Act
+//        String result = mpc.writeEmailToTextFile();
+//
+//        // Assert
+//        assertEquals(expected, result);
+//
+//        // Verify that the email is written to the file
+//        BufferedReader br = new BufferedReader(new FileReader("resources/lastLogin.txt"));
+//        String writtenEmail = br.readLine();
+//        br.close();
+//        assertEquals(email, writtenEmail);
+//    }
 
     @Test
     public void testSetUserToNull() {
        String result = mpc.setUserToNull();
        assertEquals("User set to null", result);
     }
-    @Test
-    public void testSetRootToLoginPane() throws IOException, SQLException {
-        StartServer serverMock = mock(StartServer.class);
-        //StartClient clientMock = mock(StartClient.class);
-     //   serverMock.main(new String[0]);
-        StartClient.setRoot(String.valueOf(RootName.loginPane));
-        String result = mpc.setRootToLoginPane();
-        assertEquals("Root set to loginPane", result);
-     //   verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
-    }
-    //////////////////////////////////////////////
-   /*  @Test
-        public void testLogoutButtonPressed() throws Exception {
-            // Arrange
-            MainPaneController mpc = Mockito.spy(MainPaneController.class);
-
-            // Act
-            String result = mpc.logoutButtonPressed();
-
-            // Assert
-            verify(mpc, times(1)).writeEmailToTextFile();
-            //verify(mpc, times(1)).setUserToNull();
-            verify(mpc, times(1)).setRootToLoginPane();
-            assertEquals("User logged out", result);
-        }
-        */
-        @Test
-    public void test1SetUserToNull() {
-        // Arrange
-        MainPaneController mpc = new MainPaneController();
-        LoggedInUser.getInstance().setUser(new User("test@test.com", "test", "test", true));
-        String expected = "User set to null";
-
-        // Act
-        String result = mpc.setUserToNull();
-
-        // Assert
-        assertEquals(expected, result);
-
-        // Verify that the user is set to null
-        assertEquals(null,LoggedInUser.getInstance().getUser());
-    }
 //    @Test
-//    public void testSetRootToLoginPane() throws IOException {
-//        // Initialize JavaFX platform
-//        new JFXPanel();
-//
-//        // Arrange
-//        MainPaneController mpc = new MainPaneController();
-//        String expected = "Root set to loginPane";
-//
-//        // Act
-//        Platform.runLater(() -> {
-//            String result = mpc.setRootToLoginPane();
-//
-//            // Assert
-//            assertEquals(expected, result);
-//        });
-//
-//        // Wait for JavaFX platform to finish processing
-//        WaitForAsyncUtils.waitForFxEvents();
+//    public void testSetRootToLoginPane() throws IOException, SQLException {
+//        StartServer serverMock = mock(StartServer.class);
+//        //StartClient clientMock = mock(StartClient.class);
+//     //   serverMock.main(new String[0]);
+//        StartClient.setRoot(String.valueOf(RootName.loginPane));
+//        String result = mpc.setRootToLoginPane();
+//        assertEquals("Root set to loginPane", result);
+//     //   verify(clientMock, times(1)).setRoot(RootName.loginPane.toString());
 //    }
-
-
-
-
-
-//    @Test
-//    @Test
-//    public void testSetRootToLoginPane() throws IOException {
-//        // Initialize JavaFX platform
-//        new JFXPanel();
-//
-//        // Arrange
-//        MainPaneController mpc = new MainPaneController();
-//        String expected = "Root set to loginPane";
-//
-//        // Act
-//        Platform.runLater(() -> {
-//            String result = mpc.setRootToLoginPane();
-//
-//            // Assert
-//            assertEquals(expected, result);
-//        });
-//
-//        // Wait for JavaFX platform to finish processing
-//        WaitForAsyncUtils.waitForFxEvents();
-//    }
-
-
-
-
-
-    //////////////////////////////////////////////
-   /*  @Test
-        public void testLogoutButtonPressed() throws Exception {
-            // Arrange
-            MainPaneController mpc = Mockito.spy(MainPaneController.class);
-
-            // Act
-            String result = mpc.logoutButtonPressed();
-
-            // Assert
-            verify(mpc, times(1)).writeEmailToTextFile();
-            //verify(mpc, times(1)).setUserToNull();
-            verify(mpc, times(1)).setRootToLoginPane();
-            assertEquals("User logged out", result);
-        }
-        */
-        @Test
-    public void test1SetUserToNull() {
-        // Arrange
-        MainPaneController mpc = new MainPaneController();
-        LoggedInUser.getInstance().setUser(new User("test@test.com", "test", "test", true));
-        String expected = "User set to null";
-
-        // Act
-        String result = mpc.setUserToNull();
-
-        // Assert
-        assertEquals(expected, result);
-
-        // Verify that the user is set to null
-        assertEquals(null,LoggedInUser.getInstance().getUser());
-    }
     @Test
     public void testSetRootToLoginPane() throws IOException {
-        // Initialize JavaFX platform
-        new JFXPanel();
+        // Create a MainPaneController object
 
+
+        // Call the method
+        String result = mpc.setRootToLoginPane();
+
+        // Verify the result
+        assertEquals("Root set to loginPane", result);
+    }
+    @Test
+    public void test1SetUserToNull() {
         // Arrange
         MainPaneController mpc = new MainPaneController();
-        String expected = "Root set to loginPane";
+        LoggedInUser.getInstance().setUser(new User("test@test.com", "test", "test", true));
+        String expected = "User set to null";
 
         // Act
-        Platform.runLater(() -> {
-            String result = mpc.setRootToLoginPane();
+        String result = mpc.setUserToNull();
 
-            // Assert
-            assertEquals(expected, result);
-        });
+        // Assert
+        assertEquals(expected, result);
 
-        // Wait for JavaFX platform to finish processing
-        WaitForAsyncUtils.waitForFxEvents();
+        // Verify that the user is set to null
+        assertEquals(null,LoggedInUser.getInstance().getUser());
     }
+//    @Test
+//    public void testSetRootToLoginPane() throws IOException {
+//        // Initialize JavaFX platform
+//        new JFXPanel();
+//
+//        // Arrange
+//        MainPaneController mpc = new MainPaneController();
+//        String expected = "Root set to loginPane";
+//
+//        // Act
+//        Platform.runLater(() -> {
+//            String result = mpc.setRootToLoginPane();
+//
+//            // Assert
+//            assertEquals(expected, result);
+//        });
+//
+//        // Wait for JavaFX platform to finish processing
+//        WaitForAsyncUtils.waitForFxEvents();
+//    }
+
+
+
+
+
+//    @Test
+//    @Test
+//    public void testSetRootToLoginPane() throws IOException {
+//        // Initialize JavaFX platform
+//        new JFXPanel();
+//
+//        // Arrange
+//        MainPaneController mpc = new MainPaneController();
+//        String expected = "Root set to loginPane";
+//
+//        // Act
+//        Platform.runLater(() -> {
+//            String result = mpc.setRootToLoginPane();
+//
+//            // Assert
+//            assertEquals(expected, result);
+//        });
+//
+//        // Wait for JavaFX platform to finish processing
+//        WaitForAsyncUtils.waitForFxEvents();
+//    }
+
+
+
+
+
+//        @Test
+//    public void test1SetUserToNull() {
+//        // Arrange
+//        MainPaneController mpc = new MainPaneController();
+//        LoggedInUser.getInstance().setUser(new User("test@test.com", "test", "test", true));
+//        String expected = "User set to null";
+//
+//        // Act
+//        String result = mpc.setUserToNull();
+//
+//        // Assert
+//        assertEquals(expected, result);
+//
+//        // Verify that the user is set to null
+//        assertEquals(null,LoggedInUser.getInstance().getUser());
+//    }
+//    @Test
+//    public void testSetRootToLoginPane() throws IOException {
+//        // Initialize JavaFX platform
+//        new JFXPanel();
+//
+//        // Arrange
+//        MainPaneController mpc = new MainPaneController();
+//        String expected = "Root set to loginPane";
+//
+//        // Act
+//        Platform.runLater(() -> {
+//            String result = mpc.setRootToLoginPane();
+//
+//            // Assert
+//            assertEquals(expected, result);
+//        });
+//
+//        // Wait for JavaFX platform to finish processing
+//        WaitForAsyncUtils.waitForFxEvents();
+//    }
 
 
 
