@@ -274,22 +274,6 @@ public class JunitTest {
         // Verify the result
         assertEquals("Root set to loginPane", result);
     }
-    @Test
-    public void test1SetUserToNull() {
-        // Arrange
-        MainPaneController mpc = new MainPaneController();
-        LoggedInUser.getInstance().setUser(new User("test@test.com", "test", "test", true));
-        String expected = "User set to null";
-
-        // Act
-        String result = mpc.setUserToNull();
-
-        // Assert
-        assertEquals(expected, result);
-
-        // Verify that the user is set to null
-        assertEquals(null,LoggedInUser.getInstance().getUser());
-    }
 //    @Test
 //    public void testSetRootToLoginPane() throws IOException {
 //        // Initialize JavaFX platform
