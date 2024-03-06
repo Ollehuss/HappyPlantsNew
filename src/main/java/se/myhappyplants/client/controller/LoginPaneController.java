@@ -84,11 +84,11 @@ public class LoginPaneController {
         loginThread.start();
     }
 
-    private boolean checkLoginResponseNotNull(Message loginResponse) {
+    public boolean checkLoginResponseNotNull(Message loginResponse) {
         return loginResponse != null;
     }
 
-    private void checkLoginResponseIsSuccess(Message loginResponse) {
+    public void checkLoginResponseIsSuccess(Message loginResponse) {
         if (loginResponse.isSuccess()) {
             LoggedInUser.getInstance().setUser(loginResponse.getUser());
             Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));

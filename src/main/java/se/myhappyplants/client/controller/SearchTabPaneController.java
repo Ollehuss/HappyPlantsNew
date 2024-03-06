@@ -100,7 +100,7 @@ public class SearchTabPaneController {
      * @param plantAdd the selected plant to add
      */
     @FXML
-    public void addPlantToCurrentUserLibrary(Plant plantAdd) {
+    public String addPlantToCurrentUserLibrary(Plant plantAdd) {
         String plantNickname = plantAdd.getCommonName();
 
         int answer = MessageBox.askYesNo(BoxTitle.Add, "Do you want to add a nickname for your plant?");
@@ -108,6 +108,7 @@ public class SearchTabPaneController {
             plantNickname = MessageBox.askForStringInput("Add a nickname", "Nickname:");
         }
         mainPaneController.getMyPlantsTabPaneController().addPlantToCurrentUserLibrary(plantAdd, plantNickname);
+        return plantNickname;
     }
 
     /**

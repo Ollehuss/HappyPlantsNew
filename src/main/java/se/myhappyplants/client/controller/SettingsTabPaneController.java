@@ -161,7 +161,7 @@ public class SettingsTabPaneController {
         }
     }
 
-    private static boolean deleteResponseNotNull(Message deleteResponse) {
+    public static boolean deleteResponseNotNull(Message deleteResponse) {
         return deleteResponse != null;
     }
     /**
