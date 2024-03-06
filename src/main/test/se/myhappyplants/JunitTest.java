@@ -184,7 +184,7 @@ public class JunitTest {
 
     // KRAV-ID: BIB02F
     @Test
-    public void testAddCurrentUserLibraryToHomeScreen2() {
+    public void testAddCurrentUserLibraryToHomeScreen() {
         Plant testPlant = mock(Plant.class);
         ArrayList<Plant> testLibrary = new ArrayList<>();
         testLibrary.add(testPlant);
