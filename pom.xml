@@ -50,6 +50,11 @@
         <!-- JAVAFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>LATEST</version>
         </dependency>
