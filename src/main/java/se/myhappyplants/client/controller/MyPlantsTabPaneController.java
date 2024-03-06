@@ -114,26 +114,33 @@ public class MyPlantsTabPaneController {
      * Method to add a users plants to myPlantsTab
      */
     @FXML
-    public void addCurrentUserLibraryToHomeScreen() {
+    public String addCurrentUserLibraryToHomeScreen() {
         ObservableList<LibraryPlantPane> obsListLibraryPlantPane = FXCollections.observableArrayList();
+
+        String librarySize = "0";
+
         if (currentUserLibrary == null) {
             disableButtons();
             obsListLibraryPlantPane.add(new LibraryPlantPane());
+            librarySize = "null";
         } else {
             if (currentUserLibrary.size()<1) {
                 disableButtons();
                 obsListLibraryPlantPane.add(new LibraryPlantPane(this));
+                librarySize = "0";
             } else {
                 enableButtons();
                 for (Plant plant : currentUserLibrary) {
                     obsListLibraryPlantPane.add(new LibraryPlantPane(this, plant));
                 }
+                librarySize = String.valueOf(currentUserLibrary.size());
             }
         }
         Platform.runLater(() -> {
             lstViewUserPlantLibrary.setItems(obsListLibraryPlantPane);
             sortLibrary();
         });
+        return librarySize;
     }
 
     /**
@@ -437,5 +444,21 @@ public class MyPlantsTabPaneController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public ArrayList<Plant> getCurrentUserLibrary() {
+        return currentUserLibrary;
+    }
+
+    public void setCurrentUserLibrary(ArrayList<Plant> currentUserLibrary) {
+        this.currentUserLibrary = currentUserLibrary;
+    }
+
+    public ListView getLstViewUserPlantLibrary() {
+        return lstViewUserPlantLibrary;
+    }
+
+    public void setLstViewUserPlantLibrary(ListView lstViewUserPlantLibrary) {
+        this.lstViewUserPlantLibrary = lstViewUserPlantLibrary;
     }
 }
