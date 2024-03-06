@@ -115,9 +115,8 @@ public class MyPlantsTabPaneController {
      */
     @FXML
     public String addCurrentUserLibraryToHomeScreen() {
-        ObservableList<LibraryPlantPane> obsListLibraryPlantPane = FXCollections.observableArrayList();
-
         String librarySize = "0";
+        ObservableList<LibraryPlantPane> obsListLibraryPlantPane = FXCollections.observableArrayList();
 
         if (currentUserLibrary == null) {
             disableButtons();
@@ -195,7 +194,7 @@ public class MyPlantsTabPaneController {
      * @param plant
      */
     @FXML
-    public void removePlantFromDB(Plant plant) {
+    public String removePlantFromDB(Plant plant) {
         Platform.runLater(() ->PopupBox.display(MessageText.removePlant.toString()));
         Thread removePlantThread = new Thread(() -> {
             currentUserLibrary.remove(plant);
@@ -210,6 +209,7 @@ public class MyPlantsTabPaneController {
             }
         });
         removePlantThread.start();
+        return plant.getNickname();
     }
 
     /**

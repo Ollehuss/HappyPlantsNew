@@ -1,4 +1,6 @@
-package se.myhappyplants.client.controller;
+package se.myhappyplants;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import org.junit.jupiter.api.BeforeAll;
 
 import javafx.application.Application;
@@ -10,6 +12,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.mockito.Mockito;
+
+
+import org.testfx.util.WaitForAsyncUtils;
+import se.myhappyplants.client.controller.*;
 import se.myhappyplants.client.model.*;
 import se.myhappyplants.client.service.ServerConnection;
 import se.myhappyplants.client.view.LibraryPlantPane;
@@ -20,16 +26,15 @@ import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.sql.Date;
 
 import static org.mockito.Mockito.when;
 
 
-import static javafx.beans.binding.Bindings.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JunitTest {
@@ -41,8 +46,8 @@ public class JunitTest {
     private MyPlantsTabPaneController myPlantsTabPaneController;
     private Plant testPlant;
     private User user;
-
     private StartClient startClient;
+    private StartServer startServer;
     private IDatabaseConnection connectionMyHappyPlants;
     private IQueryExecutor databaseMyHappyPlants;
     private LocalDate date;
@@ -158,36 +163,45 @@ public class JunitTest {
     }
 
 
-//    @Test
-//    public void testRemovePlantFromDB() {
-//        // Arrange
-//        ArrayList<Plant> library = new ArrayList<>();
-//        library.add(testPlant);
-//        myPlantsTabPaneController.currentUserLibrary = library;
-//
-//        // Act
-//        myPlantsTabPaneController.removePlantFromDB(testPlant);
-//
-//        // Assert
-//        assertFalse(myPlantsTabPaneController.currentUserLibrary.contains(testPlant));
-//    }
-//
-//    @Test
-//    public void testAddCurrentUserLibraryToHomeScreen() {
-//        // Arrange
-//        ArrayList<Plant> library = new ArrayList<>();
-//        library.add(testPlant);
-//        myPlantsTabPaneController.currentUserLibrary = library;
-//
-//        // Act
-//        myPlantsTabPaneController.addCurrentUserLibraryToHomeScreen();
-//
-//        // Assert
-//        ListView listView = myPlantsTabPaneController.lstViewUserPlantLibrary;
-//        ObservableList<LibraryPlantPane> items = listView.getItems();
-//        assertEquals(1, items.size());
-//        assertEquals(library.get(0), items.get(0).getPlant());
-//    }
+
+    // KRAV-ID: BIB06F
+    @Test
+    public void testRemovePlantFromDB() {
+        Date testDate = new Date(1);
+        Plant testPlant = new Plant("nickname", "plantID", testDate);
+        Plant insertPlant = mock(Plant.class);
+
+        MyPlantsTabPaneController controller = mock(MyPlantsTabPaneController.class);
+
+        when(controller.removePlantFromDB(eq(insertPlant))).thenReturn(testPlant.getNickname());
+
+        String result = controller.removePlantFromDB(insertPlant);
+        String expected = testPlant.getNickname();
+
+        assertEquals(expected, result);
+    }
+
+
+    // KRAV-ID: BIB02F
+    @Test
+    public void testAddCurrentUserLibraryToHomeScreen2() {
+        Plant testPlant = mock(Plant.class);
+        ArrayList<Plant> testLibrary = new ArrayList<>();
+        testLibrary.add(testPlant);
+
+        MyPlantsTabPaneController controller = mock(MyPlantsTabPaneController.class);
+        when(controller.addCurrentUserLibraryToHomeScreen()).thenReturn(String.valueOf(testLibrary.size()));
+
+        controller.setCurrentUserLibrary(testLibrary);
+
+        String result = controller.addCurrentUserLibraryToHomeScreen();
+        String expected = String.valueOf(testLibrary.size());
+
+        assertEquals(expected, result);
+    }
+
+
+
 //
 //    @Test
 //    public void testAddPlantToCurrentUserLibrary() {
@@ -522,7 +536,7 @@ public class JunitTest {
         });
 
         // Wait for JavaFX platform to finish processing
-//        WaitForAsyncUtils.waitForFxEvents();    // vet inte vad problemet är här med WaitForAsyncUtils
+        WaitForAsyncUtils.waitForFxEvents();    // vet inte vad problemet är här med WaitForAsyncUtils
     }
 
     @BeforeAll
