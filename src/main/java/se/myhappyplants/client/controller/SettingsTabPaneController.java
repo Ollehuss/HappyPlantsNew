@@ -188,7 +188,7 @@ public class SettingsTabPaneController {
      * @author Anton
      */
     @FXML
-    private void selectAvatarImage() {
+    private String selectAvatarImage() {
         User user = LoggedInUser.getInstance().getUser();
         FileChooser fc = new FileChooser();
 
@@ -206,6 +206,7 @@ public class SettingsTabPaneController {
                 } catch (FileAlreadyExistsException e) {
                     Files.delete(new File("resources/images/user_avatars/" + user.getEmail() + "_avatar" + imageExtension).toPath());
                     Files.copy(selectedImage.toPath(), new File("resources/images/user_avatars/" + user.getEmail() + "_avatar" + imageExtension).toPath());
+                    return "Error Avatar Already Exists";
                 }
 
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter("resources/images/user_avatars/" + user.getEmail() + "_avatar.txt"))) {
@@ -213,13 +214,16 @@ public class SettingsTabPaneController {
                     bw.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return "Error Avatar Not Saved";
                 }
 
                 user.setAvatar("resources/images/user_avatars/" + user.getEmail() + "_avatar" + imageExtension);
                 mainPaneController.updateAvatarOnAllTabs();
             } catch (IOException e) {
                 e.printStackTrace();
+                return "Error Avatar Not Copied";
             }
         }
+        return "Avatar updated";
     }
 }
