@@ -114,7 +114,7 @@ public class SearchTabPaneController {
     /**
      * Method to show the search result on the pane
      */
-    private void showResultsOnPane() {
+    private String showResultsOnPane() {
         ObservableList<SearchPlantPane> searchPlantPanes = FXCollections.observableArrayList();
         for (Plant plant : searchResults) {
             searchPlantPanes.add(new SearchPlantPane(this, ImageLibrary.getLoadingImageFile().toURI().toString(), plant));
@@ -138,6 +138,7 @@ public class SearchTabPaneController {
                                 }
                                 catch (IllegalArgumentException e) {
                                     spp.setDefaultImage(ImageLibrary.getDefaultPlantImage().toURI().toString());
+                                    return "Search has failed";
                                 }
                             }
                             updateProgress(i++, searchPlantPanes.size());
@@ -153,6 +154,7 @@ public class SearchTabPaneController {
         Thread imageThread = new Thread(getImagesTask);
         progressIndicator.progressProperty().bind(getImagesTask.progressProperty());
         imageThread.start();
+        return "Search was successful";
     }
 
     /**
