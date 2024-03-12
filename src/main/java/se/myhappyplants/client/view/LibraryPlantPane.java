@@ -413,7 +413,7 @@ public class LibraryPlantPane extends Pane implements PlantPane {
      * @param plant the selected plant
      */
     private void changeNickname(Plant plant) {
-        String result = myPlantsTabPaneController.changeNicknameInDB(plant, null);
+        String result = myPlantsTabPaneController.changeNicknameInDB(plant, "");
 
         if (result.equals("Success")) {
             String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
