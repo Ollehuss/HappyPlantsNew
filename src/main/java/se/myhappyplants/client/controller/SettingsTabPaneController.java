@@ -188,7 +188,7 @@ public class SettingsTabPaneController {
      * @author Anton
      */
     @FXML
-    private void selectAvatarImage() {
+    public void selectAvatarImage() {
         User user = LoggedInUser.getInstance().getUser();
         FileChooser fc = new FileChooser();
 
