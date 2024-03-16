@@ -63,7 +63,7 @@ public class SearchPlantPane extends Pane implements PlantPane {
      * Method to initialize the image
      * @param imgPath
      */
-    private void initImage(String imgPath) {
+    private String initImage(String imgPath) {
         Image img = new Image(imgPath);
         this.image = new ImageView();
         image.setFitHeight(50.0);
@@ -72,57 +72,63 @@ public class SearchPlantPane extends Pane implements PlantPane {
         image.setPickOnBounds(true);
         image.setPreserveRatio(true);
         image.setImage(img);
+        return "Image has been initialized";
     }
 
     /**
      * Method to initialize the common name label
      */
-    private void initCommonName() {
+    private String initCommonName() {
         this.commonName = new Label(plant.getCommonName());
         commonName.setLayoutX(60.0);
         commonName.setLayoutY(20.0);
         commonName.prefHeight(17.0);
         commonName.prefWidth(264.0);
+        return "Common name has been initialized";
     }
     /**
      * Method to initialize scientific name label
      */
-    private void initScientificName() {
+    private String initScientificName() {
         this.scientificName = new Label(plant.getScientificName());
         scientificName.setLayoutX(280.0);
         scientificName.setLayoutY(20.0);
         scientificName.prefHeight(17.0);
         scientificName.prefWidth(254.0);
+        return "Scientific name has been initialized";
     }
     /**
      * Method to initialize the info button
      */
-    private void initInfoButton() {
+    private String initInfoButton() {
         this.infoButton = new Button("More info");
         infoButton.setLayoutX(595.0);
         infoButton.setLayoutY(16.0);
         infoButton.setMnemonicParsing(false);
+        return "Info button has been initialized";
     }
 
     /**
      * Method to initialize the add button
      */
-    private void initAddButton() {
+    private String initAddButton() {
         this.addButton = new Button();
         addButton.setLayoutX(705.0);
         addButton.setLayoutY(16.0);
         addButton.setMnemonicParsing(false);
         addButton.setOnAction(action -> searchTabPaneController.addPlantToCurrentUserLibrary(plant));
+        return "Add button has been initialized";
     }
 
     /**
      * Method to initialize the plus sign to the add button
      */
-    private void initImgViewPlusSign() {
+    private String initImgViewPlusSign() {
         this.imgViewPlusSign = new ImageView(ImageLibrary.getPlusSign());
         imgViewPlusSign.setFitHeight(16);
         imgViewPlusSign.setFitWidth(15);
         addButton.setGraphic(imgViewPlusSign);
+        return "Plus sign has been initialized";
     }
 
     /**
@@ -168,7 +174,7 @@ public class SearchPlantPane extends Pane implements PlantPane {
     /**
      * Method to initialize the ListView
      */
-    private void initListView() {
+    private String initListView() {
         listView = new ListView();
         listView.setLayoutX(this.getWidth());
         listView.setLayoutY(this.getHeight() + 56.0);
@@ -177,14 +183,16 @@ public class SearchPlantPane extends Pane implements PlantPane {
 
         this.prefHeight(56.0);
         this.getChildren().addAll(image, commonName, scientificName, infoButton, addButton);
+        return "ListView has been initialized";
     }
 
     /**
      * Method to update the image
      */
-    public void updateImage() {
+    public String updateImage() {
         Image img = new Image(String.valueOf(plant.getImageURL()));
         image.setImage(img);
+        return "Image has been updated";
     }
 
     /**
@@ -199,15 +207,16 @@ public class SearchPlantPane extends Pane implements PlantPane {
      * Method to set a default picture if the plant don't have it in the database
      * @param defaultImage
      */
-    public void setDefaultImage(String defaultImage) {
+    public String setDefaultImage(String defaultImage) {
         Image img = new Image(defaultImage);
         image.setImage(img);
+        return "Default image has been set";
     }
 
     /**
      * Method to extend the pane and show more info on the plant
      */
-    public void extendPaneMoreInfoPlant() {
+    public String extendPaneMoreInfoPlant() {
         AtomicReference<Double> height = new AtomicReference<>(this.getHeight());
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.millis(7.5), event -> this.setPrefHeight(height.updateAndGet(v -> (double) (v + 6.25))))
@@ -221,12 +230,13 @@ public class SearchPlantPane extends Pane implements PlantPane {
         });
         extended = true;
         gotInfoOnPlant = true;
+        return "Pane has been extended";
     }
 
     /**
      * Method to collapse the pane
      */
-    public void retractPane() {
+    public String retractPane() {
         int size = listView.getItems().size();
         for (int i = 0; i < size; i++) {
             listView.getItems().remove(0);
@@ -245,6 +255,7 @@ public class SearchPlantPane extends Pane implements PlantPane {
         });
         extended = false;
         gotInfoOnPlant = false;
+        return "Pane has been retracted";
     }
 }
 

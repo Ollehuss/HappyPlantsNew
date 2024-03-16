@@ -1,0 +1,1 @@
+resources/images/user_avatars/test@gmail.com_avatar.jpg

@@ -51,7 +51,7 @@ public class SettingsTabPaneController {
      * Method to initialize the GUI
      */
     @FXML
-    public void initialize() {
+    public String initialize() {
         User loggedInUser = LoggedInUser.getInstance().getUser();
         lblUsername.setText(loggedInUser.getUsername());
         imgUserAvatar.setFill(new ImagePattern(new Image(SetAvatar.setAvatarOnLogin(loggedInUser.getEmail()))));
@@ -59,14 +59,15 @@ public class SettingsTabPaneController {
         ButtonText.setButtonText(tglBtnChangeNotification);
         tglBtnChangeFunFacts.setSelected(loggedInUser.areFunFactsActivated());
         ButtonText.setButtonText(tglBtnChangeFunFacts);
-
+        return "Settings tab initialized";
     }
     /**
      * Method to set the mainController
      * @param mainPaneController the controller to set
      */
-    public void setMainController(MainPaneController mainPaneController) {
+    public String setMainController(MainPaneController mainPaneController) {
         this.mainPaneController = mainPaneController;
+        return "Main controller set, SettingsTabPaneController";
     }
 
     /**
@@ -107,7 +108,7 @@ public class SettingsTabPaneController {
      * Message to send to the server to change the setting of the fun facts
      */
     @FXML
-    public void changeFunFactsSetting() {
+    public String changeFunFactsSetting() {
         Thread changeFunFactsThread = new Thread(() -> {
             Message changeFunFactsRequest = new Message(MessageType.changeFunFacts, tglBtnChangeFunFacts.isSelected(), LoggedInUser.getInstance().getUser());
             ServerConnection connection = ServerConnection.getClientConnection();
@@ -127,6 +128,7 @@ public class SettingsTabPaneController {
         changeFunFactsThread.start();
         ButtonText.setButtonText(tglBtnChangeFunFacts);
         mainPaneController.getSearchTabPaneController().showFunFact(tglBtnChangeFunFacts.isSelected());
+        return "Fun facts settings has been changed";
     }
 
 
@@ -134,7 +136,7 @@ public class SettingsTabPaneController {
      * Method that handles actions when a user clicks button to delete account.
      */
     @FXML
-    private void deleteAccountButtonPressed() {
+    private String deleteAccountButtonPressed() {
         MessageBox.display(BoxTitle.Delete, "All your personal information will be deleted. \n A deleted account cannot be restored.");
         int answer = MessageBox.askYesNo(BoxTitle.Delete, "Are you sure you want to delete your account?");
         if (answer == 1) {
@@ -159,6 +161,7 @@ public class SettingsTabPaneController {
             });
             deleteAccountThread.start();
         }
+        return "Account has been deleted";
     }
 
     public static boolean deleteResponseNotNull(Message deleteResponse) {
@@ -169,15 +172,17 @@ public class SettingsTabPaneController {
      * @throws IOException
      */
     @FXML
-    private void logoutButtonPressed() throws IOException {
+    private String logoutButtonPressed() throws IOException {
         mainPaneController.logoutButtonPressed();
+        return "Logout button has been pressed, SettingsTabPaneController";
     }
 
     /**
      * Method to update the users avatar picture on the tab
      */
-    public void updateAvatar() {
+    public String updateAvatar() {
         imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+        return "Avatar has been updated on the tab, SettingsTabPaneController";
     }
 
     /**
