@@ -63,35 +63,39 @@ public class SearchTabPaneController {
      * @throws IOException
      */
     @FXML
-    public void initialize() {
+    public String initialize() {
         LoggedInUser loggedInUser = LoggedInUser.getInstance();
         lblUsername.setText(loggedInUser.getUser().getUsername());
         imgUserAvatar.setFill(new ImagePattern(new Image(SetAvatar.setAvatarOnLogin(loggedInUser.getUser().getEmail()))));
         cmbSortOption.setItems(ListSorter.sortOptionsSearch());
         showFunFact(LoggedInUser.getInstance().getUser().areFunFactsActivated());
+        return "GUI has been initialized";
     }
 
     /**
      * Method to message the right controller-class that the log out-button has been pressed
      * @throws IOException
      */
-    public void setMainController(MainPaneController mainPaneController) {
+    public String setMainController(MainPaneController mainPaneController) {
         this.mainPaneController = mainPaneController;
+        return "Main controller has been set, SearchTabPaneController";
     }
     /**
      * Method to set and display the fun facts
      * @param factsActivated boolean, if the user has activated the option to true
      */
-    public void showFunFact(boolean factsActivated) {
+    public String showFunFact(boolean factsActivated) {
 
         FunFacts funFacts = new FunFacts();
         if (factsActivated) {
             imgFunFactTitle.setVisible(true);
             lstFunFacts.setItems(funFacts.getRandomFact());
+            return "Fun facts have been set and displayed";
         }
         else {
             imgFunFactTitle.setVisible(false);
             lstFunFacts.setItems(null);
+            return "Fun facts is disabled";
         }
     }
 
@@ -100,7 +104,7 @@ public class SearchTabPaneController {
      * @param plantAdd the selected plant to add
      */
     @FXML
-    public void addPlantToCurrentUserLibrary(Plant plantAdd) {
+    public String addPlantToCurrentUserLibrary(Plant plantAdd) {
         String plantNickname = plantAdd.getCommonName();
 
         int answer = MessageBox.askYesNo(BoxTitle.Add, "Do you want to add a nickname for your plant?");
@@ -108,12 +112,13 @@ public class SearchTabPaneController {
             plantNickname = MessageBox.askForStringInput("Add a nickname", "Nickname:");
         }
         mainPaneController.getMyPlantsTabPaneController().addPlantToCurrentUserLibrary(plantAdd, plantNickname);
+        return plantNickname;
     }
 
     /**
      * Method to show the search result on the pane
      */
-    private void showResultsOnPane() {
+    private String showResultsOnPane() {
         ObservableList<SearchPlantPane> searchPlantPanes = FXCollections.observableArrayList();
         for (Plant plant : searchResults) {
             searchPlantPanes.add(new SearchPlantPane(this, ImageLibrary.getLoadingImageFile().toURI().toString(), plant));
@@ -137,6 +142,7 @@ public class SearchTabPaneController {
                                 }
                                 catch (IllegalArgumentException e) {
                                     spp.setDefaultImage(ImageLibrary.getDefaultPlantImage().toURI().toString());
+                                    return "Search has failed";
                                 }
                             }
                             updateProgress(i++, searchPlantPanes.size());
@@ -152,13 +158,14 @@ public class SearchTabPaneController {
         Thread imageThread = new Thread(getImagesTask);
         progressIndicator.progressProperty().bind(getImagesTask.progressProperty());
         imageThread.start();
+        return "Search was successful";
     }
 
     /**
-     * Method to sent a message to the server to get the results from the database. Displays a message to the user that more info is on its way
+     * Method to send a message to the server to get the results from the database. Displays a message to the user that more info is on its way
      */
     @FXML
-    private void searchButtonPressed() {
+    private String searchButtonPressed() {
         btnSearch.setDisable(true);
         txtFldSearchText.addToHistory();
         PopupBox.display(MessageText.holdOnGettingInfo.toString());
@@ -189,6 +196,7 @@ public class SearchTabPaneController {
             btnSearch.setDisable(false);
         });
         searchThread.start();
+        return "Search has been started";
     }
 
     /**
@@ -196,8 +204,9 @@ public class SearchTabPaneController {
      * @throws IOException
      */
     @FXML
-    private void logoutButtonPressed() throws IOException {
+    private String logoutButtonPressed() throws IOException {
         mainPaneController.logoutButtonPressed();
+        return "Logout button has been pressed, SearchTabPaneController";
     }
 
     public PlantDetails getPlantDetails(Plant plant) {
@@ -216,16 +225,18 @@ public class SearchTabPaneController {
      * Method to rearranges the results based on selected sorting option
      */
     @FXML
-    public void sortResults() {
+    public String sortResults() {
         SortingOption selectedOption;
         selectedOption = cmbSortOption.getValue();
         listViewResult.setItems(ListSorter.sort(selectedOption, listViewResult.getItems()));
+        return "Results have been sorted";
     }
 
     /**
      * Method to update the users avatar picture on the tab
      */
-    public void updateAvatar() {
+    public String updateAvatar() {
         imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
+        return "Avatar has been updated on the tab, SearchTabPaneController";
     }
 }

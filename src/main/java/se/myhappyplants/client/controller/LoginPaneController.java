@@ -44,23 +44,26 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    public void initialize() throws IOException {
+    public String initialize() throws IOException {
         String lastLoggedInUser;
 
         File file = new File("resources/lastLogin.txt");
         if (!file.exists()) {
             file.createNewFile();
-
+            return "Last login file not found, created a new file";
         }
         else if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader("resources/lastLogin.txt"));) {
                 lastLoggedInUser = br.readLine();
                 txtFldEmail.setText(lastLoggedInUser);
+                return "Last login file found, read from file";
             }
             catch (IOException e) {
                 e.printStackTrace();
+                return "Error reading from file";
             }
         }
+        return "Something went wrong with the last login file";
     }
 
     /**
@@ -69,7 +72,7 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    private void loginButtonPressed() {
+    private String loginButtonPressed() {
         Thread loginThread = new Thread(() -> {
             Message loginMessage = new Message(MessageType.login, new User(txtFldEmail.getText(), passFldPassword.getText()));
             ServerConnection connection = ServerConnection.getClientConnection();
@@ -82,24 +85,28 @@ public class LoginPaneController {
             }
         });
         loginThread.start();
+        return "Login button has been pressed and loginThread has been started";
     }
 
-    private boolean checkLoginResponseNotNull(Message loginResponse) {
+    public boolean checkLoginResponseNotNull(Message loginResponse) {
         return loginResponse != null;
     }
 
-    private void checkLoginResponseIsSuccess(Message loginResponse) {
+    public String checkLoginResponseIsSuccess(Message loginResponse) {
         if (loginResponse.isSuccess()) {
             LoggedInUser.getInstance().setUser(loginResponse.getUser());
             Platform.runLater(() -> PopupBox.display("Now logged in as\n" + LoggedInUser.getInstance().getUser().getUsername()));
             try {
                 switchToMainPane();
+                return "User is now logged in";
             }
             catch (IOException e) {
                 e.printStackTrace();
+                return "Error switching to mainPane";
             }
         } else {
             Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Sorry, we couldn't find an account with that email or you typed the password wrong. Try again or create a new account."));
+            return "User has not been logged in";
         }
     }
 
@@ -109,8 +116,9 @@ public class LoginPaneController {
      * @throws IOException
      */
     @FXML
-    private void switchToMainPane() throws IOException {
+    private String switchToMainPane() throws IOException {
         StartClient.setRoot(String.valueOf(RootName.mainPane));
+        return "Switched to mainPane";
     }
 
     /**
@@ -118,14 +126,14 @@ public class LoginPaneController {
      *
      * @param actionEvent
      */
-    public void swapToRegister(ActionEvent actionEvent) {
+    public String swapToRegister(ActionEvent actionEvent) {
         try {
             StartClient.setRoot(RootName.registerPane.toString());
+            return "Switched to registerPane";
         }
         catch (IOException e) {
             e.printStackTrace();
+            return "Error switching to registerPane";
         }
     }
-
-
 }

@@ -38,11 +38,11 @@ public class RegisterPaneController {
     }
 
     @FXML
-    private void registerButtonPressed() {
+    private String registerButtonPressed() {
         boolean verifiedRegistration = isVerifiedRegistration();
         if (!verifiedRegistration) {
             Platform.runLater(() -> MessageBox.display(BoxTitle.Failed, "Invalid account details. Please check your inputs."));
-            return;
+            return "Invalid account details";
         }
 
         int answer = MessageBox.askYesNo(BoxTitle.GDPR, "Your account details will be saved in accordance with GDPR requirements" + "\n" + "Do you still want to create the account?");
@@ -70,8 +70,9 @@ public class RegisterPaneController {
             });
             registerThread.start();
         } else {
-            return;
+            return "Registration cancelled";
         }
+        return "Registration successful";
     }
 
 
@@ -84,15 +85,18 @@ public class RegisterPaneController {
     }
 
     @FXML
-    private void switchToMainPane() throws IOException {
+    private String switchToMainPane() throws IOException {
         StartClient.setRoot(String.valueOf(RootName.mainPane));
+        return "Switched to main pane";
     }
 
-    public void swapToLogin(MouseEvent mouseEvent) {
+    public String swapToLogin(MouseEvent mouseEvent) {
         try {
             StartClient.setRoot(RootName.loginPane.toString());
+            return "Switched to login pane";
         } catch (IOException e) {
             e.printStackTrace();
+            return "Failed to switch to login pane";
         }
     }
     public String[] getComponentsToVerify() {

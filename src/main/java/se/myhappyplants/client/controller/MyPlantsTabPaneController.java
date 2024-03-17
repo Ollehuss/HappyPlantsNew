@@ -98,8 +98,9 @@ public class MyPlantsTabPaneController {
      * Method to set the mainPaneController
      * @param mainPaneController to set
      */
-    public void setMainController(MainPaneController mainPaneController) {
+    public String setMainController(MainPaneController mainPaneController) {
         this.mainPaneController = mainPaneController;
+        return "MainPaneController set, MyPlantsTabPaneController";
     }
 
     /**
@@ -114,59 +115,68 @@ public class MyPlantsTabPaneController {
      * Method to add a users plants to myPlantsTab
      */
     @FXML
-    public void addCurrentUserLibraryToHomeScreen() {
+    public String addCurrentUserLibraryToHomeScreen() {
+        String librarySize = "0";
         ObservableList<LibraryPlantPane> obsListLibraryPlantPane = FXCollections.observableArrayList();
+
         if (currentUserLibrary == null) {
             disableButtons();
             obsListLibraryPlantPane.add(new LibraryPlantPane());
+            librarySize = "null";
         } else {
             if (currentUserLibrary.size()<1) {
                 disableButtons();
                 obsListLibraryPlantPane.add(new LibraryPlantPane(this));
+                librarySize = "0";
             } else {
                 enableButtons();
                 for (Plant plant : currentUserLibrary) {
                     obsListLibraryPlantPane.add(new LibraryPlantPane(this, plant));
                 }
+                librarySize = String.valueOf(currentUserLibrary.size());
             }
         }
         Platform.runLater(() -> {
             lstViewUserPlantLibrary.setItems(obsListLibraryPlantPane);
             sortLibrary();
         });
+        return librarySize;
     }
 
     /**
      * Method to disable the buttons
      */
-    private void disableButtons () {
+    private String disableButtons () {
         btnWaterAll.setDisable(true);
         btnExpandAll.setDisable(true);
         btnCollapseAll.setDisable(true);
+        return "Buttons has been disabled";
     }
 
     /**
      * Mehtod to enable the buttons
      */
-    private void enableButtons () {
+    private String enableButtons () {
         btnWaterAll.setDisable(false);
         btnExpandAll.setDisable(false);
         btnCollapseAll.setDisable(false);
+        return "Buttons has been enabled";
     }
 
     /**
      * Method to show the notification
      */
-    public void showNotifications() {
+    public String showNotifications() {
         ObservableList<String> notificationStrings = NotificationsCreator.getNotificationsStrings(currentUserLibrary, imgNotifications);
         Platform.runLater(() -> lstViewNotifications.setItems(notificationStrings));
+        return "Notifications has been shown";
     }
 
     /**
      * Method to create the logged in users library from the database
      */
     @FXML
-    public void createCurrentUserLibraryFromDB() {
+    public String createCurrentUserLibraryFromDB() {
         Thread getLibraryThread = new Thread(() -> {
             Message getLibrary = new Message(MessageType.getLibrary, LoggedInUser.getInstance().getUser());
             ServerConnection connection = ServerConnection.getClientConnection();
@@ -181,6 +191,7 @@ public class MyPlantsTabPaneController {
             }
         });
         getLibraryThread.start();
+        return "Library has been created";
     }
 
     /**
@@ -188,7 +199,7 @@ public class MyPlantsTabPaneController {
      * @param plant
      */
     @FXML
-    public void removePlantFromDB(Plant plant) {
+    public String removePlantFromDB(Plant plant) {
         Platform.runLater(() ->PopupBox.display(MessageText.removePlant.toString()));
         Thread removePlantThread = new Thread(() -> {
             currentUserLibrary.remove(plant);
@@ -203,6 +214,7 @@ public class MyPlantsTabPaneController {
             }
         });
         removePlantThread.start();
+        return plant.getNickname();
     }
 
     /**
@@ -211,7 +223,7 @@ public class MyPlantsTabPaneController {
      * @param plantNickname the nickname of the plant that the user chooses
      */
     @FXML
-    public void addPlantToCurrentUserLibrary(Plant selectedPlant, String plantNickname) {
+    public String addPlantToCurrentUserLibrary(Plant selectedPlant, String plantNickname) {
         int plantsWithThisNickname = 1;
         String uniqueNickName = plantNickname;
         for (Plant plant : currentUserLibrary) {
@@ -226,6 +238,7 @@ public class MyPlantsTabPaneController {
         Plant plantToAdd = new Plant(uniqueNickName, selectedPlant.getPlantId(), date, imageURL);
         PopupBox.display(MessageText.sucessfullyAddPlant.toString());
         addPlantToDB(plantToAdd);
+        return "Plant has been added to the logged in users library with a nickname";
     }
 
     /**
@@ -233,7 +246,7 @@ public class MyPlantsTabPaneController {
      * @param plant the selected plant that the user has chosen
      */
     @FXML
-    public void addPlantToDB(Plant plant) {
+    public String addPlantToDB(Plant plant) {
         Thread addPlantThread = new Thread(() -> {
             currentUserLibrary.add(plant);
             Message savePlant = new Message(MessageType.savePlant, LoggedInUser.getInstance().getUser(), plant);
@@ -245,6 +258,7 @@ public class MyPlantsTabPaneController {
             createCurrentUserLibraryFromDB();
         });
         addPlantThread.start();
+        return "Plant has been saved to the database";
     }
 
     /**
@@ -252,8 +266,9 @@ public class MyPlantsTabPaneController {
      * @throws IOException
      */
     @FXML
-    private void logoutButtonPressed() throws IOException {
+    private String logoutButtonPressed() throws IOException {
         mainPaneController.logoutButtonPressed();
+        return "Logout button has been pressed, MyPlantsTabPaneController";
     }
 
     /**
@@ -262,7 +277,7 @@ public class MyPlantsTabPaneController {
      * @param plant instance of the plant which to change last watered date
      * @param date  new date to change to
      */
-    public void changeLastWateredInDB(Plant plant, LocalDate date) {
+    public String changeLastWateredInDB(Plant plant, LocalDate date) {
         Message changeLastWatered = new Message(MessageType.changeLastWatered, LoggedInUser.getInstance().getUser(), plant, date);
         ServerConnection connection = ServerConnection.getClientConnection();
         Message response = connection.makeRequest(changeLastWatered);
@@ -272,6 +287,7 @@ public class MyPlantsTabPaneController {
         }
         createCurrentUserLibraryFromDB();
         showNotifications();
+        return "Last watered date has been changed in the database";
     }
 
     /**
@@ -349,7 +365,7 @@ public class MyPlantsTabPaneController {
      * Method to water all the plant at once
      */
     @FXML
-    public void waterAll() {
+    public String waterAll() {
         btnWaterAll.setDisable(true);
         ObservableList<LibraryPlantPane> libraryPlantPanes = lstViewUserPlantLibrary.getItems();
         changeAllToWateredInDB();
@@ -357,13 +373,14 @@ public class MyPlantsTabPaneController {
             lpp.getProgressBar().setProgress(100);
             lpp.setColorProgressBar(100);
         }
+        return "All plants have been watered at once";
     }
 
     /**
      * Method to expand all the plants "flaps" at the same time
      */
     @FXML
-    public void expandAll() {
+    public String expandAll() {
         btnExpandAll.setDisable(true);
         ObservableList<LibraryPlantPane> libraryPlantPanes = lstViewUserPlantLibrary.getItems();
         for (LibraryPlantPane lpp : libraryPlantPanes) {
@@ -371,13 +388,14 @@ public class MyPlantsTabPaneController {
                 lpp.pressInfoButton();
         }
         btnExpandAll.setDisable(false);
+        return "All plants flaps have been expanded at once";
     }
 
     /**
      * Method to collaps att the plants "flaps" at the same time
      */
     @FXML
-    public void collapseAll() {
+    public String collapseAll() {
         btnCollapseAll.setDisable(true);
         ObservableList<LibraryPlantPane> libraryPlantPanes = lstViewUserPlantLibrary.getItems();
         for (LibraryPlantPane lpp : libraryPlantPanes) {
@@ -385,12 +403,13 @@ public class MyPlantsTabPaneController {
                 lpp.pressInfoButton();
         }
         btnCollapseAll.setDisable(false);
+        return "All plants flaps have been collapsed at once";
     }
 
     /**
      * Method to send a message to the server to change the date of the last watered in the database
      */
-    private void changeAllToWateredInDB() {
+    private String changeAllToWateredInDB() {
         Thread waterAllThread = new Thread(() -> {
             Message changeAllToWatered = new Message(MessageType.changeAllToWatered, LoggedInUser.getInstance().getUser());
             ServerConnection connection = ServerConnection.getClientConnection();
@@ -403,9 +422,10 @@ public class MyPlantsTabPaneController {
             showNotifications();
         });
         waterAllThread.start();
+        return "All plants have hade there last watered date changed in the database";
     }
 
-    public void setNewPlantPicture(LibraryPlantPane lpp) {
+    public String setNewPlantPicture(LibraryPlantPane lpp) {
         FileChooser fc = new FileChooser();
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Images", "*.jpg", "*.jpeg", "*.png");
         fc.getExtensionFilters().add(fileExtensions);
@@ -437,5 +457,22 @@ public class MyPlantsTabPaneController {
                 e.printStackTrace();
             }
         }
+        return "New picture has been set";
+    }
+
+    public ArrayList<Plant> getCurrentUserLibrary() {
+        return currentUserLibrary;
+    }
+
+    public void setCurrentUserLibrary(ArrayList<Plant> currentUserLibrary) {
+        this.currentUserLibrary = currentUserLibrary;
+    }
+
+    public ListView getLstViewUserPlantLibrary() {
+        return lstViewUserPlantLibrary;
+    }
+
+    public void setLstViewUserPlantLibrary(ListView lstViewUserPlantLibrary) {
+        this.lstViewUserPlantLibrary = lstViewUserPlantLibrary;
     }
 }
