@@ -19,3 +19,4 @@ aloe
 cctus
 tulpan
 bamboo
+tr

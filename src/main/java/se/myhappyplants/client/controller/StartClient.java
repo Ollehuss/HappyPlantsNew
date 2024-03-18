@@ -58,10 +58,11 @@ public class StartClient extends Application {
     /**
      * Method handles close on request.
      */
-    private void close() {
+    private String close() {
         if (ConfirmationBox.display("Exit", "Are you sure?")) {
             window.close();
         }
+        return "Window application closed";
     }
 
     /**

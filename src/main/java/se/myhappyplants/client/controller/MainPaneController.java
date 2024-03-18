@@ -83,16 +83,18 @@ public class MainPaneController {
     /**
      * Method to update so the user picture is the same on all the tabs
      */
-    public void updateAvatarOnAllTabs() {
+    public String updateAvatarOnAllTabs() {
         myPlantsTabPaneController.updateAvatar();
         searchTabPaneController.updateAvatar();
         settingsTabPaneController.updateAvatar();
+        return "Avatar updated on all tabs";
     }
 
     /**
      * Method to switch to the tab the user selects
      */
-    public void changeToSearchTab() {
+    public String changeToSearchTab() {
         mainPane.getSelectionModel().select(1);
+        return "Switched to the tab the user selected";
     }
 }
