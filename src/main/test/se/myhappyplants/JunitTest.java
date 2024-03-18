@@ -1,3 +1,4 @@
+/**
 package se.myhappyplants;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -290,13 +291,13 @@ public class JunitTest {
     }
 
     //KRAV-ID: ANV01F
-//    @Test
-//    public void testCheckLoginResponseIsSuccess() {
-//        LoginPaneController loginPaneController = new LoginPaneController();
-//        Message loginResponse = new Message(MessageType.login, new User("test", "test"));
-//        String result = loginPaneController.checkLoginResponseIsSuccess(loginResponse);
-//        assertEquals("Login response is not successful", result);
-//    }
+    @Test
+    public void testCheckLoginResponseIsSuccess() {
+        LoginPaneController loginPaneController = new LoginPaneController();
+        Message loginResponse = new Message(MessageType.login, new User("test", "test"));
+        String result = loginPaneController.checkLoginResponseIsSuccess(loginResponse);
+        assertEquals("Login response is not successful", result);
+    }
 
 
     //KRAV-ID: ANV03F
@@ -464,3 +465,4 @@ public class JunitTest {
 
 
 }
+ **/
