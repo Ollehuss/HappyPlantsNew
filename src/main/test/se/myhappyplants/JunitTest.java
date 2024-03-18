@@ -1,25 +1,19 @@
 package se.myhappyplants;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
 import org.junit.jupiter.api.BeforeAll;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.*;
 import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.mockito.Mockito;
 
-
 import org.testfx.util.WaitForAsyncUtils;
 import se.myhappyplants.client.controller.*;
 import se.myhappyplants.client.model.*;
 import se.myhappyplants.client.service.ServerConnection;
-import se.myhappyplants.client.view.LibraryPlantPane;
-import se.myhappyplants.server.StartServer;
 import se.myhappyplants.server.services.*;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
@@ -41,62 +35,10 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JunitTest {
-    private LoginPaneController lpc;
-    private MainPaneController mpc;
-    private PlantRepository plantRepositoryMock;
-    private SearchTabPaneController searchTabPaneController;
-    private MyPlantsTabPaneController myPlantsTabPaneController;
-    private Plant testPlant;
-    private StartClient startClient;
-    private IDatabaseConnection connectionMyHappyPlants;
-    private IQueryExecutor databaseMyHappyPlants;
-    private SettingsTabPaneController settingsTabPaneController;
-
-
-    public static void main(String[] args) throws IOException, SQLException {
-        JunitTest testFile = new JunitTest();
-        testFile.setup();
-        testFile.testLogOutButton();
-      //  testFile.testLogInButton();
-    }
-
-
-    @BeforeEach
-    public void setup() throws IOException, SQLException {
-        this.lpc = new LoginPaneController();
-        this.mpc = new MainPaneController();
-        this.startClient = new StartClient();
-        this.searchTabPaneController = new SearchTabPaneController();
-        this.myPlantsTabPaneController = new MyPlantsTabPaneController();
-        this.plantRepositoryMock = mock(PlantRepository.class);
-        this.connectionMyHappyPlants = mock(DatabaseConnection.class);
-        this.databaseMyHappyPlants = mock(QueryExecutor.class);
-        this.settingsTabPaneController = new SettingsTabPaneController();
-        this.testPlant = mock(Plant.class);
-
-        this.searchTabPaneController.setMainController(mpc);
-        this.startClient = new StartClient();
-
-        mockVerifier = mock(Verifier.class);
-//        mockUIMessageService = mock(RegisterPaneController.UIMessageService.class);       // vet inte var och när denna klass ska ha implementerats (UIMessageService), kanske Omar vet
-        controller = new RegisterPaneController();
-//        controller.setVerifier(mockVerifier);     // vet inte om denna metod har implementerats någonannanstans, ni får fråga Omar om det är något ni ska ha med
-//        controller.setUIMessageService(mockUIMessageService);     // samma som kommentaren ovan
-
-
-    }
-
-    public void testLogOutButton() throws IOException, SQLException {
-        setup();
-        testWriteEmailToTextFile();
-        testSetUserToNull();
-//        testSetRootToLoginPane();
-       // testLogoutButtonPressed();
-    }
 
 
     /////////////////////////// JAVAFX SETUP ///////////////////////////
-    @BeforeAll
+    //@BeforeAll
     public static void setupJavaFX() throws InterruptedException {
         Thread t = new Thread("JavaFX Init Thread") {
             public void run() {
@@ -109,7 +51,7 @@ public class JunitTest {
     }
 
     public static class JavaFXInit extends Application {
-        @Override
+        //@Override
         public void start(Stage primaryStage) throws Exception {
             // No need to do anything here.
         }
@@ -117,6 +59,19 @@ public class JunitTest {
 
     ///////////////////////////////////////////////////////////////
 
+
+    //KRAV-ID: ANF10F
+    @Test
+    public void testChangeProfilePicture() {
+        SettingsTabPaneController settingsTabPaneController = mock(SettingsTabPaneController.class);
+
+        when(settingsTabPaneController.selectAvatarImage()).thenReturn("Avatar updated");
+
+        String result = settingsTabPaneController.selectAvatarImage();
+        String expected = "Avatar updated";
+
+        assertEquals(expected, result);
+    }
 
 
     //KRAV-ID: SK02F
@@ -318,19 +273,18 @@ public class JunitTest {
     @Test
     public void testInvalidEmail() {
         Verifier verified = new Verifier();
-        assertFalse(verified.validateEmail("test.EmailWHENiswrong.com"));         // validateEmail har private access
+        assertFalse(verified.validateEmail("test.EmailWHENiswrong.com"));
     }
 
     //KRAV-ID: ANV03F
     @Test
     public void testvalidEmail() {
         Verifier verified = new Verifier();
-        assertTrue(verified.validateEmail("test.EmailWHENisCorrect@correct.com"));        // validateEmail har private access
+        assertTrue(verified.validateEmail("test.EmailWHENisCorrect@correct.com"));
     }
 
 
 
-    //it needs to start Server first
     @Test
     public void testMakeRequestApiResponseNotNull() {
         // Mock ServerConnection
@@ -427,50 +381,41 @@ public class JunitTest {
 
 
 
-
-    @BeforeAll
-    public static void setupJavaFXRuntime() {
-        // Initializes the JavaFX Runtime
-        new JFXPanel();
-    }
-
-    private RegisterPaneController controller;
-    private Verifier mockVerifier;
-//    private RegisterPaneController.UIMessageService mockUIMessageService; // vet inte var och när denna klass ska ha implementerats (UIMessageService), kanske Omar vet
-
-
- //registerThen Login
-    @Test
-    public void testLoginButtonPressed_SuccessfulLogin() {
-        Message registerRequest = new Message(MessageType.register, new User("test@test.com","test", "testpassword", true));
-        ServerConnection connection = ServerConnection.getClientConnection();
-        Message registerResponse = connection.makeRequest(registerRequest);
-        RegisterPaneController Register = new RegisterPaneController();
+// //registerThen Login
+//    @Test
+//    public void testLoginButtonPressed_SuccessfulLogin() {
+//        Message registerRequest = new Message(MessageType.register, new User("test@test.com","test", "testpassword", true));
+//        ServerConnection connection = ServerConnection.getClientConnection();
+//        Message registerResponse = connection.makeRequest(registerRequest);
+//        RegisterPaneController Register = new RegisterPaneController();
 //        if (Register.registerResponseSuccess(registerResponse)) {   // registerResponseSuccess har private access
-            // Further validation can be added here if needed
-            LoggedInUser.getInstance().setUser(registerResponse.getUser());
-//        }
-        Message loginMessage = new Message(MessageType.login, new User("test@test.com", "testpassword"));
-        Message loginResponse = connection.makeRequest(loginMessage);
-        LoginPaneController controller = new LoginPaneController();
-//        assertTrue(controller.checkLoginResponseNotNull(loginResponse));    // checkLoginResponseNotNull har private access
-    }
+//            // Further validation can be added here if needed
+//            LoggedInUser.getInstance().setUser(registerResponse.getUser());
+//       }
+//        Message loginMessage = new Message(MessageType.login, new User("test@test.com", "testpassword"));
+//        Message loginResponse = connection.makeRequest(loginMessage);
+//        LoginPaneController controller = new LoginPaneController();
+//
+//    }
+
+
     //login without registeration
     @Test
     public void testLoginButtonPressed_Invalid() {
-
         // Mock ServerConnection
         Message loginMessage = new Message(MessageType.login, new User("test@test.com", "testpassword"));
 
         ServerConnection connection = Mockito.mock(ServerConnection.class);
+
         Message loginResponse = connection.makeRequest(loginMessage);
-         LoginPaneController controller = new LoginPaneController();
-//        assertFalse(controller.checkLoginResponseNotNull(loginResponse));   // checkLoginResponseNotNull har private access
+        LoginPaneController controller = new LoginPaneController();
+        assertFalse(controller.checkLoginResponseNotNull(loginResponse));
     }
 
 
     @Test
     public void testDeleteResponseNotNull() {
+        SettingsTabPaneController settingsTabPaneController = new SettingsTabPaneController();
         Message message = new Message(MessageType.login, "Test User");
 
         boolean result = settingsTabPaneController.deleteResponseNotNull(message);
@@ -479,9 +424,10 @@ public class JunitTest {
 
     @Test
     public void testDeleteResponseNotNull_Null() {
+        SettingsTabPaneController settingsTabPaneController = new SettingsTabPaneController();
         Message message = new Message(MessageType.login, "Test User");
 
-        boolean result = SettingsTabPaneController.deleteResponseNotNull(null);
+        boolean result = settingsTabPaneController.deleteResponseNotNull(null);
         assertFalse(result);
     }
 

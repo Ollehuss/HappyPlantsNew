@@ -80,7 +80,7 @@ public class RegisterPaneController {
         return verifier.validateRegistration(this);
     }
 
-    private static boolean registerResponseSuccess(Message registerResponse) {
+    public static boolean registerResponseSuccess(Message registerResponse) {
         return registerResponse != null && registerResponse.isSuccess();
     }
 
