@@ -19,11 +19,13 @@ import static org.mockito.Mockito.*;
 class SettingsTabPaneControllerTest2 {
 
 
+    //INS01F
     @BeforeAll
     static void init() {
-        new JFXPanel(); // Initialisera JavaFX Toolkit
+        new JFXPanel();
     }
 
+    //INS01F
     @Test
     void changeNotificationsSetting() {
         SettingsTabPaneController settingsTabPaneController = mock(SettingsTabPaneController.class);

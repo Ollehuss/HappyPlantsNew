@@ -12,11 +12,13 @@ import static org.mockito.Mockito.*;
 
 class VerifierTest2 {
 
+    //ANV06F
     @BeforeAll
     static void initToolkit() {
         new JFXPanel();
     }
 
+    //ANV06F
     @Test
     void testValidateRegistration() {
         RegisterPaneController registerPaneController = mock(RegisterPaneController.class);

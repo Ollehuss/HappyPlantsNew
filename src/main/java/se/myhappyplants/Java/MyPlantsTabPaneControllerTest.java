@@ -14,26 +14,23 @@ import static org.mockito.Mockito.when;
 
 class MyPlantsTabPaneControllerTest {
 
+    //BIB09F
     @BeforeAll
     static void init() {
         new JFXPanel();
     }
 
+    //BIB09F
     @Test
     void sortLibrary() {
-        // Mocking MyPlantsTabPaneController
         MyPlantsTabPaneController myPlantsTabController = mock(MyPlantsTabPaneController.class);
 
-        // Test data
         ObservableList<String> testData = FXCollections.observableArrayList("Cactus", "Basil", "Aloe");
 
-        // Mocking the behavior of sortLibrary() method
         when(myPlantsTabController.sortLibrary()).thenReturn("Library sorted by nickname");
 
-        // Calling the method under test
         String resultMessage = myPlantsTabController.sortLibrary();
 
-        // Verify the result
         assertEquals("Library sorted by nickname", resultMessage);
     }
 }
