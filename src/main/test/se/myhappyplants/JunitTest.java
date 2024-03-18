@@ -116,6 +116,36 @@ public class JunitTest {
         assertEquals(expected, actual);
     }
 
+    //KRAV-ID: BIB05F
+    @Test
+    public void testChangeNickNameinDB_Success(){
+        MyPlantsTabPaneController myPlantsTabPaneController = mock(MyPlantsTabPaneController.class);
+        Plant plant = mock(Plant.class);
+        String nickName = "nickName";
+
+        when(myPlantsTabPaneController.changeNicknameInDB(plant, nickName)).thenReturn("Success");
+
+        String expected = "Success";
+        String result = myPlantsTabPaneController.changeNicknameInDB(plant, nickName);
+
+        assertEquals(expected, result);
+    }
+
+    //KRAV-ID: BIB05F
+    @Test
+    public void testChangeNickNameinDB_Failed(){
+        MyPlantsTabPaneController myPlantsTabPaneController = mock(MyPlantsTabPaneController.class);
+        Plant plant = mock(Plant.class);
+        String nickName = "nickName";
+
+        when(myPlantsTabPaneController.changeNicknameInDB(plant, nickName)).thenReturn("Failure");
+
+        String expected = "Failure";
+        String result = myPlantsTabPaneController.changeNicknameInDB(plant, nickName);
+
+        assertEquals(expected, result);
+    }
+
 
     // KRAV-ID: BIB06F
     @Test
