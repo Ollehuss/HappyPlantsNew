@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 public class SearchTabPaneControllerTest {
 
     // KRAV-ID: BIB01F
+    // TEST-ID: T14
     @Test
     public void testAddPlantToCurrentUserLibrary() {
         Plant testPlant = new Plant("plantID", "commonName", "scientificName", "familyName", "imageURL");

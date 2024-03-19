@@ -11,7 +11,8 @@ import static org.mockito.Mockito.*;
 
 class VerifierTest {
 
-    //KRAV-ID: ANV06F
+    //KRAV-ID: ANV06F, ANV07F
+    //TEST-ID: T11
     @Test
     void testGetErrorMessage() {
         Verifier verifier = mock(Verifier.class);
@@ -29,7 +30,8 @@ class VerifierTest {
         assertEquals("Please enter the same password twice", verifier.getErrorMessage(Verifier.errorType.WRONG_PASSWORD));
     }
 
-    //KRAV-ID: ANV06F
+    //KRAV-ID: ANV06F, ANV07F
+    //TEST-ID: T12
     @Test
     void testValidateRegistration() {
         new JFXPanel();
@@ -46,6 +48,7 @@ class VerifierTest {
     }
 
     //KRAV-ID: ANV03F
+    //TEST-ID: T07
     @Test
     public void testInvalidEmail() {
         Verifier verified = new Verifier();
@@ -53,6 +56,7 @@ class VerifierTest {
     }
 
     //KRAV-ID: ANV03F
+    //TEST-ID: T08
     @Test
     public void testvalidEmail() {
         Verifier verified = new Verifier();

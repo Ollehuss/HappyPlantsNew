@@ -20,12 +20,14 @@ import static org.mockito.Mockito.when;
 class MyPlantsTabPaneControllerTest {
 
     //BIB09F
+    //TEST-ID: T19
     @BeforeAll
     static void init() {
         new JFXPanel();
     }
 
     //BIB09F
+    //TEST-ID: T20
     @Test
     void sortLibrary() {
         MyPlantsTabPaneController myPlantsTabController = mock(MyPlantsTabPaneController.class);
@@ -41,6 +43,7 @@ class MyPlantsTabPaneControllerTest {
 
 
     //KRAV-ID: BIB05F
+    //TEST-ID: T17
     @Test
     public void testChangeNickNameinDB_Success(){
         MyPlantsTabPaneController myPlantsTabPaneController = mock(MyPlantsTabPaneController.class);
@@ -56,6 +59,7 @@ class MyPlantsTabPaneControllerTest {
     }
 
     //KRAV-ID: BIB05F
+    //TEST-ID: T18
     @Test
     public void testChangeNickNameinDB_Failed(){
         MyPlantsTabPaneController myPlantsTabPaneController = mock(MyPlantsTabPaneController.class);
@@ -71,7 +75,8 @@ class MyPlantsTabPaneControllerTest {
     }
 
 
-    // KRAV-ID: BIB06F
+    //KRAV-ID: BIB06F
+    //TEST-ID: T16
     @Test
     public void testRemovePlantFromDB() {
         Date testDate = new Date(1);
@@ -89,7 +94,8 @@ class MyPlantsTabPaneControllerTest {
     }
 
 
-    // KRAV-ID: BIB02F
+    //KRAV-ID: BIB02F
+    //TEST-ID: T15
     @Test
     public void testAddCurrentUserLibraryToHomeScreen() {
         Plant testPlant = mock(Plant.class);

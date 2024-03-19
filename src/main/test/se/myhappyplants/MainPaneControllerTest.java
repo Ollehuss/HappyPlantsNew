@@ -15,7 +15,9 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MainPaneControllerTest {
-    // KRAV-ID: ANV02F
+
+    //KRAV-ID: ANV02F
+    //TEST-ID: T04
     @Test
     public void testWriteEmailToTextFile() throws IOException {
         // Arrange
@@ -38,6 +40,7 @@ public class MainPaneControllerTest {
     }
 
     //KRAV-ID ANV02F
+    //TEST-ID: T05
     @Test
     public void testSetUserToNull() {
         // Arrange
@@ -56,6 +59,7 @@ public class MainPaneControllerTest {
     }
 
     //KRAV-ID ANV02F
+    //TEST-ID: T06
     @Test
     public void testSetRootToLoginPane() throws IOException {
         // Initialize JavaFX platform

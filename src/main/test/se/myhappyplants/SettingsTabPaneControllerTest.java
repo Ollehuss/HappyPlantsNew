@@ -28,7 +28,8 @@ class SettingsTabPaneControllerTest {
     }
 
 
-    //KRAV-ID: ANF10F
+    //KRAV-ID: ANV10F
+    //TEST-ID: T13
     @Test
     public void testChangeProfilePicture() {
         SettingsTabPaneController settingsTabPaneController = mock(SettingsTabPaneController.class);
@@ -41,6 +42,8 @@ class SettingsTabPaneControllerTest {
         assertEquals(expected, result);
     }
 
+    //KRAV-ID: ANV04F
+    //TEST-ID: T09
     @Test
     public void testDeleteResponseNotNull() {
         SettingsTabPaneController settingsTabPaneController = new SettingsTabPaneController();
@@ -50,6 +53,8 @@ class SettingsTabPaneControllerTest {
         assertTrue(result);
     }
 
+    //KRAV-ID: ANV04F
+    //TEST-ID: T10
     @Test
     public void testDeleteResponseNotNull_Null() {
         SettingsTabPaneController settingsTabPaneController = new SettingsTabPaneController();

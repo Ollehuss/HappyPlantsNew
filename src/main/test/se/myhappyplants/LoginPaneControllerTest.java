@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class LoginPaneControllerTest {
 
     //KRAV-ID: ANV01F
+    //TEST-ID: T01
     @Test
     public void testCheckLoginResponseNotNull_LoginResponseIsNull_DisplaysFailedMessageBox() {
         // Call the method with null loginResponse
@@ -26,6 +27,7 @@ public class LoginPaneControllerTest {
     }
 
     //KRAV-ID: ANV01F
+    //TEST-ID: T02
     @Test
     public void testCheckLoginResponseNotNull_LoginResponseIsNull_ReturnsFalse() {
         // Call the method with null loginResponse
@@ -37,6 +39,7 @@ public class LoginPaneControllerTest {
     }
 
     //KRAV-ID: ANV01F
+    //TEST-ID: T03
 //    @Test
 //    public void testCheckLoginResponseIsSuccess() {
 //        new JFXPanel();
@@ -45,6 +48,7 @@ public class LoginPaneControllerTest {
 //        String result = loginPaneController.checkLoginResponseIsSuccess(loginResponse);
 //        assertEquals("Login response is not successful", result);
 //    }
+
 
     @Test
     public void testLoginButtonPressed_Invalid() {

@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 public class UserPlantRepositoryTest {
 
     //KRAV-ID: SK02F
+    //TEST-ID: T21
     @Test
     public void testRunLastWateredQuery_Success() throws SQLException {
         UserPlantRepository userPlantRepository = mock(UserPlantRepository.class);
@@ -27,6 +28,7 @@ public class UserPlantRepositoryTest {
     }
 
     //KRAV-ID: SK02F
+    //TEST-ID: T22
     @Test
     public void testRunLastWateredQuery_Failure() throws SQLException {
         UserPlantRepository userPlantRepository = mock(UserPlantRepository.class);
@@ -40,6 +42,7 @@ public class UserPlantRepositoryTest {
     }
 
     //KRAV-ID: SK02F
+    //TEST-ID: T23
     @Test
     public void replaceSingleQuotesWithDoubleQuotes() {
         UserPlantRepository userPlantRepository = mock(UserPlantRepository.class);

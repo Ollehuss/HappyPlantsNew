@@ -128,6 +128,9 @@ public class APIScript extends Thread {
     }
 
 
+    /**
+     * Kör inte detta!!!!!!!
+     */
     private static class StartScript {
         public static void main(String[] args) throws IOException {
             APIScript apiScript = new APIScript();
