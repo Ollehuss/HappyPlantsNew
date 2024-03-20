@@ -32,33 +32,20 @@ class VerifierTest {
 
     //KRAV-ID: ANV06F, ANV07F
     //TEST-ID: T12
+    @Test
+    void testValidateRegistration() {
+        RegisterPaneController registerPaneController = mock(RegisterPaneController.class);
+        Verifier verifier = new Verifier();
+        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "username", "password", "password"});
+        assertTrue(verifier.validateRegistration(registerPaneController));
+        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"invalid", "invalid", "username", "password", "password"});
+        assertFalse(verifier.validateRegistration(registerPaneController));
+        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "username", "password", "password2"});
+        assertFalse(verifier.validateRegistration(registerPaneController));
+        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "", "password", "password"});
+        assertFalse(verifier.validateRegistration(registerPaneController));
+    }
 
-    @Test
-    void testValidateRegistration() {
-        RegisterPaneController registerPaneController = mock(RegisterPaneController.class);
-        Verifier verifier = new Verifier();
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "username", "password", "password"});
-        assertTrue(verifier.validateRegistration(registerPaneController));
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"invalid", "invalid", "username", "password", "password"});
-        assertFalse(verifier.validateRegistration(registerPaneController));
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "username", "password", "password2"});
-        assertFalse(verifier.validateRegistration(registerPaneController));
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "", "password", "password"});
-        assertFalse(verifier.validateRegistration(registerPaneController));
-    }
-    @Test
-    void testValidateRegistration() {
-        RegisterPaneController registerPaneController = mock(RegisterPaneController.class);
-        Verifier verifier = new Verifier();
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "username", "password", "password"});
-        assertTrue(verifier.validateRegistration(registerPaneController));
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"invalid", "invalid", "username", "password", "password"});
-        assertFalse(verifier.validateRegistration(registerPaneController));
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "username", "password", "password2"});
-        assertFalse(verifier.validateRegistration(registerPaneController));
-        when(registerPaneController.getComponentsToVerify()).thenReturn(new String[]{"valid@example.com", "valid@example.com", "", "password", "password"});
-        assertFalse(verifier.validateRegistration(registerPaneController));
-    }
     //KRAV-ID: ANV03F
     //TEST-ID: T07
     @Test
